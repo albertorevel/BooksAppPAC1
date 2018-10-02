@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BooksAppPAC1</string>
+
+    <!-- Exercise 1 texts -->
+    <string name="list_item_example">Item</string>
+    <string name="list_detail_example">Details about item:</string>
+    <string name="list_detail_example2">More details information here</string>
 </resources>

@@ -7,12 +7,17 @@ public class BookDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
-        // Definimos la layout que usaremos para mostrar la información gestionada
+        // Definimos el layout que usaremos para mostrar la información gestionada
         setContentView(R.layout.book_detail);
 
-        Utils.startDetailsFragment(this);
+        // Obtenemos el id del elemento seleccionado
+        int id = getIntent().getIntExtra("SELECTED_ID",0);
+
+        // Lanzamos el fragment mostrará el detalle en el frame layout, pasando el id del elemento
+        ActivitiesUtils.startDetailsFragment(getSupportFragmentManager(), id);
 
     }
 }

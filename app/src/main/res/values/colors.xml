@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6b4cd9</color>
-    <color name="colorPrimaryDark">#3d0094</color>
-    <color name="colorAccent">#4ad7e4</color>
+
+    <!-- Colors used in the app-->
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="colorPrimaryLight">#FFECB3</color>
+    <color name="colorAccent">#FFEB3B</color>
+    <color name="primaryTextColor">#212121</color>
+    <color name="secondaryTextColor">#757575</color>
+    <color name="dividersColor">#BDBDBD</color>
+    <color name="iconsColor">#BDBDBD</color>
+
+
 </resources>
