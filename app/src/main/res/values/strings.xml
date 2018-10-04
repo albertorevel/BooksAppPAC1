@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">BooksAppPAC1</string>
 
-    <!-- Exercise 1 texts -->
+    <!-- Textos del ejercicio 1 -->
     <string name="list_item_example">Item</string>
     <string name="list_detail_example">Details about item:</string>
     <string name="list_detail_example2">More details information here</string>
+
+    <!-- Textos por defecto de los elementos libro -->
+    <string name="defaultTitle">Title</string>
+    <string name="defaultAuthor">Author</string>
+    <string name="defaultPublication">01/01/2018</string>
 </resources>

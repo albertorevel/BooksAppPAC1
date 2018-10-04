@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--Fragment que contiene los detalles del libro, que se usará tanto en pantalla dual como simple-->
 
+    <!-- Primer texto de ejemplo de los detalles del libro -->
     <TextView
         android:id="@+id/primaryExampleTV"
         android:layout_width="match_parent"
@@ -20,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Primer texto de ejemplo de los detalles del libro -->
     <TextView
         android:id="@+id/secondaryExampleTV"
         android:layout_width="match_parent"

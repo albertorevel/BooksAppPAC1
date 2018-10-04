@@ -1,15 +1,14 @@
 package arevel.uoc.booksapppac1;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ListView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import arevel.uoc.booksapppac1.adapters.RecyclerAdapter;
+import arevel.uoc.booksapppac1.model.BookModel;
 
 public class BookListActivity extends AppCompatActivity {
 
@@ -26,9 +25,14 @@ public class BookListActivity extends AppCompatActivity {
         // Definimos el layout que usaremos para mostrar la información gestionada
         setContentView(R.layout.book_list);
 
+        /*
+        * ********************
+        * *** Ejercicio 1 ****
+        * ********************
+
         // Recuperamos la ListView que contiene la lista de libros
         final ListView listview = findViewById(R.id.book_listview);
-        final FrameLayout detailFrameLayout = findViewById(R.id.detail_framelayout);
+
 
         // Creamos la lista que mostraremos en la listview con datos de ejemplo
         for (int i = 0; i < 20; ++i) {
@@ -62,8 +66,30 @@ public class BookListActivity extends AppCompatActivity {
             }
         });
 
-        // Existe la vista, por lo tanto, estamos en tablet
-        if (detailFrameLayout != null) {
+        */
+
+         /*
+        * ********************
+        * *** Ejercicio 2 ****
+        * ********************
+        * */
+
+        // Obtenemos el RecyclerView que contiene la lista a mostrar
+        final RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
+
+        // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
+        // conjunto de datos a mostrar y lo asociamos al RecyclerView
+        RecyclerAdapter adapter = new RecyclerAdapter(BookModel.getITEMS());
+        recyclerView.setAdapter(adapter);
+
+        // Creamos un LinearLayoutManager y lo asociamos al RecyclerView
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+
+
+        // Buscamos el framelayout de detalles. Si existe, estamos en tablet y guardamos esta
+        // información para poder usarla en la aplicación
+        if (findViewById(R.id.detail_framelayout) != null) {
             dualScreen = true;
         }
     }

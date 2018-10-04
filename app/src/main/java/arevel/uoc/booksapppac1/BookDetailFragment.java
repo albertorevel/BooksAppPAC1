@@ -3,13 +3,10 @@ package arevel.uoc.booksapppac1;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class BookDetailFragment extends Fragment {
 
@@ -20,20 +17,15 @@ public class BookDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Obtenemos el id seleccionado para mostrar sus detalles
-        try {
-            bookId = getArguments().getInt("BOOK_DETAIL_ID");
+        bookId = getArguments() != null ? getArguments().getInt("BOOK_DETAIL_ID") : 0;
 
-        } catch (NullPointerException npe) {
-            Log.e("DATA", "Error retrieving selected id");
-        }
-
-        // asociamos el layout del fragment al ViewGroup
+        // Asociamos el layout del fragment al ViewGroup
         View v = inflater.inflate(R.layout.book_detail_fragment, container, false);
 
-        // Generamos el texto a mostrar con el id recuperado y lo asociamos al TextView que lo debe
-        // mostrar
+        // Generamos el texto a mostrar con el id recuperado
         String detailText = getResources().getString(R.string.list_detail_example) + " " + bookId;
 
+        // y lo asociamos al TextView que lo debe mostrar
         TextView primaryTextView = v.findViewById(R.id.primaryExampleTV);
         primaryTextView.setText(detailText);
 
