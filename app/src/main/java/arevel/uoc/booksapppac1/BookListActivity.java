@@ -16,7 +16,7 @@ public class BookListActivity extends AppCompatActivity {
     private final ArrayList<String> list = new ArrayList<>();
 
     // Definimos una variable que nos permitirá saber si nos encontramos con pantalla dividida
-    private static boolean dualScreen = false;
+    public static boolean dualScreen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +68,11 @@ public class BookListActivity extends AppCompatActivity {
 
         */
 
-         /*
-        * ********************
-        * *** Ejercicio 2 ****
-        * ********************
-        * */
+        /*
+         * ********************
+         * *** Ejercicio 2 ****
+         * ********************
+         * */
 
         // Obtenemos el RecyclerView que contiene la lista a mostrar
         final RecyclerView recyclerView = findViewById(R.id.book_recyclerview);

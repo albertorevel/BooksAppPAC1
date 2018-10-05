@@ -6,12 +6,12 @@ import android.support.v4.app.FragmentManager;
 /*
  * Esta clase contiene métodos comunes a varias actividades del poryecto.
  */
-class ActivitiesUtils {
+public class ActivitiesUtils {
 
     /**
      * Este método permite iniciar el fragments de detalle, informando del id del elemento seleccionado
      */
-    static void startDetailsFragment(FragmentManager fragmentManager, int id) {
+    public static void startDetailsFragment(FragmentManager fragmentManager, int id) {
 
         // Creamos el objeto que pasaremos al fragment para infornar del id que se ha seleccionado
         Bundle arguments = new Bundle();

@@ -1,14 +1,21 @@
 package arevel.uoc.booksapppac1.adapters;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
 
+import arevel.uoc.booksapppac1.ActivitiesUtils;
+import arevel.uoc.booksapppac1.BookDetailActivity;
+import arevel.uoc.booksapppac1.BookListActivity;
 import arevel.uoc.booksapppac1.R;
 import arevel.uoc.booksapppac1.model.BookItem;
 
@@ -55,11 +62,54 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     // En este método asociamos un elemento del conjunto de datos a la vista gestionada por el
     // objeto ViewHolder que llega por parámetro
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerViewHolder holder, final int position) {
 
-        BookItem bookItem = dataSet.get(position);
-        holder.titleTextView.setText(bookItem.getTitle());
-        holder.authorTextView.setText(bookItem.getAuthor());
+        // Asociamos los datos
+        holder.bookItem = dataSet.get(position);
+        holder.titleTextView.setText(holder.bookItem.getTitle());
+        holder.authorTextView.setText(holder.bookItem.getAuthor());
+
+        // Definimos el las acciones a realizar cuando se produzca un click en el elemento
+        holder.baseConstraintLayout.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                int currentPos = holder.getAdapterPosition();
+
+                    if (BookListActivity.dualScreen) {
+                        FragmentManager supportFM = ((AppCompatActivity)
+                                view.getContext()).getSupportFragmentManager();
+                        ActivitiesUtils.startDetailsFragment(supportFM,currentPos);
+                    }
+
+                    else {
+
+                        Intent i = new Intent(view.getContext(), BookDetailActivity.class);
+                        i.putExtra("SELECTED_ID", currentPos);
+                        view.getContext().startActivity(i);
+                    }
+            }
+        });
+
+//            @Override
+//            public void onCli {
+//                int currentPos;
+//// ============ INICI CODI A COMPLETAR ===============
+//                BookModel.getITEMS().get()
+//// ============ FI CODI A COMPLETAR =================
+//
+//                if ( ) {
+//// ============ INICI CODI A COMPLETAR ===============
+//// Iniciar el fragment corresponent a tablet, enviant l’argument de la posició seleccionada
+//// ============ FI CODI A COMPLETAR =================
+//                } else {
+//// ============ INICI CODI A COMPLETAR ===============
+//// Iniciar l’activitat corresponent a mòbil, enviant l’argument de la posició seleccionada
+//// ============ FI CODI A COMPLETAR =================
+//                }
+//            }
+//        }
     }
 
     // Devolvemos el tamaño del conjunto de datos
@@ -82,13 +132,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         // Vistas que contendrá el elemento
+        ConstraintLayout baseConstraintLayout;
         TextView titleTextView;
         TextView authorTextView;
+        BookItem bookItem;
 
         // Constructor de la clase donde asociamos las vistas que nos interesen a una serie de
         // atributos para poder manejarlas posteriormente
         RecyclerViewHolder(ConstraintLayout baseConstraintLayout) {
             super(baseConstraintLayout);
+            this.baseConstraintLayout = baseConstraintLayout;
             this.titleTextView = baseConstraintLayout.findViewById(R.id.title_textview);
             this.authorTextView = baseConstraintLayout.findViewById(R.id.author_textview);
         }

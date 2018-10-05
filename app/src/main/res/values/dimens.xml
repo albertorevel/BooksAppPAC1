@@ -5,4 +5,5 @@
     <dimen name="default_margin">16dp</dimen>
     <dimen name="little_margin">16dp</dimen>
     <dimen name="list_width">480dp</dimen>
+
 </resources>

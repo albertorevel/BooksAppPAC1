@@ -4,11 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--Objeto listview que contendrá la lista de libros (master)-->
+    <!--Objeto listview que contendrá la lista de libros (master) del ejercicio 1 -->
+    <!--
     <ListView
         android:id="@+id/book_listview"
         android:layout_width="@dimen/list_width"
         android:layout_height="match_parent" />
+    -->
+
+    <!-- Objeto recyclerview que contiene la lista de libros definida en el ejercicio 2 -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/book_recyclerview"
+        android:layout_width="@dimen/list_width"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
 
     <!--FrameLayout que mostrará los detalles de los libros (detail)-->
     <FrameLayout
@@ -21,7 +30,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/book_listview"
+        app:layout_constraintStart_toEndOf="@+id/book_recyclerview"
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
