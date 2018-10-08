@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
@@ -23,6 +24,7 @@ public class BookDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -42,4 +44,17 @@ public class BookDetailActivity extends AppCompatActivity {
         ActivitiesUtils.startDetailsFragment(getSupportFragmentManager(), id);
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                if(getSupportFragmentManager().getBackStackEntryCount()>0)
+                    getSupportFragmentManager().popBackStack();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

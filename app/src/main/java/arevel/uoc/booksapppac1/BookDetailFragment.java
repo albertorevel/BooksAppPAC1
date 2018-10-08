@@ -47,8 +47,8 @@ public class BookDetailFragment extends Fragment {
             }
 
             if (publicationTextView != null) {
-                Date pub = bookItem.getPublication();
-                String strDate = pub.toString();
+                Date pubDate = bookItem.getPublicationDate();
+                String strDate = Utils.formatDate(pubDate);
                 publicationTextView.setText(strDate);
             }
 

@@ -11,16 +11,16 @@ public class BookItem {
     private int id;
     private String title;
     private String author;
-    private Date publication;
+    private Date publicationDate;
     private String description;
     private String urlBookFace;
 
     // Constructor de la clase
-    public BookItem(int id, String title, String author, Date publication, String description, String urlBookFace) {
+    public BookItem(int id, String title, String author, Date publicationDate, String description, String urlBookFace) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.publication = publication;
+        this.publicationDate = publicationDate;
         this.description = description;
         this.urlBookFace = urlBookFace;
     }
@@ -50,13 +50,15 @@ public class BookItem {
         this.author = author;
     }
 
-    public Date getPublication() {
-        return publication;
+    public Date getPublicationDate() {
+        return publicationDate;
     }
 
     public void setPublication(Date publication) {
-        this.publication = publication;
+        this.publicationDate = publicationDate;
     }
+
+
 
     public String getDescription() {
         return description;

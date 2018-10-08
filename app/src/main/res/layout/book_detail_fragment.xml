@@ -64,7 +64,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/defaultPublication"
+        android:text="@string/defaultPublicationDate"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toEndOf="@+id/bookCover_image"
         app:layout_constraintTop_toBottomOf="@+id/author_detail"/>

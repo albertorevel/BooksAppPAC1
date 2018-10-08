@@ -10,6 +10,6 @@
     <string name="defaultTitle">Title</string>
     <string name="defaultAuthor">Author</string>
     <string name="defaultDescription">Description</string>
-    <string name="defaultPublication">01/01/2018</string>
+    <string name="defaultPublicationDate">01/01/2018</string>
     <string name="bookCover_description">Book cover</string>
 </resources>
