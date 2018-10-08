@@ -10,6 +10,9 @@
     <color name="secondaryTextColor">#757575</color>
     <color name="dividersColor">#BDBDBD</color>
     <color name="iconsColor">#BDBDBD</color>
+    <color name="actionBarTitleText">#FFFFFF</color>
+
+    <color name="odd_bgcolor">#C3C9EF</color>
 
 
 </resources>

@@ -91,25 +91,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                     }
             }
         });
-
-//            @Override
-//            public void onCli {
-//                int currentPos;
-//// ============ INICI CODI A COMPLETAR ===============
-//                BookModel.getITEMS().get()
-//// ============ FI CODI A COMPLETAR =================
-//
-//                if ( ) {
-//// ============ INICI CODI A COMPLETAR ===============
-//// Iniciar el fragment corresponent a tablet, enviant l’argument de la posició seleccionada
-//// ============ FI CODI A COMPLETAR =================
-//                } else {
-//// ============ INICI CODI A COMPLETAR ===============
-//// Iniciar l’activitat corresponent a mòbil, enviant l’argument de la posició seleccionada
-//// ============ FI CODI A COMPLETAR =================
-//                }
-//            }
-//        }
     }
 
     // Devolvemos el tamaño del conjunto de datos

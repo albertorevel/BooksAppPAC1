@@ -10,11 +10,21 @@
     android:layout_marginLeft="@dimen/default_margin"
     android:layout_marginEnd="@dimen/default_margin"
     android:layout_marginRight="@dimen/default_margin"
-    android:background="@color/colorPrimaryLight">
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="30dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:cardBackgroundColor="@color/odd_bgcolor"
+        app:cardCornerRadius="@dimen/card_radius"
+        app:cardElevation="@dimen/card_elevation">
 
     <!--Elemento base que contiene las vistas que se usarán -->
     <include
         layout="@layout/base_listitem"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

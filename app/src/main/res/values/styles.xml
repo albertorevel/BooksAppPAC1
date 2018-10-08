@@ -9,4 +9,26 @@
 
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--Estilo aplicado en la pantalla de detalle (desde la actividad de detalle)-->
+    <style name="BiggerBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Colores del tema. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:titleTextStyle">@style/BiggerBarTheme.TextStyle</item>
+
+        <!--Tamaño de la ActionBar-->
+        <item name="actionBarSize">300dp</item>
+    </style>
+
+    <style name="BiggerBarTheme.TextStyle">
+        <item name="android:textColor">@color/actionBarTitleText</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
 </resources>

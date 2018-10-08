@@ -28,7 +28,7 @@ tanto en los elementos pares o impares ya que los elementos que contienen y su d
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/little_margin"
+        android:layout_marginBottom="@dimen/default_margin"
         android:text="@string/defaultAuthor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

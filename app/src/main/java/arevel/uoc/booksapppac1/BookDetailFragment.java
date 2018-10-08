@@ -8,6 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Date;
+
+import arevel.uoc.booksapppac1.model.BookItem;
+import arevel.uoc.booksapppac1.model.BookModel;
+
 public class BookDetailFragment extends Fragment {
 
     // Id que usaremos para saber el detalle del libro seleccionado
@@ -25,9 +30,32 @@ public class BookDetailFragment extends Fragment {
         // Generamos el texto a mostrar con el id recuperado
         String detailText = getResources().getString(R.string.list_detail_example) + " " + bookId;
 
-        // y lo asociamos al TextView que lo debe mostrar
-        TextView primaryTextView = v.findViewById(R.id.primaryExampleTV);
-        primaryTextView.setText(detailText);
+        // Ejercicios anteriores
+        //Obtenemos el textview de detalles de ejemplo y lo asociamos al TextView que lo debe mostrar
+//        TextView primaryTextView = v.findViewById(R.id.primaryExampleTV);
+//        primaryTextView.setText(detailText);
+
+        BookItem bookItem = BookModel.getITEMS().get(bookId);
+
+        if (bookItem != null) {
+            TextView authorTextView = v.findViewById(R.id.author_detail);
+            TextView publicationTextView = v.findViewById(R.id.publication_detail);
+            TextView descriptionTextView = v.findViewById(R.id.description_detail);
+
+            if (authorTextView != null) {
+                authorTextView.setText(bookItem.getAuthor());
+            }
+
+            if (publicationTextView != null) {
+                Date pub = bookItem.getPublication();
+                String strDate = pub.toString();
+                publicationTextView.setText(strDate);
+            }
+
+            if (descriptionTextView != null) {
+                descriptionTextView.setText(bookItem.getDescription());
+            }
+        }
 
         return v;
     }
