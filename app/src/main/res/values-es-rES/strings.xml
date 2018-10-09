@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BooksAppPAC1</string>
+    <string name="list_item_example">Elemento</string>
+    <string name="list_detail_example">Detalles del elemento</string>
+    <string name="list_detail_example2">Mas información y detalles aquí</string>
+    <string name="defaultTitle">Título</string>
+    <string name="defaultAuthor">Autor</string>
+    <string name="defaultDescription">Descripción</string>
+    <string name="bookCover_description">Portada del libro</string>
+    <string name="sortByTitle">Ordenar por título</string>
+    <string name="sortByAuthor">Ordenar por autor</string>
+</resources>
