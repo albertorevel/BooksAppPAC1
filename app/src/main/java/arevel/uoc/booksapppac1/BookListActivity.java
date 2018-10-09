@@ -7,10 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import arevel.uoc.booksapppac1.adapters.RecyclerAdapter;
+import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
 
 public class BookListActivity extends AppCompatActivity {
@@ -81,7 +84,7 @@ public class BookListActivity extends AppCompatActivity {
          * */
 
         // Obtenemos el RecyclerView que contiene la lista a mostrar
-        final RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
+        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
 
         // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
         // conjunto de datos a mostrar y lo asociamos al RecyclerView
@@ -108,5 +111,34 @@ public class BookListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_list , menu);
         return true ;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        List<BookItem> sortedList = null;
+
+        switch (item.getItemId()) {
+
+            case R.id.sortByAuthor_option:
+                sortedList = BookModel.sortBy(BookModel.SORT_CRITERIA.AUTHOR);
+                break;
+            case R.id.sortByTitle_option:
+                sortedList = BookModel.sortBy(BookModel.SORT_CRITERIA.TITLE);
+                break;
+            default:
+                sortedList = BookModel.getITEMS();
+        }
+
+        if (sortedList != null) {
+
+            RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
+            RecyclerAdapter recyclerAdapter = new RecyclerAdapter(sortedList);
+
+            recyclerView.setAdapter(recyclerAdapter);
+            recyclerAdapter.notifyDataSetChanged();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
