@@ -6,6 +6,8 @@
 
     <!--Fragment que contiene los detalles del libro, que se usará tanto en pantalla dual como simple-->
 
+
+    <!--Elementos del ejercicio 1-->
     <!--
      &lt;!&ndash; Primer texto de ejemplo de los detalles del libro &ndash;&gt;
     <TextView
@@ -31,17 +33,69 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintTop_toBottomOf="@+id/primaryExampleTV" />-->
 
+    <!--Elementos del ejercicio 2-->
 
+    <!--<ImageView-->
+        <!--android:id="@+id/bookCover_image"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--android:contentDescription="@string/bookCover_description"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:srcCompat="@drawable/default_bookcover" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/author_detail"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:text="@string/defaultAuthor"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/bookCover_image"-->
+        <!--app:layout_constraintTop_toTopOf="parent"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/publication_detail"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:text="@string/defaultPublicationDate"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/bookCover_image"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/author_detail"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/description_detail"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:text="@string/defaultDescription"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/bookCover_image"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/publication_detail"/>-->
+
+    <!--Elementos del ejercicio 5-->
     <ImageView
         android:id="@+id/bookCover_image"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
         android:adjustViewBounds="true"
-        app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@string/bookCover_description"
+        android:maxWidth="@dimen/cover_width"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/default_bookcover" />
 
@@ -49,37 +103,46 @@
         android:id="@+id/author_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
         android:text="@string/defaultAuthor"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toEndOf="@+id/bookCover_image"
+        app:layout_constraintStart_toEndOf="@+id/middle_guideline"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/publication_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
         android:text="@string/defaultPublicationDate"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toEndOf="@+id/bookCover_image"
-        app:layout_constraintTop_toBottomOf="@+id/author_detail"/>
+        app:layout_constraintBottom_toBottomOf="@+id/bookCover_image"
+        app:layout_constraintStart_toEndOf="@+id/middle_guideline"/>
 
     <TextView
         android:id="@+id/description_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
         android:text="@string/defaultDescription"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toEndOf="@+id/bookCover_image"
-        app:layout_constraintTop_toBottomOf="@+id/publication_detail"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookCover_image"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/middle_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 
 </android.support.constraint.ConstraintLayout>

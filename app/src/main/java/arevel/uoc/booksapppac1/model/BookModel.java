@@ -14,41 +14,36 @@ public class BookModel {
     // Array que contendrá los datos
     private static final List<BookItem> ITEMS = new ArrayList<>();
 
-        private static Comparator<BookItem> authorComparator = null;;
+        private static Comparator<BookItem> authorComparator = null;
     private static Comparator<BookItem> titleComparator = null;
 
     // Código estático que creará y  añadirá una vez los datos de ejemplo al listado de BookItems
     static {
-        BookItem book1 = new BookItem(0,"A Title 2", "Azzuthor1", new Date(),
+        BookItem book1 = new BookItem(0,"A Title ", "ZZ Author", new Date(),
                 "Description", null );
-        BookItem book2 = new BookItem( 1, "Title2", "Aaauthor2", new Date(),
+        BookItem book2 = new BookItem( 1, "Title2", "Aa Author 2", new Date(),
                 "Description 2", null );
-BookItem book3 = new BookItem(0,"zTitle2", "Abuthor1", new Date(),
-                "Descr<<<<<iption", null );
-        BookItem book4 = new BookItem( 1, "Titlasdasdasdasdasdae4", "Author2", new Date(),
-                "Desczzzzription 2", null );
-BookItem book5 = new BookItem(0,"Title5", "Authasdor1", new Date(),
-                "zxczxczx", null );
-        BookItem book6 = new BookItem( 1, "Tasditle2", "Author2", new Date(),
-                "Description zxc", null );
-BookItem book7 = new BookItem(0,"Titlnnnne1", "Autasdhor1", new Date(),
-                "Description", null );
-        BookItem book8 = new BookItem( 1, "Titlasbasde2", "Authoasdr2", new Date(),
-                "Description 2", null );
+        BookItem book3 = new BookItem(2,"zTitle2", "Author", new Date(),
+                "Description 3", null );
+        BookItem book4 = new BookItem( 3, "Title", "Aa Author 2", new Date(),
+                "Description 4", null );
+        BookItem book5 = new BookItem(4,"Title5", "Another author", new Date(),
+                "Description 5", null );
+        BookItem book6 = new BookItem( 5, "Title 99", "Author", new Date(),
+                "Description 6", null );
+        BookItem book7 = new BookItem(6,"Another title", "William", new Date(),
+                "Description 7", null );
+        BookItem book8 = new BookItem( 7, "El Quijote", "Cervantes", new Date(),
+                "Description 8", null );
 
         ITEMS.add(book1);
         ITEMS.add(book2);
         ITEMS.add(book3);
-        ITEMS.add(book2);
         ITEMS.add(book4);
         ITEMS.add(book5);
         ITEMS.add(book6);
         ITEMS.add(book7);
         ITEMS.add(book8);
-        ITEMS.add(book4);
-        ITEMS.add(book5);
-        ITEMS.add(book6);
-        ITEMS.add(book7);
 
 
         // Creamos los comparadores que se utilizarán en la ordenación de la lista
@@ -125,6 +120,6 @@ BookItem book7 = new BookItem(0,"Titlnnnne1", "Autasdhor1", new Date(),
     public enum SORT_CRITERIA  {
         //DEFAULT, // Ahora mismo no hay opción de volver a la lista original, esta constante serviría para ello
         AUTHOR,
-        TITLE;
+        TITLE
     }
 }

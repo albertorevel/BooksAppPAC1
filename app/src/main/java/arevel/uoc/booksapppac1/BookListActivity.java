@@ -95,9 +95,6 @@ public class BookListActivity extends AppCompatActivity {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
-//        getSupportActionBar().setDisplayOptions(
-//                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-
 
         // Buscamos el framelayout de detalles. Si existe, estamos en tablet y guardamos esta
         // información para poder usarla en la aplicación
@@ -108,6 +105,7 @@ public class BookListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Creamos el menú de la lista
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_list , menu);
         return true ;
@@ -116,7 +114,8 @@ public class BookListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        List<BookItem> sortedList = null;
+        // Ordenamos la lista según la opción seleccionada
+        List<BookItem> sortedList;
 
         switch (item.getItemId()) {
 
@@ -130,6 +129,8 @@ public class BookListActivity extends AppCompatActivity {
                 sortedList = BookModel.getITEMS();
         }
 
+        // Creamos un nuevo objeto adapter con la lista y notificamos del cambio para que se pueda
+        // mostrar la nueva lista.
         if (sortedList != null) {
 
             RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
