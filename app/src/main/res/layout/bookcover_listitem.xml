@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--TODO-->
+
+    <ImageView
+        android:id="@+id/bookCover_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:foregroundGravity="center"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/default_bookcover" />
+
+    <!-- TextView que contiene el título del libro -->
+    <TextView
+        android:id="@+id/title_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/defaultTitle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+    <!-- TextView que contiene el autor del libro -->
+    <TextView
+        android:id="@+id/author_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/defaultAuthor" />
+
+
+
+</android.support.constraint.ConstraintLayout>
