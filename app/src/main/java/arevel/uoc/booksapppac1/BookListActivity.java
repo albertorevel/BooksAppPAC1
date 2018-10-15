@@ -1,5 +1,6 @@
 package arevel.uoc.booksapppac1;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,14 +116,22 @@ public class BookListActivity extends AppCompatActivity {
              * ********************
              * */
 
+//            SpaceDecoration spaceDecoration = new SpaceDecoration(R.dimen.default_margin);
+//            recyclerView.addItemDecoration(spaceDecoration);
+
+
             // TODO
             BookCoverRecyclerAdapter adapter = new BookCoverRecyclerAdapter(BookModel.getITEMS());
             recyclerView.setAdapter(adapter);
+
 
             // Todo
             StaggeredGridLayoutManager mStaggeredGridLayoutManager =
                     new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+
+
+
         }
     }
 
@@ -155,6 +165,8 @@ public class BookListActivity extends AppCompatActivity {
         // mostrar la nueva lista.
         if (sortedList != null) {
 
+            // TOdo mover esto
+
             RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
             RecyclerAdapter recyclerAdapter = new RecyclerAdapter(sortedList);
 
@@ -163,5 +175,25 @@ public class BookListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // TODO comment
+    static class SpaceDecoration extends RecyclerView.ItemDecoration {
+
+        private final int margin;
+
+        public SpaceDecoration(int margin) {
+            this.margin = margin;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            outRect.left = margin;
+            outRect.right = margin;
+            outRect.bottom = margin;
+
+            if (parent.getChildAdapterPosition(view) == 0)
+                outRect.top = margin;
+        }
     }
 }

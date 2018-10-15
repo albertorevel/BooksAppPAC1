@@ -14,6 +14,7 @@
         android:adjustViewBounds="true"
         android:foregroundGravity="center"
         android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/default_bookcover" />
 
     <!-- TextView que contiene el título del libro -->
