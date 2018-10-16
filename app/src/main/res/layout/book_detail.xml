@@ -7,10 +7,9 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/actionbar_size"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <!--app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
