@@ -18,8 +18,9 @@
         android:id="@+id/bookCover_imageview"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-
         android:adjustViewBounds="true"
+        android:alpha="0.4"
+        android:contentDescription="@string/bookCover_description"
         android:foregroundGravity="center"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,26 +33,29 @@
     <!-- TextView que contiene el título del libro -->
     <TextView
         android:id="@+id/title_textview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="@dimen/little_margin"
+        android:layout_marginLeft="@dimen/little_margin"
+        android:layout_marginTop="@dimen/default_margin"
         android:text="@string/defaultTitle"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/bookCover_imageview"
-        app:layout_constraintStart_toStartOf="@+id/bookCover_imageview" />
+        android:textAppearance="@style/List.Title"
+        app:layout_constraintStart_toStartOf="@+id/bookCover_imageview"
+        app:layout_constraintTop_toTopOf="@id/bookCover_imageview" />
 
     <!-- TextView que contiene el autor del libro -->
     <TextView
         android:id="@+id/author_textview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginEnd="@dimen/little_margin"
+        android:layout_marginRight="@dimen/little_margin"
+        android:layout_marginBottom="@dimen/little_margin"
         android:text="@string/defaultAuthor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textAppearance="@style/List.Text"
+        app:layout_constraintBottom_toBottomOf="@id/bookCover_imageview"
+        app:layout_constraintEnd_toEndOf="@id/bookCover_imageview"
+        app:layout_constraintRight_toRightOf="@id/bookCover_imageview"/>
 
 
 </android.support.constraint.ConstraintLayout>

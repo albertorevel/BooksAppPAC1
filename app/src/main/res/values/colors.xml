@@ -12,7 +12,10 @@
     <color name="iconsColor">#BDBDBD</color>
     <color name="actionBarTitleText">#FFFFFF</color>
 
-    <color name="coverListBackground">#FFFFFF</color>
+    <color name="coverListBackground">@color/colorPrimaryLight</color>
+
+    <color name="coverListTitleColor">#3366FF</color>
+    <color name="coverListTextColor">#CC00CC</color>
 
     <color name="odd_bgcolor">#C3C9EF</color>
 
