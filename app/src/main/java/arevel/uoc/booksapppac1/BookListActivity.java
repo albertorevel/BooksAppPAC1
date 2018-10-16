@@ -188,7 +188,7 @@ public class BookListActivity extends AppCompatActivity {
         private int margin;
         private int span;
 
-        public SpaceDecoration(int margin, int span) {
+        SpaceDecoration(int margin, int span) {
             this.margin = margin;
             this.span = span;
         }
@@ -196,31 +196,16 @@ public class BookListActivity extends AppCompatActivity {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect,view,parent,state);
-//            outRect.left = margin;
-//            outRect.right = margin;
-//            outRect.bottom = margin;
+            outRect.left = margin;
+            outRect.right = margin;
+            outRect.bottom = margin;
 
-//            if (parent.getChildAdapterPosition(view) == 0) {
-//                outRect.set(margin, margin, margin, margin);
-//            }
-//            else {
-//                outRect.set(margin, margin, margin, 0);
-//            }
-
-            int position = parent.getChildAdapterPosition(view); // item position
-                    int column = position % this.span;
-
-            outRect.left = this.margin - column * this.margin / this.span; // spacing - column * ((1f / this.span) * spacing)
-                        outRect.right = (column + 1) * this.margin / this.span; // (column + 1) * ((1f / this.span) * spacing)
-            
-                        if (parent.getChildAdapterPosition(view) < this.span) { // top edge
-                            outRect.top = this.margin;
-                        }
-                        outRect.bottom = this.margin; // item bottom
-
-
-
-
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.set(margin, margin, margin, margin);
+            }
+            else {
+                outRect.set(margin, margin, margin, 0);
+            }
         }
     }
 }
