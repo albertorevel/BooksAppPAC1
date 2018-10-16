@@ -24,9 +24,9 @@ import arevel.uoc.booksapppac1.model.BookItem;
 public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecyclerAdapter.RecyclerViewHolder> {
 
     // Constantes que nos permitirán distinguir elementos pares e impares
-    private final static int FIRST = 0 ;
-    private final static int SECOND = 1 ;
-    private final static int THIRD = 2 ;
+    private final static int FIRST = 0;
+    private final static int SECOND = 1;
+    private final static int THIRD = 2;
 
     // Conjunto de datos que manejará el adapter
     private List<BookItem> dataSet;
@@ -62,25 +62,23 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
 
 
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento
-        holder.baseConstraintLayout.setOnClickListener( new View.OnClickListener() {
+        holder.baseConstraintLayout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
                 int currentPos = holder.getAdapterPosition();
 
-                    if (BookListActivity.dualScreen) {
-                        FragmentManager supportFM = ((AppCompatActivity)
-                                view.getContext()).getSupportFragmentManager();
-                        ActivitiesUtils.startDetailsFragment(supportFM,currentPos);
-                    }
+                if (BookListActivity.dualScreen) {
+                    FragmentManager supportFM = ((AppCompatActivity)
+                            view.getContext()).getSupportFragmentManager();
+                    ActivitiesUtils.startDetailsFragment(supportFM, currentPos);
+                } else {
 
-                    else {
-
-                        Intent i = new Intent(view.getContext(), BookDetailActivity.class);
-                        i.putExtra("SELECTED_ID", currentPos);
-                        view.getContext().startActivity(i);
-                    }
+                    Intent i = new Intent(view.getContext(), BookDetailActivity.class);
+                    i.putExtra("SELECTED_ID", currentPos);
+                    view.getContext().startActivity(i);
+                }
             }
         });
     }

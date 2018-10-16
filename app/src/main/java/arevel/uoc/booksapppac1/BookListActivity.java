@@ -105,16 +105,13 @@ public class BookListActivity extends AppCompatActivity {
             // Creamos un LinearLayoutManager y lo asociamos al RecyclerView
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
-        }
-
-        else{
+        } else {
 
             /*
              * ********************
              * *** Ejercicio 6 ****
              * ********************
              * */
-
 
 
             // TODO
@@ -141,8 +138,8 @@ public class BookListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Creamos el menú de la lista
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_list , menu);
-        return true ;
+        inflater.inflate(R.menu.menu_list, menu);
+        return true;
     }
 
     @Override
@@ -177,9 +174,7 @@ public class BookListActivity extends AppCompatActivity {
 
                 recyclerView.setAdapter(recyclerAdapter);
                 recyclerAdapter.notifyDataSetChanged();
-            }
-
-            else {
+            } else {
                 BookCoverRecyclerAdapter bookCoverRecyclerAdapter = new BookCoverRecyclerAdapter(sortedList);
 
                 recyclerView.setAdapter(bookCoverRecyclerAdapter);

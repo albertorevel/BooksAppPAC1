@@ -9,14 +9,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:largeHeap="true"
         tools:ignore="GoogleAppIndexingWarning">
 
         <!-- Activities del proyecto -->
 
         <!-- Definimos la activity BookListActivity, que gestionará la lista de libros
          como activity principal y que se ejecutará al lanzar la aplicación -->
-        <activity android:name=".BookListActivity"
+        <activity
+            android:name=".BookListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
          que es diferente al del general de la aplicación-->
         <activity
             android:name=".BookDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

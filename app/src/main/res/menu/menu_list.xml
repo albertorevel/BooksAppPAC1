@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/sortByAuthor_option"
-        android:title="@string/sortByAuthor"/>
+    <item
+        android:id="@+id/sortByAuthor_option"
+        android:title="@string/sortByAuthor" />
 
-    <item android:id="@+id/sortByTitle_option"
-        android:title="@string/sortByTitle"/>
+    <item
+        android:id="@+id/sortByTitle_option"
+        android:title="@string/sortByTitle" />
 </menu>

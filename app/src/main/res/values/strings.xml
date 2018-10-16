@@ -12,7 +12,7 @@
     <string name="defaultDescription">Description</string>
     <string name="defaultPublicationDate" translatable="false">01/01/2018</string>
     <string name="bookCover_description">Book cover</string>
-    
+
     <!--Textos del menú-->
     <string name="sortByTitle">Sort by title</string>
     <string name="sortByAuthor">Sort by author</string>

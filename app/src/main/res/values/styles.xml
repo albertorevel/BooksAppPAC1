@@ -16,19 +16,19 @@
 
     <!--&lt;!&ndash;Estilo aplicado en la pantalla de detalle (desde la actividad de detalle)&ndash;&gt;-->
     <!--<style name="BiggerBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-        <!--&lt;!&ndash; Colores del tema. &ndash;&gt;-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <!--<item name="android:titleTextStyle">@style/BiggerBarTheme.TextStyle</item>-->
+    <!--&lt;!&ndash; Colores del tema. &ndash;&gt;-->
+    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--<item name="android:titleTextStyle">@style/BiggerBarTheme.TextStyle</item>-->
 
-        <!--&lt;!&ndash;Tamaño de la ActionBar&ndash;&gt;-->
-        <!--<item name="actionBarSize">@dimen/actionbar_size</item>-->
+    <!--&lt;!&ndash;Tamaño de la ActionBar&ndash;&gt;-->
+    <!--<item name="actionBarSize">@dimen/actionbar_size</item>-->
     <!--</style>-->
 
     <!--<style name="BiggerBarTheme.TextStyle">-->
-        <!--<item name="android:textColor">@color/actionBarTitleText</item>-->
-        <!--<item name="android:textSize">8sp</item>-->
+    <!--<item name="android:textColor">@color/actionBarTitleText</item>-->
+    <!--<item name="android:textSize">8sp</item>-->
     <!--</style>-->
 
     <!--Letras del último ejercicio-->

@@ -23,8 +23,8 @@ import arevel.uoc.booksapppac1.model.BookItem;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
 
     // Constantes que nos permitirán distinguir elementos pares e impares
-    private final static int EVEN = 0 ;
-    private final static int ODD = 1 ;
+    private final static int EVEN = 0;
+    private final static int ODD = 1;
     // Conjunto de datos que manejará el adapter
     private List<BookItem> dataSet;
 
@@ -43,11 +43,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
         // Elegimos el layout en función del viewtype que llega
         switch (viewType) {
-            case EVEN :
+            case EVEN:
                 mLayout = R.layout.even_listitem;
                 break;
 
-            default :
+            default:
                 mLayout = R.layout.odd_listitem;
                 break;
         }
@@ -70,7 +70,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
         holder.authorTextView.setText(holder.bookItem.getAuthor());
 
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento
-        holder.baseConstraintLayout.setOnClickListener( new View.OnClickListener() {
+        holder.baseConstraintLayout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -81,7 +81,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                 if (BookListActivity.dualScreen) {
                     FragmentManager supportFM = ((AppCompatActivity)
                             view.getContext()).getSupportFragmentManager();
-                    ActivitiesUtils.startDetailsFragment(supportFM,currentPos);
+                    ActivitiesUtils.startDetailsFragment(supportFM, currentPos);
                 }
 
                 // Si es móvil, crearemos una nueva actividad de detalle.
@@ -103,12 +103,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
     @Override
     // Método que permitirá distinguir si un elemento de la lista es par o impar
-    public int getItemViewType ( int position ) {
+    public int getItemViewType(int position) {
 
         // Devolvemos un valor dependiendo de si es par o impar. Podria devolverse solamente el
         // resto (position % 2) ya que coincide con las constantes declaradas en la clase, pero
         // se opta por mantenerlo así por si cambiara la codificación
-        return position % 2 == 0 ? EVEN : ODD ;
+        return position % 2 == 0 ? EVEN : ODD;
     }
 
     // Clase que define un ViewHolder que permitirá referenciar las vistas de cada elemento de la lista

@@ -50,7 +50,7 @@
         android:textAppearance="@style/List.Text"
         app:layout_constraintBottom_toBottomOf="@id/bookCover_imageview"
         app:layout_constraintEnd_toEndOf="@id/bookCover_imageview"
-        app:layout_constraintRight_toRightOf="@id/bookCover_imageview"/>
+        app:layout_constraintRight_toRightOf="@id/bookCover_imageview" />
 
 
 </android.support.constraint.ConstraintLayout>
