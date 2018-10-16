@@ -116,8 +116,6 @@ public class BookListActivity extends AppCompatActivity {
              * ********************
              * */
 
-//            SpaceDecoration spaceDecoration = new SpaceDecoration(R.dimen.default_margin);
-//            recyclerView.addItemDecoration(spaceDecoration);
 
 
             // TODO
@@ -125,12 +123,19 @@ public class BookListActivity extends AppCompatActivity {
             recyclerView.setAdapter(adapter);
 
 
+
             // Todo
+            int spanCount = 2;
+
             StaggeredGridLayoutManager mStaggeredGridLayoutManager =
-                    new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                    new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
+
+
+                        SpaceDecoration spaceDecoration = new SpaceDecoration(this.getResources().getDimensionPixelSize(R.dimen.gridOffSet), spanCount);
+            recyclerView.addItemDecoration(spaceDecoration);
+
+
             recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
-
-
 
         }
     }
@@ -180,20 +185,42 @@ public class BookListActivity extends AppCompatActivity {
     // TODO comment
     static class SpaceDecoration extends RecyclerView.ItemDecoration {
 
-        private final int margin;
+        private int margin;
+        private int span;
 
-        public SpaceDecoration(int margin) {
+        public SpaceDecoration(int margin, int span) {
             this.margin = margin;
+            this.span = span;
         }
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            outRect.left = margin;
-            outRect.right = margin;
-            outRect.bottom = margin;
+            super.getItemOffsets(outRect,view,parent,state);
+//            outRect.left = margin;
+//            outRect.right = margin;
+//            outRect.bottom = margin;
 
-            if (parent.getChildAdapterPosition(view) == 0)
-                outRect.top = margin;
+//            if (parent.getChildAdapterPosition(view) == 0) {
+//                outRect.set(margin, margin, margin, margin);
+//            }
+//            else {
+//                outRect.set(margin, margin, margin, 0);
+//            }
+
+            int position = parent.getChildAdapterPosition(view); // item position
+                    int column = position % this.span;
+
+            outRect.left = this.margin - column * this.margin / this.span; // spacing - column * ((1f / this.span) * spacing)
+                        outRect.right = (column + 1) * this.margin / this.span; // (column + 1) * ((1f / this.span) * spacing)
+            
+                        if (parent.getChildAdapterPosition(view) < this.span) { // top edge
+                            outRect.top = this.margin;
+                        }
+                        outRect.bottom = this.margin; // item bottom
+
+
+
+
         }
     }
 }

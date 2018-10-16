@@ -12,6 +12,8 @@
     <color name="iconsColor">#BDBDBD</color>
     <color name="actionBarTitleText">#FFFFFF</color>
 
+    <color name="coverListBackground">#FFFFFF</color>
+
     <color name="odd_bgcolor">#C3C9EF</color>
 
 
