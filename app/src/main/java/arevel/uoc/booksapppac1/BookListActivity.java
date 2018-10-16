@@ -1,6 +1,5 @@
 package arevel.uoc.booksapppac1;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,13 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import arevel.uoc.booksapppac1.adapters.BookCoverRecyclerAdapter;
 import arevel.uoc.booksapppac1.adapters.RecyclerAdapter;
+import arevel.uoc.booksapppac1.custom_views.SpaceDecoration;
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
 
@@ -122,8 +121,6 @@ public class BookListActivity extends AppCompatActivity {
             BookCoverRecyclerAdapter adapter = new BookCoverRecyclerAdapter(BookModel.getITEMS());
             recyclerView.setAdapter(adapter);
 
-
-
             // Todo
             int spanCount = 2;
 
@@ -131,7 +128,7 @@ public class BookListActivity extends AppCompatActivity {
                     new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
 
 
-                        SpaceDecoration spaceDecoration = new SpaceDecoration(this.getResources().getDimensionPixelSize(R.dimen.gridOffSet), spanCount);
+            SpaceDecoration spaceDecoration = new SpaceDecoration(this.getResources().getDimensionPixelSize(R.dimen.gridOffSet), spanCount);
             recyclerView.addItemDecoration(spaceDecoration);
 
 
@@ -173,39 +170,33 @@ public class BookListActivity extends AppCompatActivity {
             // TOdo mover esto
 
             RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
-            RecyclerAdapter recyclerAdapter = new RecyclerAdapter(sortedList);
 
-            recyclerView.setAdapter(recyclerAdapter);
-            recyclerAdapter.notifyDataSetChanged();
+            if (BookListActivity.dualScreen) {
+
+                RecyclerAdapter recyclerAdapter = new RecyclerAdapter(sortedList);
+
+                recyclerView.setAdapter(recyclerAdapter);
+                recyclerAdapter.notifyDataSetChanged();
+            }
+
+            else {
+                BookCoverRecyclerAdapter bookCoverRecyclerAdapter = new BookCoverRecyclerAdapter(sortedList);
+
+                recyclerView.setAdapter(bookCoverRecyclerAdapter);
+                bookCoverRecyclerAdapter.notifyDataSetChanged();
+
+                int spanCount = 2;
+
+                StaggeredGridLayoutManager mStaggeredGridLayoutManager =
+                        new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
+
+                recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     // TODO comment
-    static class SpaceDecoration extends RecyclerView.ItemDecoration {
 
-        private int margin;
-        private int span;
-
-        SpaceDecoration(int margin, int span) {
-            this.margin = margin;
-            this.span = span;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect,view,parent,state);
-            outRect.left = margin;
-            outRect.right = margin;
-            outRect.bottom = margin;
-
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.set(margin, margin, margin, margin);
-            }
-            else {
-                outRect.set(margin, margin, margin, 0);
-            }
-        }
-    }
 }

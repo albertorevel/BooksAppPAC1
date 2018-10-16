@@ -14,15 +14,19 @@ public class BookItem {
     private Date publicationDate;
     private String description;
     private String urlBookFace;
+    private int drawableId;
 
     // Constructor de la clase
-    public BookItem(int id, String title, String author, Date publicationDate, String description, String urlBookFace) {
+    // En el paso 6 se ha añadido el atributo drawableId ya que se muestran diferentes portadas.
+    // Esto permite emular la descarga de imágenes desde una url.
+    BookItem(int id, String title, String author, Date publicationDate, String description, String urlBookFace, int drawableId) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publicationDate = publicationDate;
         this.description = description;
         this.urlBookFace = urlBookFace;
+        this.drawableId = drawableId;
     }
 
     //Getters y setters de los atributos del libro
@@ -54,11 +58,9 @@ public class BookItem {
         return publicationDate;
     }
 
-    public void setPublication(Date publication) {
+    public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
     }
-
-
 
     public String getDescription() {
         return description;
@@ -74,5 +76,13 @@ public class BookItem {
 
     public void setUrlBookFace(String urlBookFace) {
         this.urlBookFace = urlBookFace;
+    }
+
+    public int getDrawableId() {
+        return drawableId;
+    }
+
+    public void setDrawableId(int drawableId) {
+        this.drawableId = drawableId;
     }
 }

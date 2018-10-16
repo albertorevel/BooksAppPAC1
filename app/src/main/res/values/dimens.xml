@@ -15,8 +15,8 @@
 
     <dimen name="actionbar_size">300dp</dimen>
 
-    <dimen name="gridOffSet">32dp</dimen>
-    <dimen name="fadingEdgeLength">48dp</dimen>
+    <dimen name="gridOffSet">20dp</dimen>
+    <dimen name="fadingEdgeLength">80dp</dimen>
 
     <!--Tamaños de letra-->
     <dimen name="big_TextSize">30sp</dimen>

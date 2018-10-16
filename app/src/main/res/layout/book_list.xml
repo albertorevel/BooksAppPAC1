@@ -30,13 +30,10 @@
     </android.support.design.widget.AppBarLayout>
 
     <!-- Objeto recyclerview que contiene la lista de libros definida en el ejercicio 2 -->
-    <android.support.v7.widget.RecyclerView
+    <arevel.uoc.booksapppac1.custom_views.FadingBottomRecyclerView
         android:id="@+id/book_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
-        android:clipToPadding="false"
-        android:padding="@dimen/gridOffSet"
         android:requiresFadingEdge="vertical"
         android:cacheColorHint="@color/colorPrimaryDark"
         android:fadingEdgeLength="@dimen/fadingEdgeLength"

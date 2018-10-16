@@ -58,26 +58,7 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
         holder.bookItem = dataSet.get(position);
         holder.titleTextView.setText(holder.bookItem.getTitle());
         holder.authorTextView.setText(holder.bookItem.getAuthor());
-
-        // TODO definimos la imagen
-
-        int cover_id;
-
-        // Elegimos el layout en función del viewtype que llega
-        switch (position % 3) {
-            case FIRST :
-                cover_id = R.drawable.default_bookcover;
-                break;
-
-            case SECOND :
-                cover_id = R.drawable.other_bookcover1;
-                break;
-
-            default :
-                cover_id = R.drawable.other_bookcover2;
-                break;
-        }
-        holder.coverImageView.setImageResource(cover_id);
+        holder.coverImageView.setImageResource(holder.bookItem.getDrawableId());
 
 
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento
