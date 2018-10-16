@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -30,17 +31,22 @@ public class BookDetailFragment extends Fragment {
         // Generamos el texto a mostrar con el id recuperado
         String detailText = getResources().getString(R.string.list_detail_example) + " " + bookId;
 
-        // Ejercicios anteriores
-        //Obtenemos el textview de detalles de ejemplo y lo asociamos al TextView que lo debe mostrar
-//        TextView primaryTextView = v.findViewById(R.id.primaryExampleTV);
-//        primaryTextView.setText(detailText);
+        // Este código comentado pertenece al ejercicio 1
 
+        //Obtenemos el textview de detalles de ejemplo y lo asociamos al TextView que lo debe mostrar
+        // TextView primaryTextView = v.findViewById(R.id.primaryExampleTV);
+        // primaryTextView.setText(detailText);
+
+        // Obtenemos el libro del que se debe mostrar el detalle.
         BookItem bookItem = BookModel.getITEMS().get(bookId);
 
         if (bookItem != null) {
+
+            // Una vez obtenido el libro, añadimos la información a las vistas que componen la pantalla.
             TextView authorTextView = v.findViewById(R.id.author_detail);
             TextView publicationTextView = v.findViewById(R.id.publication_detail);
             TextView descriptionTextView = v.findViewById(R.id.description_detail);
+            ImageView coverImageView = v.findViewById(R.id.bookCover_image);
 
             if (authorTextView != null) {
                 authorTextView.setText(bookItem.getAuthor());
@@ -54,6 +60,10 @@ public class BookDetailFragment extends Fragment {
 
             if (descriptionTextView != null) {
                 descriptionTextView.setText(bookItem.getDescription());
+            }
+
+            if (coverImageView != null) {
+                coverImageView.setImageResource(bookItem.getDrawableId());
             }
         }
 

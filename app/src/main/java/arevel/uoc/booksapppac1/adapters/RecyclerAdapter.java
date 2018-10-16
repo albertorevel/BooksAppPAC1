@@ -77,18 +77,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
                 int currentPos = holder.getAdapterPosition();
 
-                    if (BookListActivity.dualScreen) {
-                        FragmentManager supportFM = ((AppCompatActivity)
-                                view.getContext()).getSupportFragmentManager();
-                        ActivitiesUtils.startDetailsFragment(supportFM,currentPos);
-                    }
+                // Si es tablet, crearemos el fragment sin cambiar de actividad.
+                if (BookListActivity.dualScreen) {
+                    FragmentManager supportFM = ((AppCompatActivity)
+                            view.getContext()).getSupportFragmentManager();
+                    ActivitiesUtils.startDetailsFragment(supportFM,currentPos);
+                }
 
-                    else {
+                // Si es móvil, crearemos una nueva actividad de detalle.
+                else {
 
-                        Intent i = new Intent(view.getContext(), BookDetailActivity.class);
-                        i.putExtra("SELECTED_ID", currentPos);
-                        view.getContext().startActivity(i);
-                    }
+                    Intent i = new Intent(view.getContext(), BookDetailActivity.class);
+                    i.putExtra("SELECTED_ID", currentPos);
+                    view.getContext().startActivity(i);
+                }
             }
         });
     }

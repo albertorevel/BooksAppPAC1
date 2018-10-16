@@ -32,7 +32,7 @@
         android:id="@+id/book_recyclerview"
         android:layout_width="@dimen/list_width"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/little_margin"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar" />
@@ -40,14 +40,8 @@
     <!--FrameLayout que mostrará los detalles de los libros (detail)-->
     <FrameLayout
         android:id="@+id/detail-framelayout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/little_margin"
-        android:layout_marginLeft="@dimen/little_margin"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/book_recyclerview"
