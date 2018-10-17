@@ -1,59 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Layout de los elementos de la lista del ejercicio 6-->
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+<!-- Cardview añadida para conseguir en estilo similar al pedido en el enunciado -->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/coverListBackground"
-    android:orientation="vertical">
+    android:layout_gravity="center"
+    app:cardCornerRadius="@dimen/bookCover_card_radius"
+    app:cardElevation="@dimen/bookCover_card_elevation">
 
-    <!--Este layout define los elementos de la lista del ejercicio 6-->
-
-
-    <!--Imagen de portada del libro. -->
-    <!--Se aplica un difuminado para que pueda leerse el texto que se pintará sobre ella.-->
-    <ImageView
-        android:id="@+id/bookCover_imageview"
-        android:layout_width="wrap_content"
+    <!--Este layout contiene todos los elementos necesarios-->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cardViewConstraintLayout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:alpha="0.2"
-        android:contentDescription="@string/bookCover_description"
-        android:foregroundGravity="center"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="w,"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/default_bookcover" />
+        android:layout_margin="@dimen/default_margin"
+        android:background="@color/colorPrimaryLight"
 
-    <!-- TextView que contiene el título del libro -->
-    <TextView
-        android:id="@+id/title_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/little_margin"
-        android:layout_marginLeft="@dimen/little_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:text="@string/defaultTitle"
-        android:textAppearance="@style/List.Title"
-        app:layout_constraintStart_toStartOf="@+id/bookCover_imageview"
-        app:layout_constraintTop_toTopOf="@id/bookCover_imageview" />
+        android:orientation="vertical">
 
-    <!-- TextView que contiene el autor del libro -->
-    <TextView
-        android:id="@+id/author_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/little_margin"
-        android:layout_marginRight="@dimen/little_margin"
-        android:layout_marginBottom="@dimen/little_margin"
-        android:text="@string/defaultAuthor"
-        android:textAppearance="@style/List.Text"
-        app:layout_constraintBottom_toBottomOf="@id/bookCover_imageview"
-        app:layout_constraintEnd_toEndOf="@id/bookCover_imageview"
-        app:layout_constraintRight_toRightOf="@id/bookCover_imageview" />
+        <!--Imagen de portada del libro. -->
+        <!--Se aplica un difuminado para que pueda leerse el texto que se pintará sobre ella.-->
+        <ImageView
+            android:id="@+id/bookCover_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:alpha="@dimen/bookCover_alpha"
+            android:contentDescription="@string/bookCover_description"
+            android:foregroundGravity="center"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/default_bookcover" />
 
+        <!-- TextView que contiene el título del libro -->
+        <TextView
+            android:id="@+id/title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/little_margin"
+            android:layout_marginLeft="@dimen/little_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/defaultTitle"
+            android:textAppearance="@style/List.Title"
+            app:layout_constraintStart_toStartOf="@id/bookCover_imageview"
+            app:layout_constraintTop_toTopOf="@id/bookCover_imageview" />
 
-</android.support.constraint.ConstraintLayout>
+        <!-- TextView que contiene el autor del libro -->
+        <TextView
+            android:id="@+id/author_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/little_margin"
+            android:layout_marginRight="@dimen/little_margin"
+            android:layout_marginBottom="@dimen/little_margin"
+            android:text="@string/defaultAuthor"
+            android:textAppearance="@style/List.Text"
+            app:layout_constraintBottom_toBottomOf="@id/bookCover_imageview"
+            app:layout_constraintEnd_toEndOf="@id/bookCover_imageview"
+            app:layout_constraintRight_toRightOf="@id/bookCover_imageview" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

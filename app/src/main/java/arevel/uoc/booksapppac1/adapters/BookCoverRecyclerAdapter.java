@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
 
         // Asociamos el layout deseado al viewgroup que se pasa por parámetros y creamos un nuevo
         // Viewholder para esa vista que hemos asociado.
-        ConstraintLayout view = (ConstraintLayout) LayoutInflater.from(parent.getContext())
+        CardView view = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bookcover_listitem, parent, false);
         return new BookCoverRecyclerAdapter.RecyclerViewHolder(view);
     }
@@ -65,7 +66,7 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
 
 
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento
-        holder.baseConstraintLayout.setOnClickListener(new View.OnClickListener() {
+        holder.baseView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -96,7 +97,7 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
     static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         // Vistas que contendrá el elemento
-        ConstraintLayout baseConstraintLayout;
+        CardView baseView;
         TextView titleTextView;
         TextView authorTextView;
         ImageView coverImageView;
@@ -104,12 +105,13 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
 
         // Constructor de la clase donde asociamos las vistas que nos interesen a una serie de
         // atributos para poder manejarlas posteriormente
-        RecyclerViewHolder(ConstraintLayout baseConstraintLayout) {
-            super(baseConstraintLayout);
-            this.baseConstraintLayout = baseConstraintLayout;
-            this.titleTextView = baseConstraintLayout.findViewById(R.id.title_textview);
-            this.authorTextView = baseConstraintLayout.findViewById(R.id.author_textview);
-            this.coverImageView = baseConstraintLayout.findViewById(R.id.bookCover_imageview);
+        RecyclerViewHolder(CardView cardview) {
+            super(cardview);
+            this.baseView = cardview;
+            ConstraintLayout constraintLayout = cardview.findViewById(R.id.cardViewConstraintLayout);
+            this.titleTextView = constraintLayout.findViewById(R.id.title_textview);
+            this.authorTextView = constraintLayout.findViewById(R.id.author_textview);
+            this.coverImageView = constraintLayout.findViewById(R.id.bookCover_imageview);
 
         }
     }
