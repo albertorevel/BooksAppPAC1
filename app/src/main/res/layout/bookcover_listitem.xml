@@ -6,7 +6,7 @@
 <!-- Cardview añadida para conseguir en estilo similar al pedido en el enunciado -->
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     app:cardCornerRadius="@dimen/bookCover_card_radius"
@@ -17,17 +17,17 @@
         android:id="@+id/cardViewConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/default_margin"
         android:background="@color/colorPrimaryLight"
-
         android:orientation="vertical">
 
         <!--Imagen de portada del libro. -->
         <!--Se aplica un difuminado para que pueda leerse el texto que se pintará sobre ella.-->
         <ImageView
             android:id="@+id/bookCover_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:alpha="@dimen/bookCover_alpha"
             android:contentDescription="@string/bookCover_description"
@@ -42,11 +42,15 @@
         <!-- TextView que contiene el título del libro -->
         <TextView
             android:id="@+id/title_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
             android:layout_marginStart="@dimen/little_margin"
             android:layout_marginLeft="@dimen/little_margin"
             android:layout_marginTop="@dimen/default_margin"
+            android:gravity="start"
+            android:textAlignment="textStart"
             android:text="@string/defaultTitle"
             android:textAppearance="@style/List.Title"
             app:layout_constraintStart_toStartOf="@id/bookCover_imageview"
@@ -55,8 +59,12 @@
         <!-- TextView que contiene el autor del libro -->
         <TextView
             android:id="@+id/author_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/little_margin"
+            android:layout_marginLeft="@dimen/little_margin"
+            android:gravity="end"
+            android:textAlignment="textEnd"
             android:layout_marginEnd="@dimen/little_margin"
             android:layout_marginRight="@dimen/little_margin"
             android:layout_marginBottom="@dimen/little_margin"

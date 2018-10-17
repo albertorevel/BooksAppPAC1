@@ -176,6 +176,8 @@ public class BookListActivity extends AppCompatActivity {
         StaggeredGridLayoutManager mStaggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
 
+        // Definimos el StaggeredLayoutManager en la lista.
+        recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
 
         // El decorator que nos permite definir la separación de elementos solamente debe crearse
         // una única vez
@@ -187,8 +189,6 @@ public class BookListActivity extends AppCompatActivity {
             recyclerView.addItemDecoration(spaceDecoration);
         }
 
-        // Definimos el StaggeredLayoutManager en la lista.
-        recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
     }
 
 }

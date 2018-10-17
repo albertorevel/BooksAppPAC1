@@ -24,10 +24,8 @@ public class SpaceDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
 
         super.getItemOffsets(outRect, view, parent, state);
-
         // Definimos los márgenes laterales e inferior siempre;
-        // el superior solamente si se trata de la primera fila de elementos
-
+        // el superior solamente si se trata de la primera fila de elementos.
         if (parent.getChildAdapterPosition(view) < this.spanCount) {
             outRect.set(margin, margin, margin, margin);
         } else {

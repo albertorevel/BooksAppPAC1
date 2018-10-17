@@ -26,7 +26,7 @@ public class BookModel {
         BookItem book2 = new BookItem(1, "Title2", "Aa Author 2", new Date(),
                 "Description 2", null, R.drawable.default_bookcover);
         BookItem book3 = new BookItem(2, "zTitle2", "Author", new Date(),
-                "Description 3", null, R.drawable.other_bookcover2);
+                "Description 3", null, R.drawable.default_bookcover);
         BookItem book4 = new BookItem(3, "Title", "Aa Author 2", new Date(),
                 "Description 4", null, R.drawable.other_bookcover1);
         BookItem book5 = new BookItem(4, "Title5", "Another author", new Date(),

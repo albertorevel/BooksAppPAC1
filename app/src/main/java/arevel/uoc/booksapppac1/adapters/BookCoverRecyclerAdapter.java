@@ -27,11 +27,6 @@ import arevel.uoc.booksapppac1.model.BookItem;
  */
 public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecyclerAdapter.RecyclerViewHolder> {
 
-    // Constantes que nos permitirán distinguir elementos pares e impares
-    private final static int FIRST = 0;
-    private final static int SECOND = 1;
-    private final static int THIRD = 2;
-
     // Conjunto de datos que manejará el adapter
     private List<BookItem> dataSet;
 
