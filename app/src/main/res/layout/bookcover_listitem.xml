@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_margin="@dimen/little_margin"
         android:background="@color/colorPrimaryLight"
         android:orientation="vertical">
 

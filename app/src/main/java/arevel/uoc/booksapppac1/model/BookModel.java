@@ -22,15 +22,15 @@ public class BookModel {
     // Código estático que creará y  añadirá una vez los datos de ejemplo al listado de BookItems
     static {
         BookItem book1 = new BookItem(0, "A Title ", "ZZ Author", new Date(),
-                "Description", null, R.drawable.other_bookcover1);
+                "Description", null, R.drawable.other_bookcover2);
         BookItem book2 = new BookItem(1, "Title2", "Aa Author 2", new Date(),
                 "Description 2", null, R.drawable.default_bookcover);
         BookItem book3 = new BookItem(2, "zTitle2", "Author", new Date(),
                 "Description 3", null, R.drawable.default_bookcover);
         BookItem book4 = new BookItem(3, "Title", "Aa Author 2", new Date(),
-                "Description 4", null, R.drawable.other_bookcover1);
+                "Description 4", null, R.drawable.other_bookcover2);
         BookItem book5 = new BookItem(4, "Title5", "Another author", new Date(),
-                "Description 5", null, R.drawable.other_bookcover2);
+                "Description 5", null, R.drawable.other_bookcover1);
         BookItem book6 = new BookItem(5, "Title 99", "Author", new Date(),
                 "Description 6", null, R.drawable.default_bookcover);
         BookItem book7 = new BookItem(6, "Another title", "William", new Date(),

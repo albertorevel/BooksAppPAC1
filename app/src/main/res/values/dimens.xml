@@ -16,8 +16,8 @@
     <dimen name="card_radius">4dp</dimen>
     <dimen name="card_height">120dp</dimen>
 
-    <dimen name="bookCover_card_elevation">10dp</dimen>
-    <dimen name="bookCover_card_radius">8dp</dimen>
+    <dimen name="bookCover_card_elevation">8dp</dimen>
+    <dimen name="bookCover_card_radius">4dp</dimen>
     <dimen name="bookCover_alpha">0.5</dimen>
 
     <dimen name="gridOffSet">16dp</dimen>
