@@ -2,7 +2,7 @@ package arevel.uoc.booksapppac1.model;
 
 import java.util.Date;
 
-/*
+/**
  * Elemento libro representado en el modelo de datos de la aplicación
  */
 public class BookItem {

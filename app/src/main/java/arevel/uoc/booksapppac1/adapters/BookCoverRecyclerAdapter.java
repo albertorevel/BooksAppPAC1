@@ -20,7 +20,10 @@ import arevel.uoc.booksapppac1.BookListActivity;
 import arevel.uoc.booksapppac1.R;
 import arevel.uoc.booksapppac1.model.BookItem;
 
-// Este adapter nos permitirá proveer a la lista de imágenes con todos los datos y manejarla correctamente
+/**
+ * Este adapter nos permitirá proveer a la lista del ejercicio 6 en móvil,
+ * imágenes con todos los datos y manejarla correctamente
+ */
 public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecyclerAdapter.RecyclerViewHolder> {
 
     // Constantes que nos permitirán distinguir elementos pares e impares

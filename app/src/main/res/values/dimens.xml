@@ -3,7 +3,7 @@
 
     <!-- Tamaños usados en la aplicación -->
 
-    <dimen name="actionbar_size">200dp</dimen>
+    <dimen name="actionbar_size">150dp</dimen>
 
     <dimen name="default_margin">16dp</dimen>
     <dimen name="little_margin">8dp</dimen>

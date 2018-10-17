@@ -9,6 +9,10 @@ import android.view.MenuItem;
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
 
+/**
+ * Esta clase contiene la actividad de detalle de un libro, usada en la aplicación cuando se trata
+ * de un móvil.
+ */
 public class BookDetailActivity extends AppCompatActivity {
 
     @Override

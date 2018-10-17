@@ -14,6 +14,11 @@ import java.util.Date;
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
 
+/**
+ * Esta clase gestiona el fragment de detalle de un libro, usado tanto en la actividad de detalle,
+ * cuando se trata de un móvil (pantalla de menos de 900 píxeles de ancho), cómo en la actividad de
+ * lista.
+ */
 public class BookDetailFragment extends Fragment {
 
     // Id que usaremos para saber el detalle del libro seleccionado
@@ -42,12 +47,13 @@ public class BookDetailFragment extends Fragment {
 
         if (bookItem != null) {
 
-            // Una vez obtenido el libro, añadimos la información a las vistas que componen la pantalla.
+            // Una vez obtenido el libro, accedemos a las vistas que componen la pantalla.
             TextView authorTextView = v.findViewById(R.id.author_detail);
             TextView publicationTextView = v.findViewById(R.id.publication_detail);
             TextView descriptionTextView = v.findViewById(R.id.description_detail);
             ImageView coverImageView = v.findViewById(R.id.bookCover_image);
 
+            // Modificamos el contenido de dichas vistas para que muestren la información deseada
             if (authorTextView != null) {
                 authorTextView.setText(bookItem.getAuthor());
             }

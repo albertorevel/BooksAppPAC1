@@ -19,6 +19,9 @@ import arevel.uoc.booksapppac1.custom_views.SpaceDecoration;
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
 
+/**
+ * Esta clase define la actividad principal de la aplicación, que gestiona la lista de libros.
+ */
 public class BookListActivity extends AppCompatActivity {
 
     // Definimos la lista que contendrá los datos a mostrar
@@ -87,12 +90,6 @@ public class BookListActivity extends AppCompatActivity {
 
         */
 
-        /*
-         * ********************
-         * *** Ejercicio 2 ****
-         * ********************
-         * */
-
         // Obtenemos el RecyclerView que contiene la lista a mostrar
         RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
 
@@ -107,29 +104,9 @@ public class BookListActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(mLayoutManager);
         } else {
 
-            /*
-             * ********************
-             * *** Ejercicio 6 ****
-             * ********************
-             * */
-
-
-            // TODO
-            BookCoverRecyclerAdapter adapter = new BookCoverRecyclerAdapter(BookModel.getITEMS());
-            recyclerView.setAdapter(adapter);
-
-            // Todo
-            int spanCount = 2;
-
-            StaggeredGridLayoutManager mStaggeredGridLayoutManager =
-                    new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
-
-
-            SpaceDecoration spaceDecoration = new SpaceDecoration(this.getResources().getDimensionPixelSize(R.dimen.gridOffSet), spanCount);
-            recyclerView.addItemDecoration(spaceDecoration);
-
-
-            recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+            // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
+            // ejercicio 6.
+           populateCoverBookList(recyclerView, BookModel.getITEMS(), true);
 
         }
     }
@@ -164,34 +141,54 @@ public class BookListActivity extends AppCompatActivity {
         // mostrar la nueva lista.
         if (sortedList != null) {
 
-            // TOdo mover esto
-
             RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
 
+            // Si es pantalla dividida (aparece simultáneamente el listado y el detalle), usamos
+            // un tipo de listado.
             if (BookListActivity.dualScreen) {
 
                 RecyclerAdapter recyclerAdapter = new RecyclerAdapter(sortedList);
 
                 recyclerView.setAdapter(recyclerAdapter);
                 recyclerAdapter.notifyDataSetChanged();
+
             } else {
-                BookCoverRecyclerAdapter bookCoverRecyclerAdapter = new BookCoverRecyclerAdapter(sortedList);
-
-                recyclerView.setAdapter(bookCoverRecyclerAdapter);
-                bookCoverRecyclerAdapter.notifyDataSetChanged();
-
-                int spanCount = 2;
-
-                StaggeredGridLayoutManager mStaggeredGridLayoutManager =
-                        new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
-
-                recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+                // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
+                // ejercicio 6.
+                populateCoverBookList(recyclerView, sortedList, false);
             }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    // TODO comment
+    // Este método crea un adapter a partir de una lista de libros. Es usado en el ejercicio 6.
+    private void populateCoverBookList(RecyclerView recyclerView, List<BookItem> bookList, boolean initial) {
+
+        // Creamos el adapter a partir de la lista y se lo asociamos a la lista RecyclerView que
+        // contiene la vista.
+        BookCoverRecyclerAdapter bookCoverRecyclerAdapter = new BookCoverRecyclerAdapter(bookList);
+        recyclerView.setAdapter(bookCoverRecyclerAdapter);
+
+        // Creamos un StaggeredGridLayout que nos permitirá mostrar varios elementos por lista,
+        // de distinto tamaño.
+        int spanCount = 2;
+        StaggeredGridLayoutManager mStaggeredGridLayoutManager =
+                new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
+
+
+        // El decorator que nos permite definir la separación de elementos solamente debe crearse
+        // una única vez
+        if (initial) {
+
+            SpaceDecoration spaceDecoration = new SpaceDecoration(this.getResources()
+                    .getDimensionPixelSize(R.dimen.gridOffSet), spanCount);
+
+            recyclerView.addItemDecoration(spaceDecoration);
+        }
+
+        // Definimos el StaggeredLayoutManager en la lista.
+        recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+    }
 
 }

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".BookListActivity">
 
+    <!--Este layout es el que se usa desde la actividad de lista de libros,
+        en pantallas no divididas (móviles)-->
 
     <!--Objeto listview que contendrá la lista de libros (master) del ejercicio 1 -->
     <!--

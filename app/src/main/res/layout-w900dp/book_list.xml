@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--Este layout es el que se usa desde la actividad de lista de libros, en pantallas divididas (tablets).
+    Contiene tanto el listado de libros como un FrameLayout dónde se mostrará el detalle -->
 
+    <!--Toolbar de la aplicación en pantallas de tablet-->
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"

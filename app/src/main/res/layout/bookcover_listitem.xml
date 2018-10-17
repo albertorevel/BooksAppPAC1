@@ -7,6 +7,9 @@
     android:background="@color/coverListBackground"
     android:orientation="vertical">
 
+    <!--Este layout define los elementos de la lista del ejercicio 6-->
+
+
     <!--Imagen de portada del libro. -->
     <!--Se aplica un difuminado para que pueda leerse el texto que se pintará sobre ella.-->
     <ImageView

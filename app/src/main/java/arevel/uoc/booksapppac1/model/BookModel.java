@@ -8,7 +8,7 @@ import java.util.List;
 
 import arevel.uoc.booksapppac1.R;
 
-/*
+/**
  * Clase que implementa el modelo de datos de libros de la aplicación
  */
 public class BookModel {

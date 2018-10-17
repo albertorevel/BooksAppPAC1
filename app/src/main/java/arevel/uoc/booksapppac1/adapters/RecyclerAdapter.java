@@ -19,7 +19,10 @@ import arevel.uoc.booksapppac1.BookListActivity;
 import arevel.uoc.booksapppac1.R;
 import arevel.uoc.booksapppac1.model.BookItem;
 
-// Este adapter nos permitirá proveer a la lista de todos los datos y manejarla correctamente
+/**
+ *  Este adapter nos permitirá proveer a la lista de tipo RecyclerView
+ *  de todos los datos y manejarla correctamente
+ */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
 
     // Constantes que nos permitirán distinguir elementos pares e impares

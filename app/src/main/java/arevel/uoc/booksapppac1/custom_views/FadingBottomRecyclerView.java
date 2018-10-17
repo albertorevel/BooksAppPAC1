@@ -7,7 +7,8 @@ import android.util.AttributeSet;
 
 /**
  * Esta clase permite crear el efecto de fading cuando quedan elementos en la lista, evitando que se
- * cree el fading en la parte superior. El resto de métodos los hereda de RecyclerView
+ * cree el fading en la parte superior. El resto de métodos los hereda de RecyclerView. Pertenece al
+ * ejercicio 6.
  */
 public class FadingBottomRecyclerView extends RecyclerView {
 

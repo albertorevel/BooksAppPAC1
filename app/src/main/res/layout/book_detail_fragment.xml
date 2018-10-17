@@ -84,7 +84,7 @@
     <!--app:layout_constraintStart_toEndOf="@+id/bookCover_image"-->
     <!--app:layout_constraintTop_toBottomOf="@+id/publication_detail"/>-->
 
-    <!--Elementos del ejercicio 5-->
+    <!--Elementos del ejercicio 5 (imagen de portada y textos) -->
     <ImageView
         android:id="@+id/bookCover_image"
         android:layout_width="wrap_content"

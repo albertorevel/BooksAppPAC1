@@ -3,8 +3,8 @@ package arevel.uoc.booksapppac1;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 
-/*
- * Esta clase contiene métodos comunes a varias actividades del poryecto.
+/**
+ * Esta clase contiene métodos comunes a varias actividades del proyecto.
  */
 public class ActivitiesUtils {
 
