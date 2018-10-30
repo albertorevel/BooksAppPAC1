@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BooksAppPAC1</string>
+    <string name="app_name" translatable="false">BooksAppPAC2</string>
 
     <!-- Textos del ejercicio 1 -->
     <string name="list_item_example">Item</string>
@@ -16,4 +16,10 @@
     <!--Textos del menú-->
     <string name="sortByTitle">Sort by title</string>
     <string name="sortByAuthor">Sort by author</string>
+
+    <!-- Autenticación del usuario -->
+    <string name="signInWithEmail_log" translatable="false">signInWithEmail:</string>
+    <string name="success_log" translatable="false">success</string>
+    <string name="failure_log" translatable="false">failure</string>
+    <string name="authentication_error">Authentication failed.</string>
 </resources>

@@ -1,14 +1,28 @@
 package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +43,16 @@ public class BookListActivity extends AppCompatActivity {
 
     // Definimos una variable que nos permitirá saber si nos encontramos con pantalla dividida
     public static boolean dualScreen = false;
+
+    // Variables para autenticarse contra el servidor de Firebase
+    FirebaseAuth mAuth;
+    FirebaseDatabase database;
+    FirebaseUser mUser;
+
+    // Variables que permiten hacer la autenticación. En otra fase las rellenaría el usuario o se
+    // recuperarían de las preferencias
+    private String userLogin = "arevel@uoc.edu";
+    private String userPassword = "pac2uoc18";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +130,66 @@ public class BookListActivity extends AppCompatActivity {
 
             // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
             // ejercicio 6.
-           populateCoverBookList(recyclerView, BookModel.getITEMS(), true);
+            populateCoverBookList(recyclerView, BookModel.getITEMS(), true);
 
         }
+
+        // ***** PAC2 ****** //
+        // Inicializamos las clases necesarias para la comunicación con Firebase
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
+        final StringBuilder logSb = new StringBuilder();
+        logSb.append(getString(R.string.signInWithEmail_log));
+
+        // Hacemos el login en el proyecto de Firebase
+        mAuth.signInWithEmailAndPassword(userLogin, userPassword).addOnCompleteListener(
+                this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful()) {
+                            // Se ha realizado el login de manera correcta
+                            logSb.append(getString(R.string.success_log));
+                            Log.d("FIREBASE_CONN", logSb.toString());
+
+                            mUser = mAuth.getCurrentUser();
+
+                            getBooksFromBackEnd();
+
+                        } else {
+                            // Ha habido un error autenticando al usuario
+                            logSb.append(getString(R.string.failure_log));
+                            Log.w("FIREBASE_CONN", logSb.toString(), task.getException());
+
+                            Toast.makeText(BookListActivity.this,
+                                    getString(R.string.authentication_error), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                    }
+                }
+        );
+
+
+    }
+
+    public void getBooksFromBackEnd() {
+
+        DatabaseReference ref = database.getReference();
+
+        // Attach a listener to read the data at our posts reference
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("DATA_", dataSnapshot.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("DATA_", "The read failed: " + databaseError.getCode());
+            }
+        });
     }
 
     @Override

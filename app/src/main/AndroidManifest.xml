@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="arevel.uoc.booksapppac1">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".BooksAppPac"
         tools:ignore="GoogleAppIndexingWarning">
 
         <!-- Activities del proyecto -->
@@ -28,6 +31,13 @@
         <activity
             android:name=".BookDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--&lt;!&ndash; Servicio que permitirá generar una notificación al recibir un mensaje de Firebase &ndash;&gt;-->
+        <!--<service android:name=".MyFirebaseMessagingService">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
+        <!--</intent-filter>-->
+        <!--</service>-->
     </application>
 
 </manifest>

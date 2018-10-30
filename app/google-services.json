@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "818652438671",
+    "firebase_url": "https://booksapppac2-d6b8d.firebaseio.com",
+    "project_id": "booksapppac2-d6b8d",
+    "storage_bucket": "booksapppac2-d6b8d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818652438671:android:b52a5288eebccd16",
+        "android_client_info": {
+          "package_name": "arevel.uoc.booksapppac1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818652438671-voqmkt4hed14ek3lvu595ke1v3j6jsq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDZePKxQa7Ty397uEguQvGJGLM2LI4Luc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

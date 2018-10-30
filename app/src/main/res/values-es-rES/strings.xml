@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BooksAppPAC1</string>
     <string name="list_item_example">Elemento</string>
     <string name="list_detail_example">Detalles del elemento</string>
     <string name="list_detail_example2">Mas información y detalles aquí</string>
@@ -10,4 +9,5 @@
     <string name="bookCover_description">Portada del libro</string>
     <string name="sortByTitle">Ordenar por título</string>
     <string name="sortByAuthor">Ordenar por autor</string>
+    <string name="authentication_error">Autenticación fallida.</string>
 </resources>
