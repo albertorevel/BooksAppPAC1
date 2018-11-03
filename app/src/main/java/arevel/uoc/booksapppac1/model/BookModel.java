@@ -1,12 +1,11 @@
 package arevel.uoc.booksapppac1.model;
 
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-
-import arevel.uoc.booksapppac1.R;
 
 /**
  * Clase que implementa el modelo de datos de libros de la aplicación
@@ -14,13 +13,16 @@ import arevel.uoc.booksapppac1.R;
 public class BookModel {
 
     // Array que contendrá los datos
-    private static final List<BookItem> ITEMS = new ArrayList<>();
+    private static List<BookItem> ITEMS = new ArrayList<>();
 
     private static Comparator<BookItem> authorComparator = null;
     private static Comparator<BookItem> titleComparator = null;
 
-    // Código estático que creará y  añadirá una vez los datos de ejemplo al listado de BookItems
     static {
+        // Perteneciente a la PAC1
+        // Código estático que creará y  añadirá una vez los datos de ejemplo al listado de BookItems
+/*
+
         BookItem book1 = new BookItem(0, "A Title ", "ZZ Author", new Date(),
                 "Description", null, R.drawable.other_bookcover2);
         BookItem book2 = new BookItem(1, "Title2", "Aa Author 2", new Date(),
@@ -46,7 +48,7 @@ public class BookModel {
         ITEMS.add(book6);
         ITEMS.add(book7);
         ITEMS.add(book8);
-
+*/
 
         // Creamos los comparadores que se utilizarán en la ordenación de la lista.
         createComparators();
@@ -114,6 +116,44 @@ public class BookModel {
     // Devuelve la lista de BookItems que gestiona este modelo
     public static List<BookItem> getITEMS() {
         return ITEMS;
+    }
+
+    public static void populateFromFirebase(DataSnapshot dataSnapshot) {
+
+        // Creamos las variables que van a ser usadas para crear cada BookItem, así como la lista
+        // que almacenaremos, donde se irán añadiendo estos objetos.
+        List<BookItem> newList = new ArrayList<>();
+        BookItem newBookItem;
+
+        String newTitle = "";
+        String newAuthor = "";
+        String newPublicationDate = "";
+        String newDescription = "";
+        String newUrlBookFace = "";
+
+        // Obtenemos la lista de libros de la respuesta
+        DataSnapshot dataList = (DataSnapshot) dataSnapshot.child("books");
+
+        DataSnapshot eachBook = null;
+        // Iteramos sobre los libros que devuelve el servidor.
+        for (int i = 0; i < dataList.getChildrenCount(); i++) {
+
+            eachBook = dataList.child(String.valueOf(i));
+
+            newTitle = (String) eachBook.child("title").getValue();
+            newAuthor = (String) eachBook.child("author").getValue();
+            newPublicationDate = (String) eachBook.child("publication_date").getValue();
+            newDescription = (String) eachBook.child("description").getValue();
+            newUrlBookFace = (String) eachBook.child("url_image").getValue();
+
+            newBookItem = new BookItem(i, newTitle, newAuthor, newPublicationDate,
+                    newDescription, newUrlBookFace);
+            newList.add(newBookItem);
+        }
+
+        ITEMS = newList;
+
+
     }
 
     // Constantes que definen la ordenación de la lista

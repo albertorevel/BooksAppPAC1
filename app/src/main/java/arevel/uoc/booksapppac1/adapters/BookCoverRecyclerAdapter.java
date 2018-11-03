@@ -57,7 +57,7 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
         holder.bookItem = dataSet.get(position);
         holder.titleTextView.setText(holder.bookItem.getTitle());
         holder.authorTextView.setText(holder.bookItem.getAuthor());
-        holder.coverImageView.setImageResource(holder.bookItem.getDrawableId());
+        holder.coverImageView.setImageResource(R.drawable.default_bookcover);
 
 
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento

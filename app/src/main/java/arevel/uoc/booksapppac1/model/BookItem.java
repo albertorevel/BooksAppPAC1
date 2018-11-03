@@ -1,7 +1,5 @@
 package arevel.uoc.booksapppac1.model;
 
-import java.util.Date;
-
 /**
  * Elemento libro representado en el modelo de datos de la aplicación
  */
@@ -11,22 +9,23 @@ public class BookItem {
     private int id;
     private String title;
     private String author;
-    private Date publicationDate;
+    private String publicationDate;
     private String description;
     private String urlBookFace;
-    private int drawableId;
+
+    // Usado en PAC1 para simular las portadas de los libros
+    // private int drawableId;
 
     // Constructor de la clase
     // En el paso 6 se ha añadido el atributo drawableId ya que se muestran diferentes portadas.
     // Esto permite emular la descarga de imágenes desde una url.
-    BookItem(int id, String title, String author, Date publicationDate, String description, String urlBookFace, int drawableId) {
+    BookItem(int id, String title, String author, String publicationDate, String description, String urlBookFace) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publicationDate = publicationDate;
         this.description = description;
         this.urlBookFace = urlBookFace;
-        this.drawableId = drawableId;
     }
 
     //Getters y setters de los atributos del libro
@@ -54,11 +53,11 @@ public class BookItem {
         this.author = author;
     }
 
-    public Date getPublicationDate() {
+    public String getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(String publicationDate) {
         this.publicationDate = publicationDate;
     }
 
@@ -76,13 +75,5 @@ public class BookItem {
 
     public void setUrlBookFace(String urlBookFace) {
         this.urlBookFace = urlBookFace;
-    }
-
-    public int getDrawableId() {
-        return drawableId;
-    }
-
-    public void setDrawableId(int drawableId) {
-        this.drawableId = drawableId;
     }
 }

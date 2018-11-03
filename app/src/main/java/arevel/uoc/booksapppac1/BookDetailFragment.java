@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Date;
-
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
 
@@ -59,9 +57,9 @@ public class BookDetailFragment extends Fragment {
             }
 
             if (publicationTextView != null) {
-                Date pubDate = bookItem.getPublicationDate();
-                String strDate = Utils.formatDate(pubDate);
-                publicationTextView.setText(strDate);
+                String pubDate = bookItem.getPublicationDate();
+                // String strDate = Utils.formatDate(pubDate);
+                publicationTextView.setText(pubDate);
             }
 
             if (descriptionTextView != null) {
@@ -69,7 +67,7 @@ public class BookDetailFragment extends Fragment {
             }
 
             if (coverImageView != null) {
-                coverImageView.setImageResource(bookItem.getDrawableId());
+                coverImageView.setImageResource(R.drawable.default_bookcover);
             }
         }
 

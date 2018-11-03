@@ -114,27 +114,13 @@ public class BookListActivity extends AppCompatActivity {
 
         */
 
-        // Obtenemos el RecyclerView que contiene la lista a mostrar
-        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
-
-        if (dualScreen) {
-            // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
-            // conjunto de datos a mostrar y lo asociamos al RecyclerView
-            RecyclerAdapter adapter = new RecyclerAdapter(BookModel.getITEMS());
-            recyclerView.setAdapter(adapter);
-
-            // Creamos un LinearLayoutManager y lo asociamos al RecyclerView
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(mLayoutManager);
-        } else {
-
-            // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
-            // ejercicio 6.
-            populateCoverBookList(recyclerView, BookModel.getITEMS(), true);
-
-        }
-
         // ***** PAC2 ****** //
+
+        // La lista ya no se llenará automáticamente al empezar, ahora es necesario esperar a la
+        // respuesta del servidor, obteniendo de ahí la información; en caso de no poder recuperar
+        // esta información, se obtendrá la última recibida que se encuentra en la base de datos.
+        // defineBookList();
+
         // Inicializamos las clases necesarias para la comunicación con Firebase
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -177,17 +163,27 @@ public class BookListActivity extends AppCompatActivity {
     public void getBooksFromBackEnd() {
 
         DatabaseReference ref = database.getReference();
+        final StringBuilder logSb = new StringBuilder(getString(R.string.dataValueEventListener_log));
 
         // Attach a listener to read the data at our posts reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("DATA_", dataSnapshot.toString());
+                BookModel.populateFromFirebase(dataSnapshot);
+
+                defineBookList();
+
+                logSb.append(getString(R.string.success_log));
+                Log.d("FIREBASE_CONN", logSb.toString());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("DATA_", "The read failed: " + databaseError.getCode());
+                logSb.append(getString(R.string.failure_log));
+                logSb.append(getString(R.string.databaseError));
+                logSb.append(getString(R.string.databaseError));
+                logSb.append(databaseError.getCode());
+                Log.e("DATA_", logSb.toString());
             }
         });
     }
@@ -224,20 +220,8 @@ public class BookListActivity extends AppCompatActivity {
 
             RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
 
-            // Si es pantalla dividida (aparece simultáneamente el listado y el detalle), usamos
-            // un tipo de listado.
-            if (BookListActivity.dualScreen) {
+            defineBookList();
 
-                RecyclerAdapter recyclerAdapter = new RecyclerAdapter(sortedList);
-
-                recyclerView.setAdapter(recyclerAdapter);
-                recyclerAdapter.notifyDataSetChanged();
-
-            } else {
-                // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
-                // ejercicio 6.
-                populateCoverBookList(recyclerView, sortedList, false);
-            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -270,6 +254,31 @@ public class BookListActivity extends AppCompatActivity {
             recyclerView.addItemDecoration(spaceDecoration);
         }
 
+    }
+
+    private void defineBookList() {
+
+        // Obtenemos el RecyclerView que contiene la lista a mostrar
+        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
+
+        // Si es pantalla dividida (aparece simultáneamente el listado y el detalle), usamos
+        // un tipo de listado.
+        if (dualScreen) {
+            // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
+            // conjunto de datos a mostrar y lo asociamos al RecyclerView
+            RecyclerAdapter adapter = new RecyclerAdapter(BookModel.getITEMS());
+            recyclerView.setAdapter(adapter);
+
+            // Creamos un LinearLayoutManager y lo asociamos al RecyclerView
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(mLayoutManager);
+
+        } else {
+            // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
+            // ejercicio 6.
+            populateCoverBookList(recyclerView, BookModel.getITEMS(), true);
+
+        }
     }
 
 }

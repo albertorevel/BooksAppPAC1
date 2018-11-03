@@ -19,7 +19,9 @@
 
     <!-- Autenticación del usuario -->
     <string name="signInWithEmail_log" translatable="false">signInWithEmail:</string>
+    <string name="dataValueEventListener_log" translatable="false">dataValueEventListener:</string>
     <string name="success_log" translatable="false">success</string>
     <string name="failure_log" translatable="false">failure</string>
     <string name="authentication_error">Authentication failed.</string>
+    <string name="databaseError" translatable="false">. DatabaseError : </string>
 </resources>
