@@ -18,7 +18,7 @@
 
     <dimen name="bookCover_card_elevation">8dp</dimen>
     <dimen name="bookCover_card_radius">4dp</dimen>
-    <dimen name="bookCover_alpha">0.5</dimen>
+    <dimen name="bookCover_alpha">0.7</dimen>
 
     <dimen name="gridOffSet">16dp</dimen>
     <dimen name="fadingEdgeLength">80dp</dimen>

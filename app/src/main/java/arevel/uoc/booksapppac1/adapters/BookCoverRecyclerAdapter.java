@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import arevel.uoc.booksapppac1.ActivitiesUtils;
@@ -25,7 +27,8 @@ import arevel.uoc.booksapppac1.model.BookItem;
  * Este adapter nos permitirá proveer a la lista del ejercicio 6 en móvil,
  * imágenes con todos los datos y manejarla correctamente
  */
-public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecyclerAdapter.RecyclerViewHolder> {
+public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecyclerAdapter.RecyclerViewHolder>
+        implements RecyclerAdapterCommon<BookItem> {
 
     // Conjunto de datos que manejará el adapter
     private List<BookItem> dataSet;
@@ -45,6 +48,7 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
         // Viewholder para esa vista que hemos asociado.
         CardView view = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bookcover_listitem, parent, false);
+
         return new BookCoverRecyclerAdapter.RecyclerViewHolder(view);
     }
 
@@ -57,7 +61,11 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
         holder.bookItem = dataSet.get(position);
         holder.titleTextView.setText(holder.bookItem.getTitle());
         holder.authorTextView.setText(holder.bookItem.getAuthor());
-        holder.coverImageView.setImageResource(R.drawable.default_bookcover);
+
+        // Cargamos la imagen desde la URL proporcionada
+        Picasso.with(holder.coverImageView.getContext())
+                .load(holder.bookItem.getUrl_image()).into(holder.coverImageView);
+//        holder.coverImageView.setImageResource(R.drawable.default_bookcover);
 
 
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento
@@ -82,6 +90,11 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
         });
     }
 
+    public void setItems(List<BookItem> dataSet) {
+        this.dataSet = dataSet;
+        this.notifyDataSetChanged();
+    }
+
     // Devolvemos el tamaño del conjunto de datos
     @Override
     public int getItemCount() {
@@ -96,6 +109,8 @@ public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecy
         TextView titleTextView;
         TextView authorTextView;
         ImageView coverImageView;
+
+        // Libro que contedrá el elemento
         BookItem bookItem;
 
         // Constructor de la clase donde asociamos las vistas que nos interesen a una serie de

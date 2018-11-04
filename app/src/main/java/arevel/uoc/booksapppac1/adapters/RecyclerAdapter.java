@@ -23,7 +23,8 @@ import arevel.uoc.booksapppac1.model.BookItem;
  *  Este adapter nos permitirá proveer a la lista de tipo RecyclerView
  *  de todos los datos y manejarla correctamente
  */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder>
+        implements RecyclerAdapterCommon<BookItem> {
 
     // Constantes que nos permitirán distinguir elementos pares e impares
     private final static int EVEN = 0;
@@ -96,6 +97,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                 }
             }
         });
+    }
+
+    public void setItems(List<BookItem> dataSet) {
+        this.dataSet = dataSet;
+        this.notifyDataSetChanged();
     }
 
     // Devolvemos el tamaño del conjunto de datos

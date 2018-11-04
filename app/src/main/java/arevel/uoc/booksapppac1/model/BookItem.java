@@ -1,31 +1,44 @@
 package arevel.uoc.booksapppac1.model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Elemento libro representado en el modelo de datos de la aplicación
  */
-public class BookItem {
+public class BookItem extends RealmObject {
 
     // Atributos de un libro
+    @PrimaryKey
     private int id;
+
     private String title;
     private String author;
-    private String publicationDate;
+    private String publication_date;
     private String description;
-    private String urlBookFace;
+    private String url_image;
 
     // Usado en PAC1 para simular las portadas de los libros
     // private int drawableId;
 
+
+    /*
     // Constructor de la clase
     // En el paso 6 se ha añadido el atributo drawableId ya que se muestran diferentes portadas.
     // Esto permite emular la descarga de imágenes desde una url.
-    BookItem(int id, String title, String author, String publicationDate, String description, String urlBookFace) {
+    BookItem(int id, String title, String author, String publication_date, String description,
+            String url_image, int drawableId) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.publicationDate = publicationDate;
+        this.publication_date = publication_date;
         this.description = description;
-        this.urlBookFace = urlBookFace;
+        this.url_image = url_image;
+        this.drawableId = drawableId;
+    }
+    */
+
+    public BookItem() {
     }
 
     //Getters y setters de los atributos del libro
@@ -53,12 +66,12 @@ public class BookItem {
         this.author = author;
     }
 
-    public String getPublicationDate() {
-        return publicationDate;
+    public String getPublication_date() {
+        return publication_date;
     }
 
-    public void setPublicationDate(String publicationDate) {
-        this.publicationDate = publicationDate;
+    public void setPublication_date(String publication_date) {
+        this.publication_date = publication_date;
     }
 
     public String getDescription() {
@@ -69,11 +82,11 @@ public class BookItem {
         this.description = description;
     }
 
-    public String getUrlBookFace() {
-        return urlBookFace;
+    public String getUrl_image() {
+        return url_image;
     }
 
-    public void setUrlBookFace(String urlBookFace) {
-        this.urlBookFace = urlBookFace;
+    public void setUrl_image(String url_image) {
+        this.url_image = url_image;
     }
 }

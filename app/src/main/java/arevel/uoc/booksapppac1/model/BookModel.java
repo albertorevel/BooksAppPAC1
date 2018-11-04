@@ -1,11 +1,15 @@
 package arevel.uoc.booksapppac1.model;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Clase que implementa el modelo de datos de libros de la aplicación
@@ -17,6 +21,8 @@ public class BookModel {
 
     private static Comparator<BookItem> authorComparator = null;
     private static Comparator<BookItem> titleComparator = null;
+
+    private static Realm realm;
 
     static {
         // Perteneciente a la PAC1
@@ -52,6 +58,8 @@ public class BookModel {
 
         // Creamos los comparadores que se utilizarán en la ordenación de la lista.
         createComparators();
+
+        realm = Realm.getDefaultInstance();
     }
 
     private static void createComparators() {
@@ -118,42 +126,47 @@ public class BookModel {
         return ITEMS;
     }
 
-    public static void populateFromFirebase(DataSnapshot dataSnapshot) {
+    public static void reciveDataFromFireBase(DataSnapshot dataSnapshot) {
 
         // Creamos las variables que van a ser usadas para crear cada BookItem, así como la lista
         // que almacenaremos, donde se irán añadiendo estos objetos.
         List<BookItem> newList = new ArrayList<>();
-        BookItem newBookItem;
 
-        String newTitle = "";
-        String newAuthor = "";
-        String newPublicationDate = "";
-        String newDescription = "";
-        String newUrlBookFace = "";
-
-        // Obtenemos la lista de libros de la respuesta
         DataSnapshot dataList = (DataSnapshot) dataSnapshot.child("books");
 
-        DataSnapshot eachBook = null;
-        // Iteramos sobre los libros que devuelve el servidor.
-        for (int i = 0; i < dataList.getChildrenCount(); i++) {
+        GenericTypeIndicator<ArrayList<BookItem>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<BookItem>>() {
+        };
+        newList = dataList.getValue(genericTypeIndicator);
 
-            eachBook = dataList.child(String.valueOf(i));
+        if (newList != null) {
+            for (final BookItem eachBookItem : newList) {
 
-            newTitle = (String) eachBook.child("title").getValue();
-            newAuthor = (String) eachBook.child("author").getValue();
-            newPublicationDate = (String) eachBook.child("publication_date").getValue();
-            newDescription = (String) eachBook.child("description").getValue();
-            newUrlBookFace = (String) eachBook.child("url_image").getValue();
+                if (!exists(eachBookItem)) {
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            realm.copyToRealmOrUpdate(eachBookItem);
+                        }
+                    });
+                }
+            }
 
-            newBookItem = new BookItem(i, newTitle, newAuthor, newPublicationDate,
-                    newDescription, newUrlBookFace);
-            newList.add(newBookItem);
+            ITEMS = newList;
         }
+    }
 
-        ITEMS = newList;
+    public static List<BookItem> getBooks() {
 
+        RealmResults<BookItem> books = realm.where(BookItem.class).findAll();
 
+        return new ArrayList<>(books);
+    }
+
+    public static boolean exists(BookItem bookItem) {
+
+        BookItem retrievedBookItem = realm.where(BookItem.class).like("title", bookItem.getTitle()).findFirst();
+
+        return retrievedBookItem != null;
     }
 
     // Constantes que definen la ordenación de la lista

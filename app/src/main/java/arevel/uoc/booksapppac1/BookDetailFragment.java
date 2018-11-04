@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
 
@@ -57,7 +59,7 @@ public class BookDetailFragment extends Fragment {
             }
 
             if (publicationTextView != null) {
-                String pubDate = bookItem.getPublicationDate();
+                String pubDate = bookItem.getPublication_date();
                 // String strDate = Utils.formatDate(pubDate);
                 publicationTextView.setText(pubDate);
             }
@@ -67,7 +69,10 @@ public class BookDetailFragment extends Fragment {
             }
 
             if (coverImageView != null) {
-                coverImageView.setImageResource(R.drawable.default_bookcover);
+                // Cargamos la imagen desde la URL proporcionada
+                Picasso.with(coverImageView.getContext())
+                        .load(bookItem.getUrl_image()).into(coverImageView);
+//                coverImageView.setImageResource(R.drawable.default_bookcover);
             }
         }
 
