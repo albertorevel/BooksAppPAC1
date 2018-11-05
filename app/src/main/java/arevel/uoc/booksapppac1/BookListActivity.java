@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import arevel.uoc.booksapppac1.adapters.BookCoverRecyclerAdapter;
@@ -39,7 +38,7 @@ import arevel.uoc.booksapppac1.model.BookModel;
 public class BookListActivity extends AppCompatActivity {
 
     // Definimos la lista que contendrá los datos a mostrar
-    private final ArrayList<String> list = new ArrayList<>();
+    // private final ArrayList<String> list = new ArrayList<>();
 
     // Definimos una variable que nos permitirá saber si nos encontramos con pantalla dividida
     public static boolean dualScreen = false;
@@ -51,8 +50,8 @@ public class BookListActivity extends AppCompatActivity {
 
     // Variables que permiten hacer la autenticación. En otra fase las rellenaría el usuario o se
     // recuperarían de las preferencias
-    private String userLogin = "arevel@uoc.edu";
-    private String userPassword = "pac2uoc18";
+    String userLogin = "arevel@uoc.edu";
+    String userPassword = "pac2uoc18";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +120,9 @@ public class BookListActivity extends AppCompatActivity {
         // esta información, se obtendrá la última recibida que se encuentra en la base de datos.
         // defineBookList();
 
+        // Creamos los adapter que contendrábn la lista (ahora vacía)
+        createAdapters();
+
         // Inicializamos las clases necesarias para la comunicación con Firebase
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -141,59 +143,159 @@ public class BookListActivity extends AppCompatActivity {
 
                             mUser = mAuth.getCurrentUser();
 
-                            getBooksFromBackEnd();
+                            checkConnection();
 
                         } else {
                             // Ha habido un error autenticando al usuario
                             logSb.append(getString(R.string.failure_log));
                             Log.w("FIREBASE_CONN", logSb.toString(), task.getException());
-
+//TODO retrieve data?
                             Toast.makeText(BookListActivity.this,
                                     getString(R.string.authentication_error), Toast.LENGTH_SHORT)
                                     .show();
                         }
-
                     }
                 }
         );
+    }
 
+    public void checkConnection() {
+
+        final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    getBooksFromBackEnd();
+                    connectedRef.removeEventListener(this);
+                } else {
+                    //TODO show error and log
+                    BookModel.setItemsFromDatabase();
+                    recyclerListChanged();
+                    connectedRef.removeEventListener(this);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                BookModel.setItemsFromDatabase();
+                recyclerListChanged();
+                //TODO show error and log
+                System.err.println("Listener was cancelled");
+            }
+        });
 
     }
 
     public void getBooksFromBackEnd() {
 
-        DatabaseReference ref = database.getReference();
+        final DatabaseReference ref = database.getReference();
         final StringBuilder logSb = new StringBuilder(getString(R.string.dataValueEventListener_log));
 
         // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
+        ValueEventListener dataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                BookModel.reciveDataFromFireBase(dataSnapshot);
 
+                BookModel.setItemsFromFireBase(dataSnapshot);
                 recyclerListChanged();
+                ref.removeEventListener(this);
 
                 logSb.append(getString(R.string.success_log));
                 Log.d("FIREBASE_CONN", logSb.toString());
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                logSb.append(getString(R.string.failure_log));
-                logSb.append(getString(R.string.databaseError));
-                logSb.append(getString(R.string.databaseError));
+
+                BookModel.setItemsFromDatabase();
+                recyclerListChanged();
+                ref.removeEventListener(this);
+
+                //TODO mostrar error sincro?
+                logSb.append(getString(R.string.fireBaseDatabaseError));
                 logSb.append(databaseError.getCode());
                 Log.e("DATA_", logSb.toString());
             }
-        });
+        };
+
+        ref.addValueEventListener(dataListener);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Creamos el menú de la lista
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_list, menu);
-        return true;
+    private void createAdapters() {
+
+        // Obtenemos el RecyclerView que contiene la lista a mostrar
+        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
+
+        // Si es pantalla dividida (aparece simultáneamente el listado y el detalle), usamos
+        // un tipo de listado.
+        if (dualScreen) {
+            // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
+            // conjunto de datos a mostrar y lo asociamos al RecyclerView
+            RecyclerAdapter adapter = new RecyclerAdapter(BookModel.getITEMS());
+            recyclerView.setAdapter(adapter);
+
+            // Creamos un LinearLayoutManager y lo asociamos al RecyclerView
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(mLayoutManager);
+
+        } else {
+            // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
+            // ejercicio 6. Creamos el adapter a partir de la lista y se lo asociamos a la lista
+            // RecyclerView que contiene la vista.
+            BookCoverRecyclerAdapter bookCoverRecyclerAdapter =
+                    new BookCoverRecyclerAdapter(BookModel.getITEMS());
+            recyclerView.setAdapter(bookCoverRecyclerAdapter);
+
+            // Creamos un StaggeredGridLayout que nos permitirá mostrar varios elementos por lista,
+            // de distinto tamaño.
+            int spanCount = 2;
+            StaggeredGridLayoutManager mStaggeredGridLayoutManager =
+                    new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
+
+            // Definimos el StaggeredLayoutManager en la lista.
+            recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+
+            // El decorator que nos permite definir la separación de elementos solamente debe crearse
+            // una única vez
+            SpaceDecoration spaceDecoration = new SpaceDecoration(this.getResources()
+                    .getDimensionPixelSize(R.dimen.gridOffSet), spanCount);
+
+            recyclerView.addItemDecoration(spaceDecoration);
+
+        }
+    }
+
+    private void recyclerListChanged() {
+
+        // Obtenemos el RecyclerView que contiene la lista a mostrar
+        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
+
+        if (recyclerView != null) {
+            // Si es pantalla dividida
+            if (dualScreen) {
+                // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
+                // conjunto de datos a mostrar y lo asociamos al RecyclerView
+                RecyclerAdapter adapter = (RecyclerAdapter) recyclerView.getAdapter();
+
+                if (adapter != null) {
+                    adapter.setItems(BookModel.getITEMS());
+                    adapter.notifyDataSetChanged();
+                }
+
+            } else {
+                // Si solamente tenemos la lista en la pantalla
+                BookCoverRecyclerAdapter adapter =
+                        (BookCoverRecyclerAdapter) recyclerView.getAdapter();
+
+                if (adapter != null) {
+                    adapter.setItems(BookModel.getITEMS());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 
     @Override
@@ -218,93 +320,19 @@ public class BookListActivity extends AppCompatActivity {
         // mostrar la nueva lista.
         if (sortedList != null) {
 
-            RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
-
-            defineBookList();
+            recyclerListChanged();
 
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    // Este método crea un adapter a partir de una lista de libros. Es usado en el ejercicio 6.
-    private void populateCoverBookList(RecyclerView recyclerView, List<BookItem> bookList, boolean initial) {
-
-        // Creamos el adapter a partir de la lista y se lo asociamos a la lista RecyclerView que
-        // contiene la vista.
-        BookCoverRecyclerAdapter bookCoverRecyclerAdapter = new BookCoverRecyclerAdapter(bookList);
-        recyclerView.setAdapter(bookCoverRecyclerAdapter);
-
-        // Creamos un StaggeredGridLayout que nos permitirá mostrar varios elementos por lista,
-        // de distinto tamaño.
-        int spanCount = 2;
-        StaggeredGridLayoutManager mStaggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
-
-        // Definimos el StaggeredLayoutManager en la lista.
-        recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
-
-        // El decorator que nos permite definir la separación de elementos solamente debe crearse
-        // una única vez
-        if (initial) {
-
-            SpaceDecoration spaceDecoration = new SpaceDecoration(this.getResources()
-                    .getDimensionPixelSize(R.dimen.gridOffSet), spanCount);
-
-            recyclerView.addItemDecoration(spaceDecoration);
-        }
-
-    }
-
-    private void defineBookList() {
-
-        // Obtenemos el RecyclerView que contiene la lista a mostrar
-        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
-
-        // Si es pantalla dividida (aparece simultáneamente el listado y el detalle), usamos
-        // un tipo de listado.
-        if (dualScreen) {
-            // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
-            // conjunto de datos a mostrar y lo asociamos al RecyclerView
-            RecyclerAdapter adapter = new RecyclerAdapter(BookModel.getITEMS());
-            recyclerView.setAdapter(adapter);
-
-            // Creamos un LinearLayoutManager y lo asociamos al RecyclerView
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(mLayoutManager);
-
-        } else {
-            // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
-            // ejercicio 6.
-            populateCoverBookList(recyclerView, BookModel.getITEMS(), true);
-
-        }
-    }
-
-    private void recyclerListChanged() {
-
-        // Obtenemos el RecyclerView que contiene la lista a mostrar
-        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
-
-        // Si es pantalla dividida (aparece simultáneamente el listado y el detalle), usamos
-        // un tipo de listado.
-        if (dualScreen) {
-            // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
-            // conjunto de datos a mostrar y lo asociamos al RecyclerView
-            RecyclerAdapter adapter = (RecyclerAdapter) recyclerView.getAdapter();
-            adapter.setItems(BookModel.getITEMS());
-
-            // Creamos un LinearLayoutManager y lo asociamos al RecyclerView
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(mLayoutManager);
-
-        } else {
-            // Si solamente tenemos la lista en la pantalla, usamos la lista implementada en el
-            // ejercicio 6.
-            populateCoverBookList(recyclerView, BookModel.getITEMS(), true);
-
-        }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Creamos el menú de la lista
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_list, menu);
+        return true;
     }
 
 }

@@ -126,7 +126,7 @@ public class BookModel {
         return ITEMS;
     }
 
-    public static void reciveDataFromFireBase(DataSnapshot dataSnapshot) {
+    public static void setItemsFromFireBase(DataSnapshot dataSnapshot) {
 
         // Creamos las variables que van a ser usadas para crear cada BookItem, así como la lista
         // que almacenaremos, donde se irán añadiendo estos objetos.
@@ -155,14 +155,18 @@ public class BookModel {
         }
     }
 
-    public static List<BookItem> getBooks() {
+    public static void setItemsFromDatabase() {
+        ITEMS = getBooks();
+    }
+
+    private static List<BookItem> getBooks() {
 
         RealmResults<BookItem> books = realm.where(BookItem.class).findAll();
 
         return new ArrayList<>(books);
     }
 
-    public static boolean exists(BookItem bookItem) {
+    private static boolean exists(BookItem bookItem) {
 
         BookItem retrievedBookItem = realm.where(BookItem.class).like("title", bookItem.getTitle()).findFirst();
 
