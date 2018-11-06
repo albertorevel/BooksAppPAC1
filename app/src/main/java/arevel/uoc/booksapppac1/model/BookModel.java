@@ -22,8 +22,6 @@ public class BookModel {
     private static Comparator<BookItem> authorComparator = null;
     private static Comparator<BookItem> titleComparator = null;
 
-    private static Realm realm;
-
     static {
         // Perteneciente a la PAC1
         // Código estático que creará y  añadirá una vez los datos de ejemplo al listado de BookItems
@@ -59,7 +57,6 @@ public class BookModel {
         // Creamos los comparadores que se utilizarán en la ordenación de la lista.
         createComparators();
 
-        realm = Realm.getDefaultInstance();
     }
 
     private static void createComparators() {
@@ -130,19 +127,22 @@ public class BookModel {
 
         // Creamos las variables que van a ser usadas para crear cada BookItem, así como la lista
         // que almacenaremos, donde se irán añadiendo estos objetos.
-        List<BookItem> newList = new ArrayList<>();
+        List<BookItem> newList;
 
-        DataSnapshot dataList = (DataSnapshot) dataSnapshot.child("books");
+        DataSnapshot dataList = dataSnapshot.child("books");
 
         GenericTypeIndicator<ArrayList<BookItem>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<BookItem>>() {
         };
         newList = dataList.getValue(genericTypeIndicator);
 
         if (newList != null) {
-            for (final BookItem eachBookItem : newList) {
+            for (int i = 0; i < newList.size(); i++) {
+
+                final BookItem eachBookItem = newList.get(i);
+                eachBookItem.setId(i);
 
                 if (!exists(eachBookItem)) {
-                    realm.executeTransaction(new Realm.Transaction() {
+                    Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
                             realm.copyToRealmOrUpdate(eachBookItem);
@@ -161,14 +161,16 @@ public class BookModel {
 
     private static List<BookItem> getBooks() {
 
-        RealmResults<BookItem> books = realm.where(BookItem.class).findAll();
+        RealmResults<BookItem> books = Realm.getDefaultInstance().where(BookItem.class)
+                .findAllAsync();
 
         return new ArrayList<>(books);
     }
 
     private static boolean exists(BookItem bookItem) {
 
-        BookItem retrievedBookItem = realm.where(BookItem.class).like("title", bookItem.getTitle()).findFirst();
+        BookItem retrievedBookItem = Realm.getDefaultInstance().where(BookItem.class)
+                .like("title", bookItem.getTitle()).findFirst();
 
         return retrievedBookItem != null;
     }

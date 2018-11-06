@@ -2,6 +2,7 @@ package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +53,8 @@ public class BookListActivity extends AppCompatActivity {
     // recuperarían de las preferencias
     String userLogin = "arevel@uoc.edu";
     String userPassword = "pac2uoc18";
+
+    SwipeRefreshLayout mSwipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +130,57 @@ public class BookListActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        checkConnectionAndRetrieveData();
+
+        mSwipeContainer = findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                checkConnectionAndRetrieveData();
+            }
+        });
+    }
+
+    public void checkConnectionAndRetrieveData() {
+
+        final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = false;
+
+                try {
+                    connected = snapshot.getValue(Boolean.class);
+                } catch (NullPointerException npe) {
+                    //TODO error log
+                    Log.e("FB", "Firebase error checking connection");
+                }
+
+                if (connected) {
+                    firebaseAuth();
+                } else {
+                    //TODO show error and log
+                    BookModel.setItemsFromDatabase();
+                    recyclerListChanged();
+                    connectedRef.removeEventListener(this);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                BookModel.setItemsFromDatabase();
+                recyclerListChanged();
+                //TODO show error and log
+                System.err.println("Listener was cancelled");
+            }
+        });
+
+    }
+
+    public void firebaseAuth() {
+
+        final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
         final StringBuilder logSb = new StringBuilder();
         logSb.append(getString(R.string.signInWithEmail_log));
 
@@ -143,13 +197,15 @@ public class BookListActivity extends AppCompatActivity {
 
                             mUser = mAuth.getCurrentUser();
 
-                            checkConnection();
+                            getBooksFromBackEnd();
 
                         } else {
                             // Ha habido un error autenticando al usuario
                             logSb.append(getString(R.string.failure_log));
                             Log.w("FIREBASE_CONN", logSb.toString(), task.getException());
 //TODO retrieve data?
+                            BookModel.setItemsFromDatabase();
+                            recyclerListChanged();
                             Toast.makeText(BookListActivity.this,
                                     getString(R.string.authentication_error), Toast.LENGTH_SHORT)
                                     .show();
@@ -157,35 +213,6 @@ public class BookListActivity extends AppCompatActivity {
                     }
                 }
         );
-    }
-
-    public void checkConnection() {
-
-        final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-        connectedRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                boolean connected = snapshot.getValue(Boolean.class);
-                if (connected) {
-                    getBooksFromBackEnd();
-                    connectedRef.removeEventListener(this);
-                } else {
-                    //TODO show error and log
-                    BookModel.setItemsFromDatabase();
-                    recyclerListChanged();
-                    connectedRef.removeEventListener(this);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                BookModel.setItemsFromDatabase();
-                recyclerListChanged();
-                //TODO show error and log
-                System.err.println("Listener was cancelled");
-            }
-        });
-
     }
 
     public void getBooksFromBackEnd() {
@@ -295,6 +322,10 @@ public class BookListActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 }
             }
+        }
+
+        if (mSwipeContainer != null && mSwipeContainer.isRefreshing()) {
+            mSwipeContainer.setRefreshing(false);
         }
     }
 
