@@ -52,7 +52,7 @@ public class BookDetailFragment extends Fragment {
             TextView publicationTextView = v.findViewById(R.id.publication_detail);
             TextView descriptionTextView = v.findViewById(R.id.description_detail);
             ImageView coverImageView = v.findViewById(R.id.bookCover_image);
-            ImageView headerImageView = v.findViewById(R.id.headerImage);
+            final ImageView headerImageView = getActivity().findViewById(R.id.app_bar).findViewById(R.id.headerImage);
 
             // Modificamos el contenido de dichas vistas para que muestren la información deseada
             if (authorTextView != null) {
