@@ -31,14 +31,22 @@
     -->
 
     <!-- Objeto recyclerview que contiene la lista de libros definida en el ejercicio 2 -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/book_recyclerview"
-        android:layout_width="@dimen/list_width"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/little_margin"
-        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/app_bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/book_recyclerview"
+            android:layout_width="@dimen/list_width"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/little_margin"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <!--FrameLayout que mostrará los detalles de los libros (detail)-->
     <FrameLayout
@@ -47,7 +55,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/book_recyclerview"
+        app:layout_constraintStart_toEndOf="@+id/swipeContainer"
         app:layout_constraintTop_toBottomOf="@id/app_bar">
 
     </FrameLayout>

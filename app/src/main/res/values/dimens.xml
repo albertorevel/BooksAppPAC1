@@ -10,7 +10,7 @@
     <dimen name="big_margin">30dp</dimen>
 
     <dimen name="list_width">480dp</dimen>
-    <dimen name="cover_width">150dp</dimen>
+    <dimen name="cover_width">2000dp</dimen>
 
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="card_radius">4dp</dimen>

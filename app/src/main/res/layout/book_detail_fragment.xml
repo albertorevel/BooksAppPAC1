@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -87,62 +88,64 @@
     <!--Elementos del ejercicio 5 (imagen de portada y textos) -->
     <ImageView
         android:id="@+id/bookCover_image"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/bookCover_description"
         android:maxWidth="@dimen/cover_width"
+        app:layout_constraintEnd_toStartOf="@+id/middle_guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/default_bookcover" />
 
     <TextView
         android:id="@+id/author_detail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginTop="@dimen/big_margin"
         android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:textStyle="bold"
         android:text="@string/defaultAuthor"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toEndOf="@+id/middle_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/publication_detail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginTop="@dimen/little_margin"
         android:text="@string/defaultPublicationDate"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBottom_toBottomOf="@+id/bookCover_image"
-        app:layout_constraintStart_toEndOf="@+id/middle_guideline" />
+        app:layout_constraintEnd_toEndOf="@id/author_detail"
+        app:layout_constraintStart_toStartOf="@id/author_detail"
+        app:layout_constraintTop_toBottomOf="@+id/author_detail"
+        tools:layout_editor_absoluteX="212dp" />
 
     <TextView
         android:id="@+id/description_detail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:text="@string/defaultDescription"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookCover_image" />
+        app:layout_constraintEnd_toEndOf="@id/author_detail"
+        app:layout_constraintStart_toStartOf="@id/author_detail"
+        app:layout_constraintTop_toBottomOf="@+id/publication_detail" />
 
     <android.support.constraint.Guideline
         android:id="@+id/middle_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.4" />
 
 
 </android.support.constraint.ConstraintLayout>
