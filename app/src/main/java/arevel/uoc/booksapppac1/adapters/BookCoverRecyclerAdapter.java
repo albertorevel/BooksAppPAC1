@@ -27,8 +27,8 @@ import arevel.uoc.booksapppac1.model.BookItem;
  * Este adapter nos permitirá proveer a la lista del ejercicio 6 en móvil,
  * imágenes con todos los datos y manejarla correctamente
  */
-public class BookCoverRecyclerAdapter extends RecyclerView.Adapter<BookCoverRecyclerAdapter.RecyclerViewHolder>
-        implements RecyclerAdapterCommon<BookItem> {
+public class BookCoverRecyclerAdapter
+        extends RecyclerView.Adapter<BookCoverRecyclerAdapter.RecyclerViewHolder> {
 
     // Conjunto de datos que manejará el adapter
     private List<BookItem> dataSet;

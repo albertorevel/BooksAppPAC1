@@ -24,4 +24,5 @@
     <string name="failure_log" translatable="false">failure</string>
     <string name="authentication_error">Authentication failed.</string>
     <string name="fireBaseDatabaseError" translatable="false">. Firebase onCancelled databaseError : </string>
+    <string name="dataRefreshComplete">List has been updated</string>
 </resources>

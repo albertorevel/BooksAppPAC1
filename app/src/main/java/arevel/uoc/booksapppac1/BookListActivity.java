@@ -2,6 +2,7 @@ package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -326,7 +327,12 @@ public class BookListActivity extends AppCompatActivity {
 
         if (mSwipeContainer != null && mSwipeContainer.isRefreshing()) {
             mSwipeContainer.setRefreshing(false);
+
+            Snackbar.make(findViewById(R.id.swipeContainer), getString(R.string.dataRefreshComplete),
+                    Snackbar.LENGTH_LONG).show();
         }
+
+
     }
 
     @Override

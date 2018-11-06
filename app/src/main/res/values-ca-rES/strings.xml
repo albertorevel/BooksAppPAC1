@@ -10,4 +10,5 @@
     <string name="sortByTitle">Ordenar per títol</string>
     <string name="sortByAuthor">Ordenar per autor</string>
     <string name="authentication_error">Autenticació fallida.</string>
+    <string name="dataRefreshComplete">El llistat s\'ha actualitzat</string>
 </resources>

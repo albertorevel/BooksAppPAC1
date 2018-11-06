@@ -10,4 +10,5 @@
     <string name="sortByTitle">Ordenar por título</string>
     <string name="sortByAuthor">Ordenar por autor</string>
     <string name="authentication_error">Autenticación fallida.</string>
+    <string name="dataRefreshComplete">El listado se ha actualizado</string>
 </resources>
