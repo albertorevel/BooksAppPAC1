@@ -52,6 +52,7 @@ public class BookDetailFragment extends Fragment {
             TextView publicationTextView = v.findViewById(R.id.publication_detail);
             TextView descriptionTextView = v.findViewById(R.id.description_detail);
             ImageView coverImageView = v.findViewById(R.id.bookCover_image);
+            ImageView headerImageView = v.findViewById(R.id.headerImage);
 
             // Modificamos el contenido de dichas vistas para que muestren la información deseada
             if (authorTextView != null) {
@@ -72,8 +73,12 @@ public class BookDetailFragment extends Fragment {
                 // Cargamos la imagen desde la URL proporcionada
                 Picasso.with(coverImageView.getContext())
                         .load(bookItem.getUrl_image()).into(coverImageView);
+                // Cuando la imagen venía de drawable
 //                coverImageView.setImageResource(R.drawable.default_bookcover);
             }
+
+            Picasso.with(headerImageView.getContext())
+                    .load(bookItem.getUrl_image()).into(headerImageView);
         }
 
         return v;
