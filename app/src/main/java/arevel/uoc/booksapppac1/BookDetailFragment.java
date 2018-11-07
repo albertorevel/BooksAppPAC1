@@ -2,6 +2,7 @@ package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.Guideline;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,8 +53,14 @@ public class BookDetailFragment extends Fragment {
             TextView publicationTextView = v.findViewById(R.id.publication_detail);
             TextView descriptionTextView = v.findViewById(R.id.description_detail);
             ImageView coverImageView = v.findViewById(R.id.bookCover_image);
-            final ImageView headerImageView = getActivity().findViewById(R.id.app_bar).findViewById(R.id.headerImage);
+            Guideline guideline = v.findViewById(R.id.middle_guideline);
 
+            final ImageView headerImageView;
+            if (getActivity() != null && getActivity().findViewById(R.id.app_bar) != null) {
+                headerImageView = getActivity().findViewById(R.id.app_bar).findViewById(R.id.headerImage);
+            } else {
+                headerImageView = null;
+            }
             // Modificamos el contenido de dichas vistas para que muestren la información deseada
             if (authorTextView != null) {
                 authorTextView.setText(bookItem.getAuthor());
@@ -69,16 +76,22 @@ public class BookDetailFragment extends Fragment {
                 descriptionTextView.setText(bookItem.getDescription());
             }
 
-            if (coverImageView != null) {
+
+            if (headerImageView != null) {
+                Picasso.with(headerImageView.getContext())
+                        .load(bookItem.getUrl_image()).into(headerImageView);
+                guideline.setGuidelinePercent(0);
+            } else if (coverImageView != null) {
+
                 // Cargamos la imagen desde la URL proporcionada
                 Picasso.with(coverImageView.getContext())
                         .load(bookItem.getUrl_image()).into(coverImageView);
                 // Cuando la imagen venía de drawable
-//                coverImageView.setImageResource(R.drawable.default_bookcover);
+                // coverImageView.setImageResource(R.drawable.default_bookcover);
+
             }
 
-            Picasso.with(headerImageView.getContext())
-                    .load(bookItem.getUrl_image()).into(headerImageView);
+
         }
 
         return v;

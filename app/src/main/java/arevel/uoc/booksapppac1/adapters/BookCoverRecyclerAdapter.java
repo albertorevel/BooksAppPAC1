@@ -65,7 +65,7 @@ public class BookCoverRecyclerAdapter
         // Cargamos la imagen desde la URL proporcionada
         Picasso.with(holder.coverImageView.getContext())
                 .load(holder.bookItem.getUrl_image()).into(holder.coverImageView);
-//        holder.coverImageView.setImageResource(R.drawable.default_bookcover);
+        //  holder.coverImageView.setImageResource(R.drawable.default_bookcover);
 
 
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento

@@ -158,6 +158,8 @@ public class BookListActivity extends AppCompatActivity {
                     Log.e("FB", "Firebase error checking connection");
                 }
 
+                //connectedRef.removeEventListener(this);
+
                 if (connected) {
                     firebaseAuth();
                 } else {
@@ -302,6 +304,11 @@ public class BookListActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
 
         if (recyclerView != null) {
+
+            // Llamamos a la ordenación con el parámetro null para que la ordene según el criterio
+            // de ordenación que tenía almacenado
+            List<BookItem> bookList = BookModel.sortBy(null);
+
             // Si es pantalla dividida
             if (dualScreen) {
                 // Creamos el adapter que gestionará los datos de la lista, pasándole como parámetro el
@@ -309,7 +316,7 @@ public class BookListActivity extends AppCompatActivity {
                 RecyclerAdapter adapter = (RecyclerAdapter) recyclerView.getAdapter();
 
                 if (adapter != null) {
-                    adapter.setItems(BookModel.getITEMS());
+                    adapter.setItems(bookList);
                     adapter.notifyDataSetChanged();
                 }
 
@@ -319,7 +326,7 @@ public class BookListActivity extends AppCompatActivity {
                         (BookCoverRecyclerAdapter) recyclerView.getAdapter();
 
                 if (adapter != null) {
-                    adapter.setItems(BookModel.getITEMS());
+                    adapter.setItems(bookList);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -330,6 +337,10 @@ public class BookListActivity extends AppCompatActivity {
 
             Snackbar.make(findViewById(R.id.swipeContainer), getString(R.string.dataRefreshComplete),
                     Snackbar.LENGTH_LONG).show();
+
+            if (dualScreen) {
+                ActivitiesUtils.removeDetailsFragment(getSupportFragmentManager());
+            }
         }
 
 

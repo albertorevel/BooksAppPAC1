@@ -22,6 +22,8 @@ public class BookModel {
     private static Comparator<BookItem> authorComparator = null;
     private static Comparator<BookItem> titleComparator = null;
 
+    private static SORT_CRITERIA currentSortCriteria = SORT_CRITERIA.DEFAULT;
+
     static {
         // Perteneciente a la PAC1
         // Código estático que creará y  añadirá una vez los datos de ejemplo al listado de BookItems
@@ -97,16 +99,19 @@ public class BookModel {
 
     /**
      * Devuelve la lista ordenada según el parámetro especificado. La lista se queda almacenada con
-     * ese criterio.
+     * ese criterio. Si el parámetro de entrada es null, reordena la lista con el último criterio
+     * utilizado (o el criterio por defecto en caso de que no se haya llamado todavía);
      *
-     * @param sortCriteria criterio de ordenación
+     * @param sortCriteria criterio de ordenación. Si el valor es null, usa el último conocido.
      * @return la lista ordenada
      */
     public static List<BookItem> sortBy(SORT_CRITERIA sortCriteria) {
 
-        Comparator<BookItem> currentComparator = null;
+        if (sortCriteria != null) {
+            currentSortCriteria = sortCriteria;
+        }
 
-        switch (sortCriteria) {
+        switch (currentSortCriteria) {
             case AUTHOR:
                 Collections.sort(getITEMS(), authorComparator);
                 break;
@@ -115,6 +120,7 @@ public class BookModel {
                 break;
 
         }
+
         return getITEMS();
     }
 
@@ -177,7 +183,7 @@ public class BookModel {
 
     // Constantes que definen la ordenación de la lista
     public enum SORT_CRITERIA {
-        //DEFAULT, // Ahora mismo no hay opción de volver a la lista original, esta constante serviría para ello
+        DEFAULT,
         AUTHOR,
         TITLE
     }
