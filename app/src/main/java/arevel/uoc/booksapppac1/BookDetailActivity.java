@@ -38,7 +38,8 @@ public class BookDetailActivity extends AppCompatActivity {
 
 
         // Recuperamos el libro y asociamos la información a los elementos del fragment
-        BookItem bookItem = BookModel.getITEMS().get(id);
+        //BookItem bookItem = BookModel.getITEMS().get(id);
+        BookItem bookItem = BookModel.findBookById(id);
         String str = bookItem.getTitle();
 
         // Cambiamos el título de la barra de la aplicación

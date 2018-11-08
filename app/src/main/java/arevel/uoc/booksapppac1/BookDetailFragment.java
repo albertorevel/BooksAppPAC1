@@ -44,7 +44,7 @@ public class BookDetailFragment extends Fragment {
         // primaryTextView.setText(detailText);
 
         // Obtenemos el libro del que se debe mostrar el detalle.
-        BookItem bookItem = BookModel.getITEMS().get(bookId);
+        BookItem bookItem = BookModel.findBookById(bookId);
 
         if (bookItem != null) {
 

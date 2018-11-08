@@ -74,16 +74,16 @@ public class BookCoverRecyclerAdapter
             @Override
             public void onClick(View view) {
 
-                int currentPos = holder.getAdapterPosition();
+                int id = holder.bookItem.getId();
 
                 if (BookListActivity.dualScreen) {
                     FragmentManager supportFM = ((AppCompatActivity)
                             view.getContext()).getSupportFragmentManager();
-                    ActivitiesUtils.startDetailsFragment(supportFM, currentPos);
+                    ActivitiesUtils.startDetailsFragment(supportFM, id);
                 } else {
 
                     Intent i = new Intent(view.getContext(), BookDetailActivity.class);
-                    i.putExtra("SELECTED_ID", currentPos);
+                    i.putExtra("SELECTED_ID", id);
                     view.getContext().startActivity(i);
                 }
             }

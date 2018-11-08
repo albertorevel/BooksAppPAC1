@@ -53,8 +53,8 @@
             android:textAlignment="textStart"
             android:text="@string/defaultTitle"
             android:textAppearance="@style/List.Title"
-            app:layout_constraintStart_toStartOf="@id/bookCover_imageview"
-            app:layout_constraintTop_toTopOf="@id/bookCover_imageview" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- TextView que contiene el autor del libro -->
         <TextView
@@ -70,9 +70,9 @@
             android:layout_marginBottom="@dimen/little_margin"
             android:text="@string/defaultAuthor"
             android:textAppearance="@style/List.Text"
-            app:layout_constraintBottom_toBottomOf="@id/bookCover_imageview"
-            app:layout_constraintEnd_toEndOf="@id/bookCover_imageview"
-            app:layout_constraintRight_toRightOf="@id/bookCover_imageview" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

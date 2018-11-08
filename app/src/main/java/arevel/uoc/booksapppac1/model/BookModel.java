@@ -147,7 +147,7 @@ public class BookModel {
                 final BookItem eachBookItem = newList.get(i);
                 eachBookItem.setId(i);
 
-                if (!exists(eachBookItem)) {
+                if (!exists(eachBookItem.getTitle())) {
                     Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
@@ -162,10 +162,15 @@ public class BookModel {
     }
 
     public static void setItemsFromDatabase() {
-        ITEMS = getBooks();
+        ITEMS = findAllBooks();
     }
 
-    private static List<BookItem> getBooks() {
+
+    /**
+     * MÉTODOS DE LA BASE DE DATOS
+     **/
+
+    private static List<BookItem> findAllBooks() {
 
         RealmResults<BookItem> books = Realm.getDefaultInstance().where(BookItem.class)
                 .findAllAsync();
@@ -173,12 +178,18 @@ public class BookModel {
         return new ArrayList<>(books);
     }
 
-    private static boolean exists(BookItem bookItem) {
+    private static boolean exists(String bookTitle) {
 
         BookItem retrievedBookItem = Realm.getDefaultInstance().where(BookItem.class)
-                .like("title", bookItem.getTitle()).findFirst();
+                .like("title", bookTitle).findFirst();
 
         return retrievedBookItem != null;
+    }
+
+    public static BookItem findBookById(int bookId) {
+
+        return Realm.getDefaultInstance().where(BookItem.class).equalTo("id", bookId)
+                .findFirst();
     }
 
     // Constantes que definen la ordenación de la lista

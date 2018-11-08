@@ -131,7 +131,7 @@ public class BookListActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
-        checkConnectionAndRetrieveData();
+        firebaseAuth();
 
         mSwipeContainer = findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -141,44 +141,6 @@ public class BookListActivity extends AppCompatActivity {
                 checkConnectionAndRetrieveData();
             }
         });
-    }
-
-    public void checkConnectionAndRetrieveData() {
-
-        final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-        connectedRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean connected = false;
-
-                try {
-                    connected = snapshot.getValue(Boolean.class);
-                } catch (NullPointerException npe) {
-                    //TODO error log
-                    Log.e("FB", "Firebase error checking connection");
-                }
-
-                //connectedRef.removeEventListener(this);
-
-                if (connected) {
-                    firebaseAuth();
-                } else {
-                    //TODO show error and log
-                    BookModel.setItemsFromDatabase();
-                    recyclerListChanged();
-                    connectedRef.removeEventListener(this);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                BookModel.setItemsFromDatabase();
-                recyclerListChanged();
-                //TODO show error and log
-                System.err.println("Listener was cancelled");
-            }
-        });
-
     }
 
     public void firebaseAuth() {
@@ -198,9 +160,7 @@ public class BookListActivity extends AppCompatActivity {
                             logSb.append(getString(R.string.success_log));
                             Log.d("FIREBASE_CONN", logSb.toString());
 
-                            mUser = mAuth.getCurrentUser();
-
-                            getBooksFromBackEnd();
+                            checkConnectionAndRetrieveData();
 
                         } else {
                             // Ha habido un error autenticando al usuario
@@ -216,6 +176,46 @@ public class BookListActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    public void checkConnectionAndRetrieveData() {
+
+        final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = false;
+
+                try {
+                    connected = snapshot.getValue(Boolean.class);
+                } catch (NullPointerException npe) {
+                    //TODO error log
+                    Log.e("FB", "Firebase error checking connection");
+                }
+
+                if (connected) {
+                    mUser = mAuth.getCurrentUser();
+
+                    getBooksFromBackEnd();
+
+                    connectedRef.removeEventListener(this);
+                } else {
+                    //TODO show error and log
+                    BookModel.setItemsFromDatabase();
+                    recyclerListChanged();
+                    // connectedRef.removeEventListener(this);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                BookModel.setItemsFromDatabase();
+                recyclerListChanged();
+                //TODO show error and log
+                System.err.println("Listener was cancelled");
+            }
+        });
+
     }
 
     public void getBooksFromBackEnd() {

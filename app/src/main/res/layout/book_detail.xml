@@ -26,7 +26,6 @@
                 android:id="@+id/headerImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/default_bookcover"
                 android:contentDescription="@string/bookCover_description"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
