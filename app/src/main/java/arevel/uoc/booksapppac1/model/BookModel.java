@@ -19,15 +19,20 @@ public class BookModel {
     // Array que contendrá los datos
     private static List<BookItem> ITEMS = new ArrayList<>();
 
+    // Comparadores que se usarán para la ordenación de la lista
     private static Comparator<BookItem> authorComparator = null;
     private static Comparator<BookItem> titleComparator = null;
 
+    // Comparador en uso (útil para mantener ordenación de la lista al actualizarla)
     private static SORT_CRITERIA currentSortCriteria = SORT_CRITERIA.DEFAULT;
 
     static {
+
+        /*
+
         // Perteneciente a la PAC1
+
         // Código estático que creará y  añadirá una vez los datos de ejemplo al listado de BookItems
-/*
 
         BookItem book1 = new BookItem(0, "A Title ", "ZZ Author", new Date(),
                 "Description", null, R.drawable.other_bookcover2);
@@ -129,27 +134,43 @@ public class BookModel {
         return ITEMS;
     }
 
+    /**
+     * Este método guarda en la lista de items de la clase, los libros recibidos en formato
+     * DataSnapShot desde FireBase.
+     * Además, comprueba si cada libro está almacenado en la base de datos local, y lo almacena en
+     * caso de que no lo esté.
+     *
+     * @param dataSnapshot libros recibidos desde Firebase
+     */
     public static void setItemsFromFireBase(DataSnapshot dataSnapshot) {
 
         // Creamos las variables que van a ser usadas para crear cada BookItem, así como la lista
         // que almacenaremos, donde se irán añadiendo estos objetos.
         List<BookItem> newList;
 
+        // Obtenemos la lista de libros del objeto de tipo DataSnapshot
         DataSnapshot dataList = dataSnapshot.child("books");
 
-        GenericTypeIndicator<ArrayList<BookItem>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<BookItem>>() {
-        };
+        // Mediante un GenericTypeIndicator, realizamos el parse de los datos recibidos, obteniendo
+        // así un listado de objetos BookItem que podemos utilizar.
+        GenericTypeIndicator<ArrayList<BookItem>> genericTypeIndicator =
+                new GenericTypeIndicator<ArrayList<BookItem>>() {
+                };
         newList = dataList.getValue(genericTypeIndicator);
 
         if (newList != null) {
             for (int i = 0; i < newList.size(); i++) {
 
+                // Añadimos el id del libro, que corresponde con la posición de la lista.
                 final BookItem eachBookItem = newList.get(i);
                 eachBookItem.setId(i);
 
+                // Comprobamos la existencia del libro en la base de datos.
                 if (!exists(eachBookItem.getTitle())) {
                     Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
                         @Override
+
+                        // Creamos el libro en la base de datos Realm de la aplicación
                         public void execute(Realm realm) {
                             realm.copyToRealmOrUpdate(eachBookItem);
                         }
@@ -161,15 +182,24 @@ public class BookModel {
         }
     }
 
+    /**
+     * Este método recupera los libros de la base de datos, almacenando como listado de BookItems el
+     * resultado de esta operación.
+     */
     public static void setItemsFromDatabase() {
         ITEMS = findAllBooks();
     }
 
 
-    /**
+    /*
      * MÉTODOS DE LA BASE DE DATOS
-     **/
+     */
 
+    /**
+     * Búsqueda de todos los libros existentes en la base de datos
+     *
+     * @return listado de objetos BookItem con la información de los libros recuperados.
+     */
     private static List<BookItem> findAllBooks() {
 
         RealmResults<BookItem> books = Realm.getDefaultInstance().where(BookItem.class)
@@ -178,6 +208,11 @@ public class BookModel {
         return new ArrayList<>(books);
     }
 
+    /**
+     * Comprueba si un libro dado existe en la base de datos
+     * @param bookTitle libro cuya existencia se desea comprobar
+     * @return true si el libro existe en la base de datos, false en caso contrario.
+     */
     private static boolean exists(String bookTitle) {
 
         BookItem retrievedBookItem = Realm.getDefaultInstance().where(BookItem.class)
@@ -186,6 +221,11 @@ public class BookModel {
         return retrievedBookItem != null;
     }
 
+    /**
+     * Devuelve la información de un libro en un objeto BookItem
+     * @param bookId id del libro a buscar
+     * @return libro cuyo id es igual al pasado por parámetros
+     */
     public static BookItem findBookById(int bookId) {
 
         return Realm.getDefaultInstance().where(BookItem.class).equalTo("id", bookId)

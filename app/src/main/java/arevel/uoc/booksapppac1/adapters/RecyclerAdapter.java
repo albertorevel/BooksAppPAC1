@@ -97,6 +97,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
         });
     }
 
+    // Este método asocia una nueva lista al adapter y notifica del cambio a este para que la muestre
     public void setItems(List<BookItem> dataSet) {
         this.dataSet = dataSet;
         this.notifyDataSetChanged();

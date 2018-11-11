@@ -17,12 +17,12 @@ public class BookItem extends RealmObject {
     private String publication_date;
     private String description;
     private String url_image;
+ /*
+    // Código usado en PAC1, en desuso actualmente
 
-    // Usado en PAC1 para simular las portadas de los libros
+    // Usado para mostrar un recurso como portada del libro
     // private int drawableId;
 
-
-    /*
     // Constructor de la clase
     // En el paso 6 se ha añadido el atributo drawableId ya que se muestran diferentes portadas.
     // Esto permite emular la descarga de imágenes desde una url.

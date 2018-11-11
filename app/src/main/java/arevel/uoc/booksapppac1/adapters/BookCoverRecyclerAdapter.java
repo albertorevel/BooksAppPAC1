@@ -74,6 +74,7 @@ public class BookCoverRecyclerAdapter
             @Override
             public void onClick(View view) {
 
+                // Obtenemos el identificador del libro mostrado en el elemento sobre el que se ha hecho click.
                 int id = holder.bookItem.getId();
 
                 if (BookListActivity.dualScreen) {
@@ -90,6 +91,7 @@ public class BookCoverRecyclerAdapter
         });
     }
 
+    // Este método asocia una nueva lista al adapter y notifica del cambio a este para que la muestre
     public void setItems(List<BookItem> dataSet) {
         this.dataSet = dataSet;
         this.notifyDataSetChanged();
@@ -122,7 +124,6 @@ public class BookCoverRecyclerAdapter
             this.titleTextView = constraintLayout.findViewById(R.id.title_textview);
             this.authorTextView = constraintLayout.findViewById(R.id.author_textview);
             this.coverImageView = constraintLayout.findViewById(R.id.bookCover_imageview);
-
         }
     }
 }
