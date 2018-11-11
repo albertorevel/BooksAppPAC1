@@ -127,14 +127,15 @@ public class BookListActivity extends AppCompatActivity {
         // Creamos los adapter que contendrábn la lista (ahora vacía)
         createAdapters();
 
-        // Inicializamos las clases necesarias para la comunicación con Firebase
+        // Inicializamos las clases necesarias para la comunicación con Firebase y realizamos
+        // la autenticación
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
         firebaseAuth();
 
+        // Definimos el método que se usará al realizar el gesto de actualizar la lista
         mSwipeContainer = findViewById(R.id.swipeContainer);
-        // Setup refresh listener which triggers new data loading
         mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -143,9 +144,12 @@ public class BookListActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Este método permite realizar la autenticación del usuario contra Firebase. En caso de que esta
+     * autenticación sea correcta, intentará recuperar los datos del servidor Firebase.
+     */
     public void firebaseAuth() {
 
-        final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
         final StringBuilder logSb = new StringBuilder();
         logSb.append(getString(R.string.signInWithEmail_log));
 
@@ -156,17 +160,21 @@ public class BookListActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()) {
-                            // Se ha realizado el login de manera correcta
+                            // Se ha realizado el login de manera correcta y guardamos le usuario
+
+                            mUser = mAuth.getCurrentUser();
+
                             logSb.append(getString(R.string.success_log));
                             Log.d("FIREBASE_CONN", logSb.toString());
 
+                            // Se procede a comprobar la conexión y recuperar los datos
                             checkConnectionAndRetrieveData();
 
                         } else {
                             // Ha habido un error autenticando al usuario
                             logSb.append(getString(R.string.failure_log));
                             Log.w("FIREBASE_CONN", logSb.toString(), task.getException());
-//TODO retrieve data?
+
                             BookModel.setItemsFromDatabase();
                             recyclerListChanged();
                             Toast.makeText(BookListActivity.this,
@@ -178,58 +186,103 @@ public class BookListActivity extends AppCompatActivity {
         );
     }
 
+    /**
+     * Este método comprueba la conexión con Firebase, y en caso de que esta exista, recupera el
+     * listado de libros disponible
+     */
     public void checkConnectionAndRetrieveData() {
 
+        final StringBuilder logSb = new StringBuilder();
+        logSb.append(getString(R.string.checkConnection_log));
+
+        // Realizamos la comprobación
         final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 boolean connected = false;
 
+                // Eliminamos el listener. En futuras implementaciones podría fijarse un timeout para
+                // evitar que siempre nos devuelva un false esta llamada la primera vez que se realiza
+                // (o si se realiza tras un tiempo sin conexiones con Firebase).
+                connectedRef.removeEventListener(this);
+
+                // Obtenemos la respuesta del servidor
                 try {
                     connected = snapshot.getValue(Boolean.class);
                 } catch (NullPointerException npe) {
-                    //TODO error log
-                    Log.e("FB", "Firebase error checking connection");
+                    connected = false;
                 }
 
+                // Si la respuesta es positiva, significa que hay conexión con Firebase, por lo que
+                // llamamos al método que realizará la petición de libros.
                 if (connected) {
-                    mUser = mAuth.getCurrentUser();
 
-                    getBooksFromBackEnd();
+                    logSb.append(getString(R.string.success_log));
+                    Log.d("FIREBASE_CONN", logSb.toString());
 
-                    connectedRef.removeEventListener(this);
-                } else {
-                    //TODO show error and log
+                    // Obtenemos los libros de FireBase
+                    getBooksFromFirebase();
+
+                }
+
+                // Si la respuesta es negativa, recuperamos los libros de la base de datos
+                else {
+
+                    logSb.append(getString(R.string.failure_log));
+                    Log.d("FIREBASE_CONN", logSb.toString());
+
                     BookModel.setItemsFromDatabase();
                     recyclerListChanged();
                     // connectedRef.removeEventListener(this);
                 }
+
+                // Eliminamos el listener ya que la actualización de datos no tiene que ser
+                // en tiempo real
+                connectedRef.removeEventListener(this);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+                // Si hay un problema con la petición, recuperamos los libros de la base de datos
+                // por si era la primera vez que se trataba de recuperar la lista (es decir, no era
+                // una actualización tras un swipe).
                 BookModel.setItemsFromDatabase();
                 recyclerListChanged();
-                //TODO show error and log
-                System.err.println("Listener was cancelled");
+
+                // Eliminamos el listener ya que la actualización de datos no tiene que ser
+                // en tiempo real
+                connectedRef.removeEventListener(this);
+
+                logSb.append(getString(R.string.failure_log));
+                Log.d("FIREBASE_CONN", logSb.toString());
             }
         });
 
     }
 
-    public void getBooksFromBackEnd() {
+    /**
+     * Este método obtiene los libros de la base de datos creada en Firebase.
+     */
+    public void getBooksFromFirebase() {
 
+        // Creamos las variables necesarias para realizar la llamada y mostrar el log
         final DatabaseReference ref = database.getReference();
         final StringBuilder logSb = new StringBuilder(getString(R.string.dataValueEventListener_log));
 
-        // Attach a listener to read the data at our posts reference
+        // Creamos el listener que nos permitirá obtener la respuesta.
         ValueEventListener dataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                // Creamos la lista en el modelo de la aplicación al recibir una respuesta.
                 BookModel.setItemsFromFireBase(dataSnapshot);
                 recyclerListChanged();
+
+                // Eliminamos el listener ya que los datos deben actualizarse tras ciertas interacciones
+                // del usuario.
                 ref.removeEventListener(this);
 
                 logSb.append(getString(R.string.success_log));
@@ -240,20 +293,29 @@ public class BookListActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                // Si hay un problema con la petición, recuperamos los libros de la base de datos
+                // por si era la primera vez que se trataba de recuperar la lista (es decir, no era
+                // una actualización tras un swipe).
+
                 BookModel.setItemsFromDatabase();
                 recyclerListChanged();
+
+                // Eliminamos el listener ya que la actualización de datos no tiene que ser
+                // en tiempo real
                 ref.removeEventListener(this);
 
-                //TODO mostrar error sincro?
                 logSb.append(getString(R.string.fireBaseDatabaseError));
                 logSb.append(databaseError.getCode());
-                Log.e("DATA_", logSb.toString());
+                Log.e("FIREBASE_CONN", logSb.toString());
             }
         };
 
         ref.addValueEventListener(dataListener);
     }
 
+    /**
+     * Método que crea los adapter para los diferentes tipos de lista
+     */
     private void createAdapters() {
 
         // Obtenemos el RecyclerView que contiene la lista a mostrar
@@ -298,6 +360,9 @@ public class BookListActivity extends AppCompatActivity {
         }
     }
 
+    // Método que es ejecutado para cambiar la lista de libros de un adapter (que será diferente
+    // según el tamaño de la pantalla). Este método cambia la lista que usa el adapter y le notifica
+    // del cambio. Además, ordena la lista según el criterio aplicado antes de este cambio de listado.
     private void recyclerListChanged() {
 
         // Obtenemos el RecyclerView que contiene la lista a mostrar
@@ -332,12 +397,16 @@ public class BookListActivity extends AppCompatActivity {
             }
         }
 
+        // Si se ha llamado tras el gesto de refrescar el listado, se informa de esta actualización
+        // y se para la animación del SwipeContainer.
         if (mSwipeContainer != null && mSwipeContainer.isRefreshing()) {
             mSwipeContainer.setRefreshing(false);
 
             Snackbar.make(findViewById(R.id.swipeContainer), getString(R.string.dataRefreshComplete),
                     Snackbar.LENGTH_LONG).show();
 
+            // En caso de que se esté mostrando el detalle de un libro, se elimina. (El libro puede
+            // haber cambiado o haber sido eliminado).
             if (dualScreen) {
                 ActivitiesUtils.removeDetailsFragment(getSupportFragmentManager());
             }

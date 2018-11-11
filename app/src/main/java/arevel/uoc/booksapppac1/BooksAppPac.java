@@ -7,6 +7,9 @@ import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.realm.Realm;
 
+/**
+ * Clase que extiende de Application, creada para inicializar Stetho y Realm.
+ */
 public class BooksAppPac extends Application {
 
     @Override

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Animación de entrada de una actividad, desde el borde inferior de la pantalla-->
+
+    <!--Movimiento de desplazamiento-->
     <translate
         android:duration="@android:integer/config_mediumAnimTime"
         android:fromYDelta="-50%p"
         android:toYDelta="0" />
+
+    <!-- La actividad irá perdiendo transparencia conforme se realice el desplazamiento -->
     <alpha
         android:duration="@android:integer/config_mediumAnimTime"
         android:fromAlpha="0.5"

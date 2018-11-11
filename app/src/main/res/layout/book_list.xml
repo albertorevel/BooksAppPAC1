@@ -31,7 +31,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!-- Objeto recyclerview que contiene la lista de libros definida en el ejercicio 2 -->
+    <!--Widget que permite implementar la actualización de la lista al hacer un desplazamiento hacia -->
+    <!--arriba cuando ya no puede desplazarse más-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
@@ -39,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar">
 
-
+        <!-- Objeto recyclerview que contiene la lista de libros definida en el ejercicio 2 -->
         <arevel.uoc.booksapppac1.custom_views.FadingBottomRecyclerView
             android:id="@+id/book_recyclerview"
             android:layout_width="match_parent"

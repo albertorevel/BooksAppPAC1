@@ -9,6 +9,8 @@ import io.realm.annotations.PrimaryKey;
 public class BookItem extends RealmObject {
 
     // Atributos de un libro
+
+    // Clave primaria del libro
     @PrimaryKey
     private int id;
 

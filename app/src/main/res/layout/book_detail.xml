@@ -66,12 +66,5 @@
         app:layout_anchor="@+id/detail-framelayout"
         app:layout_anchorGravity="top|end"
         app:srcCompat="@android:drawable/stat_notify_chat" />
-    <!--FrameLayout que mostrará los detalles de los libros (detail)-->
-    <!--<FrameLayout-->
-    <!--android:id="@+id/"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height=""-->
-
-    <!--/>-->
 
 </android.support.design.widget.CoordinatorLayout>

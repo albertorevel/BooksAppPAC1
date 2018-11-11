@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Animación de salida de una actividad, hacia el borde inferior de la pantalla-->
+
+    <!--Movimiento de desplazamiento-->
     <translate
         android:duration="@android:integer/config_mediumAnimTime"
         android:fromYDelta="0"
         android:toYDelta="50%p" />
+
+    <!--Aplicamos un desvanecimiento que acompañe el desplazamiento-->
     <alpha
         android:duration="@android:integer/config_mediumAnimTime"
         android:fromAlpha="1.0"

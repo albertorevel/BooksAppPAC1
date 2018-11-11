@@ -112,6 +112,7 @@ public class BookModel {
      */
     public static List<BookItem> sortBy(SORT_CRITERIA sortCriteria) {
 
+        // Si llega un parámetro como null, reordena la lista con el último criterio de ordenación usado
         if (sortCriteria != null) {
             currentSortCriteria = sortCriteria;
         }
