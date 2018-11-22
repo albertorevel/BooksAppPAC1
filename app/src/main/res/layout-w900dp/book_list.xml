@@ -68,4 +68,20 @@
         </FrameLayout>
     </android.support.v4.widget.NestedScrollView>
 
+    <!--Spinner que se usará en la primera carga, en el resto se usará el propio de SwipeRefreshLayout-->
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.6"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

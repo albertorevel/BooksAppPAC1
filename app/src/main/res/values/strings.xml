@@ -26,4 +26,5 @@
     <string name="fireBaseDatabaseError" translatable="false">. Firebase onCancelled databaseError : </string>
     <string name="dataRefreshComplete">List has been updated</string>
     <string name="checkConnection_log" translatable="false">check firebase connexion</string>
+    <string name="noData">There\'s no data to show. Please try again later.</string>
 </resources>

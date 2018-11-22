@@ -1,6 +1,7 @@
 package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,6 +59,11 @@ public class BookListActivity extends AppCompatActivity {
     String userPassword = "pac2uoc18";
 
     SwipeRefreshLayout mSwipeContainer;
+
+    // Variable que permite repetir un intento de conexión, evitando falsos negativos
+    static boolean connectionTry = false;
+    // Layout que contiene el spinner que indica la carga, usado al crear la actividad
+    RelativeLayout m_loadingPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +140,11 @@ public class BookListActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        // Mostramos el spinner de carga (disponible en la primera carga)
+        m_loadingPanel = findViewById(R.id.loadingPanel);
+        if (m_loadingPanel != null) {
+            m_loadingPanel.setVisibility(View.VISIBLE);
+        }
         firebaseAuth();
 
         // Definimos el método que se usará al realizar el gesto de actualizar la lista
@@ -219,28 +232,48 @@ public class BookListActivity extends AppCompatActivity {
                 // llamamos al método que realizará la petición de libros.
                 if (connected) {
 
+                    connectionTry = false;
+
                     logSb.append(getString(R.string.success_log));
                     Log.d("FIREBASE_CONN", logSb.toString());
 
                     // Obtenemos los libros de FireBase
                     getBooksFromFirebase();
 
+                    // Eliminamos el listener ya que la actualización de datos no tiene que ser
+                    // en tiempo real
+                    connectedRef.removeEventListener(this);
                 }
 
-                // Si la respuesta es negativa, recuperamos los libros de la base de datos
+                // La respuesta es negativa, no hay conexión
                 else {
+                    // Si no es el primer intento, se obtiene la lista de la base de datos.
+                    if (connectionTry) {
+                        connectionTry = false;
+                        BookModel.setItemsFromDatabase();
+                        recyclerListChanged();
 
+                        // Eliminamos el listener ya que la actualización de datos no tiene que ser
+                        // en tiempo real
+                        connectedRef.removeEventListener(this);
+                    }
+                    // Si es el primer intento, se lanza una nueva petición tras tres segundos (para
+                    // evitar falsos negativos)
+                    else {
+                        connectionTry = true;
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                checkConnectionAndRetrieveData();
+                            }
+                        }, 3000);
+                    }
                     logSb.append(getString(R.string.failure_log));
                     Log.d("FIREBASE_CONN", logSb.toString());
-
-                    BookModel.setItemsFromDatabase();
-                    recyclerListChanged();
-                    // connectedRef.removeEventListener(this);
                 }
 
-                // Eliminamos el listener ya que la actualización de datos no tiene que ser
-                // en tiempo real
-                connectedRef.removeEventListener(this);
+
             }
 
             @Override
@@ -368,11 +401,23 @@ public class BookListActivity extends AppCompatActivity {
         // Obtenemos el RecyclerView que contiene la lista a mostrar
         RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
 
+        // Si existe el spinner de carga, se oculta y se elimina la referencia, evitando que el programa
+        // continue cambiando la visibilidad a "GONE" ya que no volverá a ser visible.
+        if (m_loadingPanel != null) {
+            m_loadingPanel.setVisibility(View.GONE);
+            m_loadingPanel = null;
+        }
+
         if (recyclerView != null) {
 
             // Llamamos a la ordenación con el parámetro null para que la ordene según el criterio
             // de ordenación que tenía almacenado
             List<BookItem> bookList = BookModel.sortBy(null);
+
+            if (bookList.size() <= 0) {
+                Snackbar.make(findViewById(R.id.swipeContainer), getString(R.string.noData),
+                        Snackbar.LENGTH_LONG).show();
+            }
 
             // Si es pantalla dividida
             if (dualScreen) {
