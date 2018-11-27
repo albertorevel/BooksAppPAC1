@@ -191,7 +191,6 @@ public class BookModel {
         ITEMS = findAllBooks();
     }
 
-
     /*
      * MÉTODOS DE LA BASE DE DATOS
      */
@@ -231,6 +230,23 @@ public class BookModel {
 
         return Realm.getDefaultInstance().where(BookItem.class).equalTo("id", bookId)
                 .findFirst();
+    }
+
+
+    /**
+     * Este método borra un libro de la base de datos local cuyo id sea bookId
+     */
+    public static void deleteBookAtDatabase(final Integer bookId) {
+
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+
+            // Creamos el libro en la base de datos Realm de la aplicación
+            public void execute(Realm realm) {
+                realm.getDefaultInstance().where(BookItem.class).equalTo("id", bookId)
+                        .findAll().deleteFirstFromRealm();
+            }
+        });
     }
 
     // Constantes que definen la ordenación de la lista

@@ -17,7 +17,7 @@ public class ActivitiesUtils {
 
         // Creamos el objeto que pasaremos al fragment para infornar del id que se ha seleccionado
         Bundle arguments = new Bundle();
-        arguments.putInt("BOOK_DETAIL_ID", id);
+        arguments.putInt(Constants.BOOK_ID, id);
 
         // Creamos el fragment y lo asociamos al framelayout de la vista
         BookDetailFragment fragment = new BookDetailFragment();

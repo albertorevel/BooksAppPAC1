@@ -1,9 +1,11 @@
 package arevel.uoc.booksapppac1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.List;
 
@@ -81,6 +85,15 @@ public class BookListActivity extends AppCompatActivity {
         if (findViewById(R.id.detail_framelayout) != null) {
             dualScreen = true;
         }
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+                new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        task.getResult();
+                    }
+                }
+        );
 
         /*
         * ********************
@@ -155,6 +168,40 @@ public class BookListActivity extends AppCompatActivity {
                 checkConnectionAndRetrieveData();
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+
+        // Comprobamos si se ha de realizar alguna acción (actividad abierta desde las acciones de
+        // una notificación, o si por el contrario hay que mostrar la actividad sin realizar ninguna
+        // acción extra
+
+        if (intent != null && intent.getAction() != null && intent.getExtras() != null) {
+
+            Integer position = intent.getExtras().getInt(Constants.BOOK_ID);
+
+            switch (intent.getAction()) {
+                case Constants.ACTION_DELETE:
+                    deleteBook(position);
+                    break;
+
+                case Constants.ACTION_DETAIL:
+
+                    if (BookListActivity.dualScreen) {
+                        FragmentManager supportFM = getSupportFragmentManager();
+                        ActivitiesUtils.startDetailsFragment(supportFM, position);
+                    } else {
+
+                        Intent i = new Intent(this, BookDetailActivity.class);
+                        i.putExtra(Constants.BOOK_ID, position);
+                        startActivity(i);
+                    }
+
+                    break;
+            }
+        }
     }
 
     /**
@@ -497,4 +544,14 @@ public class BookListActivity extends AppCompatActivity {
         return true;
     }
 
+    private void deleteBook(Integer bookposition) {
+        if (bookposition != null && bookposition >= 0) {
+
+            BookModel.deleteBookAtDatabase(bookposition);
+
+            BookModel.setItemsFromDatabase();
+            recyclerListChanged();
+
+        }
+    }
 }

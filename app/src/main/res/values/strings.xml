@@ -27,4 +27,8 @@
     <string name="dataRefreshComplete">List has been updated</string>
     <string name="checkConnection_log" translatable="false">check firebase connexion</string>
     <string name="noData">There\'s no data to show. Please try again later.</string>
+    <string name="delete">Delete</string>
+    <string name="detail">View details</string>
+    <string name="channel_name">Books Notifications</string>
+    <string name="channel_description">Books notification channel and its actions</string>
 </resources>

@@ -29,7 +29,7 @@ public class BookDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Obtenemos el id seleccionado para mostrar sus detalles
-        bookId = getArguments() != null ? getArguments().getInt("BOOK_DETAIL_ID") : 0;
+        bookId = getArguments() != null ? getArguments().getInt(Constants.BOOK_ID) : 0;
 
         // Asociamos el layout del fragment al ViewGroup
         View v = inflater.inflate(R.layout.book_detail_fragment, container, false);

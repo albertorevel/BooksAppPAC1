@@ -20,6 +20,7 @@ import java.util.List;
 import arevel.uoc.booksapppac1.ActivitiesUtils;
 import arevel.uoc.booksapppac1.BookDetailActivity;
 import arevel.uoc.booksapppac1.BookListActivity;
+import arevel.uoc.booksapppac1.Constants;
 import arevel.uoc.booksapppac1.R;
 import arevel.uoc.booksapppac1.model.BookItem;
 
@@ -84,7 +85,7 @@ public class BookCoverRecyclerAdapter
                 } else {
 
                     Intent i = new Intent(view.getContext(), BookDetailActivity.class);
-                    i.putExtra("SELECTED_ID", id);
+                    i.putExtra(Constants.BOOK_ID, id);
                     view.getContext().startActivity(i);
                 }
             }

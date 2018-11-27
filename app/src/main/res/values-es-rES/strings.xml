@@ -12,4 +12,8 @@
     <string name="authentication_error">Autenticación fallida.</string>
     <string name="dataRefreshComplete">El listado se ha actualizado</string>
     <string name="noData">No hay datos para mostrar. Inténtelo de nuevo más tarde.</string>
+    <string name="delete">Borrar</string>
+    <string name="detail">Ver detalles</string>
+    <string name="channel_name">Notificación de libros</string>
+    <string name="channel_description">Canal de notificació de llibres i llurs notificacions</string>
 </resources>

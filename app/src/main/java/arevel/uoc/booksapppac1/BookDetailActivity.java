@@ -34,7 +34,7 @@ public class BookDetailActivity extends AppCompatActivity {
         }
 
         // Obtenemos el id del elemento seleccionado
-        int id = getIntent().getIntExtra("SELECTED_ID", 0);
+        int id = getIntent().getIntExtra(Constants.BOOK_ID, 0);
 
 
         // Recuperamos el libro y asociamos la información a los elementos del fragment
