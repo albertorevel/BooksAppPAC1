@@ -523,7 +523,7 @@ public class BookListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         // Ordenamos la lista según la opción seleccionada
-        List<BookItem> sortedList = BookModel.getITEMS();
+        List<BookItem> sortedList;
 
         switch (item.getItemId()) {
 
@@ -532,15 +532,6 @@ public class BookListActivity extends AppCompatActivity {
                 break;
             case R.id.sortByTitle_option:
                 sortedList = BookModel.sortBy(BookModel.SORT_CRITERIA.TITLE);
-                break;
-            case R.id.delete0:
-                deleteBook(0);
-                break;
-            case R.id.delete1:
-                deleteBook(1);
-                break;
-            case R.id.delete4:
-                deleteBook(4);
                 break;
             default:
                 sortedList = BookModel.getITEMS();

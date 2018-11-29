@@ -77,6 +77,7 @@ public class BookCoverRecyclerAdapter
         //  holder.coverImageView.setImageResource(R.drawable.default_bookcover);
 
 
+        // TODO no bind pq no elemento
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento
         holder.baseView.setOnClickListener(new View.OnClickListener() {
 
