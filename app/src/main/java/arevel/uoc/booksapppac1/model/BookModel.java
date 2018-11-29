@@ -1,5 +1,7 @@
 package arevel.uoc.booksapppac1.model;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 
@@ -22,6 +24,7 @@ public class BookModel {
     // Comparadores que se usarán para la ordenación de la lista
     private static Comparator<BookItem> authorComparator = null;
     private static Comparator<BookItem> titleComparator = null;
+    private static Comparator<BookItem> idComparator = null;
 
     // Comparador en uso (útil para mantener ordenación de la lista al actualizarla)
     private static SORT_CRITERIA currentSortCriteria = SORT_CRITERIA.DEFAULT;
@@ -100,6 +103,23 @@ public class BookModel {
                 return result;
             }
         };
+
+        // Comparador por id
+        idComparator = new Comparator<BookItem>() {
+            @Override
+            public int compare(BookItem bookItem1, BookItem bookItem2) {
+
+                int result = 0;
+
+                // Comparamos, evitando NullPointerExceptions
+                if (bookItem1 != null && bookItem2 != null) {
+                    result = ((Integer) bookItem1.getId()).compareTo((Integer) bookItem2.getId());
+                }
+
+                // Devolvemos el resultado
+                return result;
+            }
+        };
     }
 
     /**
@@ -124,7 +144,8 @@ public class BookModel {
             case TITLE:
                 Collections.sort(getITEMS(), titleComparator);
                 break;
-
+            default:
+                Collections.sort(getITEMS(), idComparator);
         }
 
         return getITEMS();
@@ -203,7 +224,7 @@ public class BookModel {
     private static List<BookItem> findAllBooks() {
 
         RealmResults<BookItem> books = Realm.getDefaultInstance().where(BookItem.class)
-                .findAllAsync();
+                .findAll();
 
         return new ArrayList<>(books);
     }
@@ -243,8 +264,10 @@ public class BookModel {
 
             // Creamos el libro en la base de datos Realm de la aplicación
             public void execute(Realm realm) {
-                realm.getDefaultInstance().where(BookItem.class).equalTo("id", bookId)
-                        .findAll().deleteFirstFromRealm();
+                RealmResults<BookItem> results = Realm.getDefaultInstance().where(BookItem.class).equalTo("id", bookId)
+                        .findAll();
+                boolean deleted = results.deleteAllFromRealm();
+                Log.d("DD", String.valueOf(deleted));
             }
         });
     }

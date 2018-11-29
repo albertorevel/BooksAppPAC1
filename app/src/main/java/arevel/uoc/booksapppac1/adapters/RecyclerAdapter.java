@@ -19,6 +19,8 @@ import arevel.uoc.booksapppac1.BookListActivity;
 import arevel.uoc.booksapppac1.Constants;
 import arevel.uoc.booksapppac1.R;
 import arevel.uoc.booksapppac1.model.BookItem;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  *  Este adapter nos permitirá proveer a la lista de tipo RecyclerView
@@ -120,22 +122,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
         return position % 2 == 0 ? EVEN : ODD;
     }
 
-    // Clase que define un ViewHolder que permitirá referenciar las vistas de cada elemento de la lista
+    // Clase que dee un ViewHolder que permitirá referenciar las vistas de cada elemento de la lista
     static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         // Vistas que contendrá el elemento
         ConstraintLayout baseConstraintLayout;
-        TextView titleTextView;
-        TextView authorTextView;
         BookItem bookItem;
+
+        // Hacemos el bind de las vistas que necesitamos definir
+        @BindView(R.id.title_textview)
+        TextView titleTextView;
+
+        @BindView(R.id.author_textview)
+        TextView authorTextView;
 
         // Constructor de la clase donde asociamos las vistas que nos interesen a una serie de
         // atributos para poder manejarlas posteriormente
         RecyclerViewHolder(ConstraintLayout baseConstraintLayout) {
             super(baseConstraintLayout);
             this.baseConstraintLayout = baseConstraintLayout;
-            this.titleTextView = baseConstraintLayout.findViewById(R.id.title_textview);
-            this.authorTextView = baseConstraintLayout.findViewById(R.id.author_textview);
+
+            ButterKnife.bind(this, baseConstraintLayout);
         }
     }
 }

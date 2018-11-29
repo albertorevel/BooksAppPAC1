@@ -8,12 +8,20 @@ import android.view.MenuItem;
 
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Esta clase contiene la actividad de detalle de un libro, usada en la aplicación cuando se trata
  * de un móvil.
  */
 public class BookDetailActivity extends AppCompatActivity {
+
+    // Definimos los bindings de las vistas para ButterKnife
+
+    // Toolbar que sobreescribirá el de Android
+    @BindView(R.id.app_bar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +31,10 @@ public class BookDetailActivity extends AppCompatActivity {
         // Definimos el layout que usaremos para mostrar la información gestionada
         setContentView(R.layout.book_detail);
 
+        // Creamos los bindings definidos para Butterknife
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        // Definimos la toolbar de la aplicación
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();

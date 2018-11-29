@@ -2,7 +2,9 @@ package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.Guideline;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Esta clase gestiona el fragment de detalle de un libro, usado tanto en la actividad de detalle,
@@ -25,6 +29,30 @@ public class BookDetailFragment extends Fragment {
     // Id que usaremos para saber el detalle del libro seleccionado
     private int bookId = -1;
 
+    // Hacemos el bind de las vistas que necesitamos definir
+    @BindView(R.id.author_detail)
+    TextView authorTextView;
+
+    @BindView(R.id.publication_detail)
+    TextView publicationTextView;
+
+    @BindView(R.id.description_detail)
+    TextView descriptionTextView;
+
+    @BindView(R.id.bookCover_image)
+    ImageView coverImageView;
+
+    @BindView(R.id.middle_guideline)
+    Guideline guideline;
+
+    @Nullable
+    @BindView(R.id.app_bar)
+    AppBarLayout appBarLayout;
+
+    @Nullable
+    @BindView(R.id.headerImage)
+    ImageView headerImageView;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -33,6 +61,7 @@ public class BookDetailFragment extends Fragment {
 
         // Asociamos el layout del fragment al ViewGroup
         View v = inflater.inflate(R.layout.book_detail_fragment, container, false);
+        ButterKnife.bind(this, v);
 
         // Generamos el texto a mostrar con el id recuperado
         String detailText = getResources().getString(R.string.list_detail_example) + " " + bookId;
@@ -48,19 +77,6 @@ public class BookDetailFragment extends Fragment {
 
         if (bookItem != null) {
 
-            // Una vez obtenido el libro, accedemos a las vistas que componen la pantalla.
-            TextView authorTextView = v.findViewById(R.id.author_detail);
-            TextView publicationTextView = v.findViewById(R.id.publication_detail);
-            TextView descriptionTextView = v.findViewById(R.id.description_detail);
-            ImageView coverImageView = v.findViewById(R.id.bookCover_image);
-            Guideline guideline = v.findViewById(R.id.middle_guideline);
-
-            final ImageView headerImageView;
-            if (getActivity() != null && getActivity().findViewById(R.id.app_bar) != null) {
-                headerImageView = getActivity().findViewById(R.id.app_bar).findViewById(R.id.headerImage);
-            } else {
-                headerImageView = null;
-            }
             // Modificamos el contenido de dichas vistas para que muestren la información deseada
             if (authorTextView != null) {
                 authorTextView.setText(bookItem.getAuthor());

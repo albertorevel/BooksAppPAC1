@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -40,6 +42,8 @@ import arevel.uoc.booksapppac1.adapters.RecyclerAdapter;
 import arevel.uoc.booksapppac1.custom_views.SpaceDecoration;
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Esta clase define la actividad principal de la aplicación, que gestiona la lista de libros.
@@ -62,12 +66,32 @@ public class BookListActivity extends AppCompatActivity {
     String userLogin = "arevel@uoc.edu";
     String userPassword = "pac2uoc18";
 
-    SwipeRefreshLayout mSwipeContainer;
-
     // Variable que permite repetir un intento de conexión, evitando falsos negativos
     static boolean connectionTry = false;
+
+
+    // Definimos los bindings de las vistas para ButterKnife
+
+    // Toolbar que sobreescribirá el de Android
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    // Container que permite hacer el gesto de swipe para refrescar la lista
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout mSwipeContainer;
+
     // Layout que contiene el spinner que indica la carga, usado al crear la actividad
+    @BindView(R.id.loadingPanel)
     RelativeLayout m_loadingPanel;
+
+    // Obtenemos el RecyclerView que contiene la lista a mostrar
+    @BindView(R.id.book_recyclerview)
+    RecyclerView recyclerView;
+
+    @Nullable
+    @BindView(R.id.detail_framelayout)
+    FrameLayout frameLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +100,16 @@ public class BookListActivity extends AppCompatActivity {
         // Definimos el layout que usaremos para mostrar la información gestionada
         setContentView(R.layout.book_list);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        // Creamos los bindings definidos para Butterknife
+        ButterKnife.bind(this);
+
+        // Definimos la toolbar de la aplicación
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
         // Buscamos el framelayout de detalles. Si existe, estamos en tablet y guardamos esta
         // información para poder usarla en la aplicación
-        if (findViewById(R.id.detail_framelayout) != null) {
+        if (frameLayout != null) {
             dualScreen = true;
         }
 
@@ -154,14 +181,12 @@ public class BookListActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         // Mostramos el spinner de carga (disponible en la primera carga)
-        m_loadingPanel = findViewById(R.id.loadingPanel);
         if (m_loadingPanel != null) {
             m_loadingPanel.setVisibility(View.VISIBLE);
         }
         firebaseAuth();
 
         // Definimos el método que se usará al realizar el gesto de actualizar la lista
-        mSwipeContainer = findViewById(R.id.swipeContainer);
         mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -398,9 +423,6 @@ public class BookListActivity extends AppCompatActivity {
      */
     private void createAdapters() {
 
-        // Obtenemos el RecyclerView que contiene la lista a mostrar
-        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
-
         // Si es pantalla dividida (aparece simultáneamente el listado y el detalle), usamos
         // un tipo de listado.
         if (dualScreen) {
@@ -445,9 +467,6 @@ public class BookListActivity extends AppCompatActivity {
     // del cambio. Además, ordena la lista según el criterio aplicado antes de este cambio de listado.
     private void recyclerListChanged() {
 
-        // Obtenemos el RecyclerView que contiene la lista a mostrar
-        RecyclerView recyclerView = findViewById(R.id.book_recyclerview);
-
         // Si existe el spinner de carga, se oculta y se elimina la referencia, evitando que el programa
         // continue cambiando la visibilidad a "GONE" ya que no volverá a ser visible.
         if (m_loadingPanel != null) {
@@ -462,7 +481,7 @@ public class BookListActivity extends AppCompatActivity {
             List<BookItem> bookList = BookModel.sortBy(null);
 
             if (bookList.size() <= 0) {
-                Snackbar.make(findViewById(R.id.swipeContainer), getString(R.string.noData),
+                Snackbar.make(mSwipeContainer, getString(R.string.noData),
                         Snackbar.LENGTH_LONG).show();
             }
 
@@ -494,7 +513,7 @@ public class BookListActivity extends AppCompatActivity {
         if (mSwipeContainer != null && mSwipeContainer.isRefreshing()) {
             mSwipeContainer.setRefreshing(false);
 
-            Snackbar.make(findViewById(R.id.swipeContainer), getString(R.string.dataRefreshComplete),
+            Snackbar.make(mSwipeContainer, getString(R.string.dataRefreshComplete),
                     Snackbar.LENGTH_LONG).show();
 
             // En caso de que se esté mostrando el detalle de un libro, se elimina. (El libro puede
@@ -503,23 +522,32 @@ public class BookListActivity extends AppCompatActivity {
                 ActivitiesUtils.removeDetailsFragment(getSupportFragmentManager());
             }
         }
-
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         // Ordenamos la lista según la opción seleccionada
-        List<BookItem> sortedList;
-
+        List<BookItem> sortedList = BookModel.getITEMS();
+        ;
+//TODO         List<BookItem> sortedList;
         switch (item.getItemId()) {
+
 
             case R.id.sortByAuthor_option:
                 sortedList = BookModel.sortBy(BookModel.SORT_CRITERIA.AUTHOR);
                 break;
             case R.id.sortByTitle_option:
                 sortedList = BookModel.sortBy(BookModel.SORT_CRITERIA.TITLE);
+                break;
+            case R.id.delete0:
+                deleteBook(0);
+                break;
+            case R.id.delete1:
+                deleteBook(1);
+                break;
+            case R.id.delete4:
+                deleteBook(4);
                 break;
             default:
                 sortedList = BookModel.getITEMS();

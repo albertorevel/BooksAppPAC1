@@ -2,7 +2,6 @@ package arevel.uoc.booksapppac1.adapters;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -23,6 +22,8 @@ import arevel.uoc.booksapppac1.BookListActivity;
 import arevel.uoc.booksapppac1.Constants;
 import arevel.uoc.booksapppac1.R;
 import arevel.uoc.booksapppac1.model.BookItem;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Este adapter nos permitirá proveer a la lista del ejercicio 6 en móvil,
@@ -33,6 +34,9 @@ public class BookCoverRecyclerAdapter
 
     // Conjunto de datos que manejará el adapter
     private List<BookItem> dataSet;
+
+    // Hacemos el bind de las vistas que necesitamos definir
+
 
     // Constructor del adapter, al que le pasamos el conjunto de datos
     public BookCoverRecyclerAdapter(List<BookItem> dataSet) {
@@ -49,6 +53,9 @@ public class BookCoverRecyclerAdapter
         // Viewholder para esa vista que hemos asociado.
         CardView view = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bookcover_listitem, parent, false);
+
+        ButterKnife.bind(this, view);
+
 
         return new BookCoverRecyclerAdapter.RecyclerViewHolder(view);
     }
@@ -109,8 +116,14 @@ public class BookCoverRecyclerAdapter
 
         // Vistas que contendrá el elemento
         CardView baseView;
+
+        @BindView(R.id.title_textview)
         TextView titleTextView;
+
+        @BindView(R.id.author_textview)
         TextView authorTextView;
+
+        @BindView(R.id.bookCover_imageview)
         ImageView coverImageView;
 
         // Libro que contedrá el elemento
@@ -121,10 +134,8 @@ public class BookCoverRecyclerAdapter
         RecyclerViewHolder(CardView cardview) {
             super(cardview);
             this.baseView = cardview;
-            ConstraintLayout constraintLayout = cardview.findViewById(R.id.cardViewConstraintLayout);
-            this.titleTextView = constraintLayout.findViewById(R.id.title_textview);
-            this.authorTextView = constraintLayout.findViewById(R.id.author_textview);
-            this.coverImageView = constraintLayout.findViewById(R.id.bookCover_imageview);
+
+            ButterKnife.bind(this, cardview);
         }
     }
 }

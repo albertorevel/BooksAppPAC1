@@ -9,4 +9,16 @@
     <item
         android:id="@+id/sortByTitle_option"
         android:title="@string/sortByTitle" />
+
+    <item
+        android:id="@+id/delete0"
+        android:title="DELETE 0" />
+
+    <item
+        android:id="@+id/delete1"
+        android:title="DELETE 1" />
+
+    <item
+        android:id="@+id/delete4"
+        android:title="DELETE 4" />
 </menu>

@@ -40,7 +40,7 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param bookPosition Datos recibidos de FireBase
      */
-    private void sendNotification(String bookPosition) {
+    public void sendNotification(String bookPosition) {
 
         // Definimos los intent que gestionarán las interacciones del usuario con la notificación
         // Intent que lleva a la Activity principal al pulsar sobre la notificación
