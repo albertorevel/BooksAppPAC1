@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -28,31 +29,39 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // Mostrar una notificación al recibir un mensaje de Firebase
+
+
+        // Se ha elegido el id del libro en vez de la posición para tratar la notificación porque es
+        // el dato que se utilizaba ya para gestionar el modelo de la aplicación. No obstante se ha
+        // mantenido que la clave del dato enviado desde el servidor fuera "book_position".
+
+        // Si se reciben datos con el mensaje de firebase, buscamos el id y llamamos al método
+        // que creará la notificación.
         Map<String, String> map = remoteMessage.getData();
         if (map != null && map.size() > 0) {
-            sendNotification(remoteMessage.getData().get(Constants.FIREBASE_BOOK_POSITION));
+
+            int bookId = 0;
+            try {
+                // Buscamos el valor "book_position", aunque tratemos ids.
+                bookId = Integer.parseInt(remoteMessage.getData().get(Constants.FIREBASE_BOOK_POSITION));
+                sendNotification(bookId);
+            } catch (NumberFormatException nfe) {
+                StringBuilder sb = new StringBuilder(getString(R.string.fireBaseMessageError));
+                sb.append(remoteMessage.getData().get(Constants.FIREBASE_BOOK_POSITION));
+                Log.e("FIREBASE_MESSAGING", sb.toString());
+            }
+
         }
     }
 
     /**
      * Crea y muestra una notificación al recibir un mensaje de Firebase
      *
-     * @param bookPosition Datos recibidos de FireBase
+     * @param bookId Id del libro recibidos de FireBase
      */
-    public void sendNotification(String bookPosition) {
+    public void sendNotification(int bookId) {
 
         // Definimos los intent que gestionarán las interacciones del usuario con la notificación
-        // Intent que lleva a la Activity principal al pulsar sobre la notificación
-//        Intent intent = new Intent(this, BookListActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntentMain = PendingIntent.getActivity(this, 0, intent,
-//                PendingIntent.FLAG_ONE_SHOT);
-
-        int bookId = 0;
-        if (bookPosition != null) {
-            bookId = Integer.parseInt(bookPosition);
-        }
 
         // Intent para el borrado de un libro
         Intent intent = new Intent(this, BookListActivity.class);
@@ -68,10 +77,9 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntentDetail = PendingIntent.getActivity(this,
                 (int) System.currentTimeMillis(), intent2, 0);
 
-        // Dependiendo de la posición, variarán una serie de elementos de la notificación.
+        // Dependiendo del id, variarán una serie de elementos de la notificación.
         // En las notificaciones de libros con posición par, se mostrará un led azul y un sonido;
         // en las que se refieran a una posición impar, un led rojo y un sonido diferente.
-
         int color = 0;
         int sound = 0;
 
@@ -104,14 +112,17 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
             notificationBuilder.setPriority(Notification.PRIORITY_MAX);
         }
 
-        // Mostramos la notificación
+        // Construimos la notificación y buscamos el Notification Manager
         Notification notification = notificationBuilder.build();
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (notificationManager != null) {
-            notificationManager.notify(0, notification);
+
+            // Lanzamos la notificación creada, con un Id igual al recibido. Este id permitirá
+            // gestionar la notificación más adelante y mostrar más de una.
+            notificationManager.notify(bookId, notification);
         }
     }
 }

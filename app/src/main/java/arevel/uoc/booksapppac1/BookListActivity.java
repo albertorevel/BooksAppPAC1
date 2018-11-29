@@ -1,5 +1,7 @@
 package arevel.uoc.booksapppac1;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,8 +34,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.List;
 
@@ -113,15 +113,6 @@ public class BookListActivity extends AppCompatActivity {
             dualScreen = true;
         }
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
-                new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        task.getResult();
-                    }
-                }
-        );
-
         /*
         * ********************
         * *** Ejercicio 1 ****
@@ -198,33 +189,39 @@ public class BookListActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
 
-
         // Comprobamos si se ha de realizar alguna acción (actividad abierta desde las acciones de
         // una notificación, o si por el contrario hay que mostrar la actividad sin realizar ninguna
         // acción extra
 
         if (intent != null && intent.getAction() != null && intent.getExtras() != null) {
 
-            Integer position = intent.getExtras().getInt(Constants.BOOK_ID);
+            Integer bookId = intent.getExtras().getInt(Constants.BOOK_ID);
 
             switch (intent.getAction()) {
+
                 case Constants.ACTION_DELETE:
-                    deleteBook(position);
+                    deleteBook(bookId);
                     break;
 
                 case Constants.ACTION_DETAIL:
 
                     if (BookListActivity.dualScreen) {
                         FragmentManager supportFM = getSupportFragmentManager();
-                        ActivitiesUtils.startDetailsFragment(supportFM, position);
+                        ActivitiesUtils.startDetailsFragment(supportFM, bookId);
                     } else {
-
                         Intent i = new Intent(this, BookDetailActivity.class);
-                        i.putExtra(Constants.BOOK_ID, position);
+                        i.putExtra(Constants.BOOK_ID, bookId);
                         startActivity(i);
                     }
-
                     break;
+            }
+
+            // Borramos la notificación ahora que está gestionada
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (notificationManager != null) {
+                notificationManager.cancel(bookId);
             }
         }
     }
@@ -492,8 +489,7 @@ public class BookListActivity extends AppCompatActivity {
                 RecyclerAdapter adapter = (RecyclerAdapter) recyclerView.getAdapter();
 
                 if (adapter != null) {
-                    adapter.setItems(bookList);
-                    adapter.notifyDataSetChanged();
+                    adapter.updateItems(bookList);
                 }
 
             } else {
@@ -502,8 +498,7 @@ public class BookListActivity extends AppCompatActivity {
                         (BookCoverRecyclerAdapter) recyclerView.getAdapter();
 
                 if (adapter != null) {
-                    adapter.setItems(bookList);
-                    adapter.notifyDataSetChanged();
+                    adapter.updateItems(bookList);
                 }
             }
         }
@@ -515,12 +510,12 @@ public class BookListActivity extends AppCompatActivity {
 
             Snackbar.make(mSwipeContainer, getString(R.string.dataRefreshComplete),
                     Snackbar.LENGTH_LONG).show();
+        }
 
-            // En caso de que se esté mostrando el detalle de un libro, se elimina. (El libro puede
-            // haber cambiado o haber sido eliminado).
-            if (dualScreen) {
-                ActivitiesUtils.removeDetailsFragment(getSupportFragmentManager());
-            }
+        // En caso de que se esté mostrando el detalle de un libro, se elimina. (El libro puede
+        // haber cambiado o haber sido eliminado).
+        if (dualScreen) {
+            ActivitiesUtils.removeDetailsFragment(getSupportFragmentManager());
         }
     }
 
@@ -529,10 +524,8 @@ public class BookListActivity extends AppCompatActivity {
 
         // Ordenamos la lista según la opción seleccionada
         List<BookItem> sortedList = BookModel.getITEMS();
-        ;
-//TODO         List<BookItem> sortedList;
-        switch (item.getItemId()) {
 
+        switch (item.getItemId()) {
 
             case R.id.sortByAuthor_option:
                 sortedList = BookModel.sortBy(BookModel.SORT_CRITERIA.AUTHOR);

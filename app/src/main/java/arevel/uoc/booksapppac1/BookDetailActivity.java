@@ -1,10 +1,13 @@
 package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
@@ -21,7 +24,16 @@ public class BookDetailActivity extends AppCompatActivity {
 
     // Toolbar que sobreescribirá el de Android
     @BindView(R.id.app_bar)
+    AppBarLayout appBarLayout;
+
+    @BindView(R.id.detail_toolbar)
     Toolbar toolbar;
+
+    // Definimos aquí la headerImageView que usará el fragment para que pueda encontrarla al llamar
+    // a método Butterknife.bind();
+    @Nullable
+    @BindView(R.id.headerImage)
+    ImageView headerImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

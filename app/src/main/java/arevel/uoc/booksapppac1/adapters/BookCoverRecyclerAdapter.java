@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -100,9 +101,13 @@ public class BookCoverRecyclerAdapter
     }
 
     // Este método asocia una nueva lista al adapter y notifica del cambio a este para que la muestre
-    public void setItems(List<BookItem> dataSet) {
-        this.dataSet = dataSet;
-        this.notifyDataSetChanged();
+    public void updateItems(List<BookItem> dataSet) {
+        final BookItemDiffCallback diffCallback = new BookItemDiffCallback(this.dataSet, dataSet);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.dataSet.clear();
+        this.dataSet.addAll(dataSet);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     // Devolvemos el tamaño del conjunto de datos

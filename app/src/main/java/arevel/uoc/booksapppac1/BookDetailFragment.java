@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Guideline;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,18 +38,13 @@ public class BookDetailFragment extends Fragment {
     @BindView(R.id.description_detail)
     TextView descriptionTextView;
 
+    @Nullable
     @BindView(R.id.bookCover_image)
     ImageView coverImageView;
 
     @BindView(R.id.middle_guideline)
     Guideline guideline;
 
-    @Nullable
-    @BindView(R.id.app_bar)
-    AppBarLayout appBarLayout;
-
-    @Nullable
-    @BindView(R.id.headerImage)
     ImageView headerImageView;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -61,6 +55,7 @@ public class BookDetailFragment extends Fragment {
 
         // Asociamos el layout del fragment al ViewGroup
         View v = inflater.inflate(R.layout.book_detail_fragment, container, false);
+
         ButterKnife.bind(this, v);
 
         // Generamos el texto a mostrar con el id recuperado
@@ -92,11 +87,15 @@ public class BookDetailFragment extends Fragment {
                 descriptionTextView.setText(bookItem.getDescription());
             }
 
+            if (getActivity().getClass() == BookDetailActivity.class) {
 
-            if (headerImageView != null) {
-                Picasso.with(headerImageView.getContext())
-                        .load(bookItem.getUrl_image()).into(headerImageView);
-                guideline.setGuidelinePercent(0);
+                headerImageView = ((BookDetailActivity) getActivity()).headerImageView;
+
+                if (headerImageView != null) {
+                    Picasso.with(headerImageView.getContext())
+                            .load(bookItem.getUrl_image()).into(headerImageView);
+                    guideline.setGuidelinePercent(0);
+                }
             } else if (coverImageView != null) {
 
                 // Cargamos la imagen desde la URL proporcionada

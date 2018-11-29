@@ -31,4 +31,5 @@
     <string name="detail">View details</string>
     <string name="channel_name">Books Notifications</string>
     <string name="channel_description">Books notification channel and its actions</string>
+    <string name="fireBaseMessageError" translatable="false">Error in book_id data received from Firebase. Id received:</string>
 </resources>
