@@ -30,7 +30,7 @@ public class ActivitiesUtils {
     /**
      * Este método permite eliminar el fragment de detalle que se muestra actualmente.
      */
-    public static void removeDetailsFragment(FragmentManager fragmentManager) {
+    static void removeDetailsFragment(FragmentManager fragmentManager) {
 
         // recuperamos el fragment que se está mostrando y lo eliminamos
         Fragment activeFragment = fragmentManager.findFragmentByTag(DETAIL_FRAGMENT_TAG);

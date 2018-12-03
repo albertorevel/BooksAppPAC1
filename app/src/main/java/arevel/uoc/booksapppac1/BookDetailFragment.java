@@ -1,10 +1,13 @@
 package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Guideline;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,12 +61,12 @@ public class BookDetailFragment extends Fragment {
 
         ButterKnife.bind(this, v);
 
+        // Este código comentado pertenece a una PAC anterior
+
         // Generamos el texto a mostrar con el id recuperado
-        String detailText = getResources().getString(R.string.list_detail_example) + " " + bookId;
+        // String detailText = getResources().getString(R.string.list_detail_example) + " " + bookId;
 
-        // Este código comentado pertenece al ejercicio 1
-
-        //Obtenemos el textview de detalles de ejemplo y lo asociamos al TextView que lo debe mostrar
+        // Obtenemos el textview de detalles de ejemplo y lo asociamos al TextView que lo debe mostrar
         // TextView primaryTextView = v.findViewById(R.id.primaryExampleTV);
         // primaryTextView.setText(detailText);
 
@@ -105,8 +108,29 @@ public class BookDetailFragment extends Fragment {
                 // coverImageView.setImageResource(R.drawable.default_bookcover);
 
             }
+        } else {
+            // Si el libro no ha podido ser encontrado, mostramos un mensaje y eliminamos el fragment
+            int messageDuration = 3000;
+            final FragmentManager fragmentManager = getFragmentManager();
+            final BookDetailFragment self = this;
 
+            // Creamos el mensaje advirtiendo el usuario
+            Snackbar.make(v, getString(R.string.noBookFound),
+                    messageDuration).show();
 
+            // Definimos un handler que ejecute el método finish de la actividad cuando haya pasado
+            // el tiempo establecido. En este caso, será el mismo tiempo que se muestra el mensaje
+            // Snackbar
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (fragmentManager != null) {
+                        ActivitiesUtils.removeDetailsFragment(fragmentManager);
+                    }
+                }
+            }, messageDuration);
+            Snackbar.make(v, getString(R.string.noData), Snackbar.LENGTH_LONG).show();
         }
 
         return v;

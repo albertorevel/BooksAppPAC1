@@ -163,7 +163,7 @@ public class BookListActivity extends AppCompatActivity {
         // esta información, se obtendrá la última recibida que se encuentra en la base de datos.
         // defineBookList();
 
-        // Creamos los adapter que contendrábn la lista (ahora vacía)
+        // Creamos los adapter que contendrán la lista (ahora vacía)
         createAdapters();
 
         // Inicializamos las clases necesarias para la comunicación con Firebase y realizamos
@@ -184,6 +184,13 @@ public class BookListActivity extends AppCompatActivity {
                 checkConnectionAndRetrieveData();
             }
         });
+
+        // Comprobamos si se ha de realizar alguna acción (actividad abierta desde las acciones de
+        // una notificación), o si por el contrario se ha iniciado de manera normal
+        Intent mIntent = getIntent();
+        if (mIntent != null && mIntent.getAction() != null && mIntent.getExtras() != null) {
+            onNewIntent(mIntent);
+        }
     }
 
     @Override
@@ -556,10 +563,17 @@ public class BookListActivity extends AppCompatActivity {
         return true;
     }
 
-    private void deleteBook(Integer bookposition) {
-        if (bookposition != null && bookposition >= 0) {
+    /**
+     * Este método realiza una llamada al modelo de datos para que borre un libro y tras esto,
+     * indica al modelo que se deben usar los datos de la base de datos local (para poder ver el
+     * cambio reflejado, ya que en la base de datos remota no se borrará el libro).
+     *
+     * @param bookId id del libro a borrar
+     */
+    private void deleteBook(Integer bookId) {
+        if (bookId != null && bookId >= 0) {
 
-            BookModel.deleteBookAtDatabase(bookposition);
+            BookModel.deleteBookAtDatabase(bookId);
 
             BookModel.setItemsFromDatabase();
             recyclerListChanged();

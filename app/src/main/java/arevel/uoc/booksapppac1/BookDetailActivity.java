@@ -1,8 +1,11 @@
 package arevel.uoc.booksapppac1;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +31,9 @@ public class BookDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.detail_toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.detail_framelayout)
+    NestedScrollView nestedScrollView;
 
     // Definimos aquí la headerImageView que usará el fragment para que pueda encontrarla al llamar
     // a método Butterknife.bind();
@@ -56,20 +62,42 @@ public class BookDetailActivity extends AppCompatActivity {
         }
 
         // Obtenemos el id del elemento seleccionado
-        int id = getIntent().getIntExtra(Constants.BOOK_ID, 0);
+        int id = getIntent().getIntExtra(Constants.BOOK_ID, -1);
 
 
         // Recuperamos el libro y asociamos la información a los elementos del fragment
         //BookItem bookItem = BookModel.getITEMS().get(id);
         BookItem bookItem = BookModel.findBookById(id);
-        String str = bookItem.getTitle();
 
-        // Cambiamos el título de la barra de la aplicación
-        getSupportActionBar().setTitle(str);
+        if (bookItem != null) {
+            String str = bookItem.getTitle();
 
-        // Lanzamos el fragment mostrará el detalle en el frame layout, pasando el id del elemento
-        ActivitiesUtils.startDetailsFragment(getSupportFragmentManager(), id);
+            // Cambiamos el título de la barra de la aplicación
+            getSupportActionBar().setTitle(str);
 
+            // Lanzamos el fragment mostrará el detalle en el frame layout, pasando el id del elemento
+            ActivitiesUtils.startDetailsFragment(getSupportFragmentManager(), id);
+        } else {
+            // Si el libro no ha podido ser encontrado, mostramos un mensaje y cerramos la actividad
+            // volviendo al home.
+            int messageDuration = 3000;
+            final BookDetailActivity self = this;
+
+            // Creamos el mensaje advirtiendo el usuario
+            Snackbar.make(nestedScrollView, getString(R.string.noBookFound),
+                    messageDuration).show();
+
+            // Definimos un handler que ejecute el método finish de la actividad cuando haya pasado
+            // el tiempo establecido. En este caso, será el mismo tiempo que se muestra el mensaje
+            // Snackbar
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    self.finish();
+                }
+            }, messageDuration);
+        }
     }
 
     @Override

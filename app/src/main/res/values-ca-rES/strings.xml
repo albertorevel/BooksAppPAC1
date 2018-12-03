@@ -16,4 +16,5 @@
     <string name="detail">Veure detalls</string>
     <string name="channel_name">Notificacions de llibres</string>
     <string name="channel_description">Canal de notificación de libros y sus acciones</string>
+    <string name="noBookFound">El llibre no existeix</string>
 </resources>

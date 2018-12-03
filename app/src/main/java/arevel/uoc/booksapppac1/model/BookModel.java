@@ -1,7 +1,5 @@
 package arevel.uoc.booksapppac1.model;
 
-import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 
@@ -266,8 +264,7 @@ public class BookModel {
             public void execute(Realm realm) {
                 RealmResults<BookItem> results = Realm.getDefaultInstance().where(BookItem.class).equalTo("id", bookId)
                         .findAll();
-                boolean deleted = results.deleteAllFromRealm();
-                Log.d("DD", String.valueOf(deleted));
+                results.deleteAllFromRealm();
             }
         });
     }
