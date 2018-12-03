@@ -32,7 +32,7 @@ public class ActivitiesUtils {
      */
     static void removeDetailsFragment(FragmentManager fragmentManager) {
 
-        // recuperamos el fragment que se está mostrando y lo eliminamos
+        // Recuperamos el fragment que se está mostrando y lo eliminamos
         Fragment activeFragment = fragmentManager.findFragmentByTag(DETAIL_FRAGMENT_TAG);
 
         if (activeFragment != null) {

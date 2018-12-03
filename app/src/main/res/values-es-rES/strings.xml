@@ -17,4 +17,5 @@
     <string name="channel_name">Notificación de libros</string>
     <string name="channel_description">Canal de notificació de llibres i llurs notificacions</string>
     <string name="noBookFound">El libro no existe</string>
+    <string name="noDeleted">El libro no ha podido ser borrado</string>
 </resources>

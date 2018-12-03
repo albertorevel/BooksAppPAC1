@@ -33,4 +33,5 @@
     <string name="channel_description">Books notification channel and its actions</string>
     <string name="fireBaseMessageError" translatable="false">Error in book_id data received from Firebase. Id received:</string>
     <string name="noBookFound">This book doesn\'t exist.</string>
+    <string name="noDeleted">Error in book deletion</string>
 </resources>

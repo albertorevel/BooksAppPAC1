@@ -40,15 +40,14 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> map = remoteMessage.getData();
         if (map != null && map.size() > 0) {
 
-            int bookId = 0;
             try {
                 // Buscamos el valor "book_position", aunque tratemos ids.
-                bookId = Integer.parseInt(remoteMessage.getData().get(Constants.FIREBASE_BOOK_POSITION));
+                int bookId = Integer.parseInt(remoteMessage.getData().get(Constants.FIREBASE_BOOK_POSITION));
                 sendNotification(bookId);
             } catch (NumberFormatException nfe) {
                 StringBuilder sb = new StringBuilder(getString(R.string.fireBaseMessageError));
                 sb.append(remoteMessage.getData().get(Constants.FIREBASE_BOOK_POSITION));
-                Log.e("FIREBASE_MESSAGING", sb.toString());
+                Log.e(Constants.LOG_FB_CM, sb.toString());
             }
 
         }
@@ -80,8 +79,8 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
         // Dependiendo del id, variarán una serie de elementos de la notificación.
         // En las notificaciones de libros con posición par, se mostrará un led azul y un sonido;
         // en las que se refieran a una posición impar, un led rojo y un sonido diferente.
-        int color = 0;
-        int sound = 0;
+        int color;
+        int sound;
 
         String baseSoundUri = "android.resource://" + getPackageName() + "/";
 
@@ -93,6 +92,7 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
             color = getResources().getColor(R.color.led2);
             sound = R.raw.appointed;
         }
+
         Uri notificationSound = Uri.parse(baseSoundUri + sound);
 
         // Creamos la notificación

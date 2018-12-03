@@ -254,7 +254,7 @@ public class BookListActivity extends AppCompatActivity {
                             mUser = mAuth.getCurrentUser();
 
                             logSb.append(getString(R.string.success_log));
-                            Log.d("FIREBASE_CONN", logSb.toString());
+                            Log.d(Constants.LOG_FB_CON, logSb.toString());
 
                             // Se procede a comprobar la conexión y recuperar los datos
                             checkConnectionAndRetrieveData();
@@ -262,7 +262,7 @@ public class BookListActivity extends AppCompatActivity {
                         } else {
                             // Ha habido un error autenticando al usuario
                             logSb.append(getString(R.string.failure_log));
-                            Log.w("FIREBASE_CONN", logSb.toString(), task.getException());
+                            Log.w(Constants.LOG_FB_CON, logSb.toString(), task.getException());
 
                             BookModel.setItemsFromDatabase();
                             recyclerListChanged();
@@ -290,7 +290,7 @@ public class BookListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                boolean connected = false;
+                boolean connected;
 
                 // Eliminamos el listener. En futuras implementaciones podría fijarse un timeout para
                 // evitar que siempre nos devuelva un false esta llamada la primera vez que se realiza
@@ -311,7 +311,7 @@ public class BookListActivity extends AppCompatActivity {
                     connectionTry = false;
 
                     logSb.append(getString(R.string.success_log));
-                    Log.d("FIREBASE_CONN", logSb.toString());
+                    Log.d(Constants.LOG_FB_CON, logSb.toString());
 
                     // Obtenemos los libros de FireBase
                     getBooksFromFirebase();
@@ -346,7 +346,7 @@ public class BookListActivity extends AppCompatActivity {
                         }, 3000);
                     }
                     logSb.append(getString(R.string.failure_log));
-                    Log.d("FIREBASE_CONN", logSb.toString());
+                    Log.d(Constants.LOG_FB_CON, logSb.toString());
                 }
 
 
@@ -366,7 +366,7 @@ public class BookListActivity extends AppCompatActivity {
                 connectedRef.removeEventListener(this);
 
                 logSb.append(getString(R.string.failure_log));
-                Log.d("FIREBASE_CONN", logSb.toString());
+                Log.d(Constants.LOG_FB_CON, logSb.toString());
             }
         });
 
@@ -395,7 +395,7 @@ public class BookListActivity extends AppCompatActivity {
                 ref.removeEventListener(this);
 
                 logSb.append(getString(R.string.success_log));
-                Log.d("FIREBASE_CONN", logSb.toString());
+                Log.d(Constants.LOG_FB_CON, logSb.toString());
 
             }
 
@@ -415,7 +415,7 @@ public class BookListActivity extends AppCompatActivity {
 
                 logSb.append(getString(R.string.fireBaseDatabaseError));
                 logSb.append(databaseError.getCode());
-                Log.e("FIREBASE_CONN", logSb.toString());
+                Log.e(Constants.LOG_FB_CON, logSb.toString());
             }
         };
 
@@ -571,13 +571,21 @@ public class BookListActivity extends AppCompatActivity {
      * @param bookId id del libro a borrar
      */
     private void deleteBook(Integer bookId) {
+
         if (bookId != null && bookId >= 0) {
 
-            BookModel.deleteBookAtDatabase(bookId);
+            // Realizamos la llamada que permitirá borrar el libro de la base de datoss.
+            boolean deleted = BookModel.deleteBookAtDatabase(bookId);
 
-            BookModel.setItemsFromDatabase();
-            recyclerListChanged();
-
+            // Si el borrado ha podido realizarse de manera correcta, hacemos que los cambios queden
+            // reflejados en la lista. En caso contrario, informamos al usuario del error.
+            if (deleted) {
+                BookModel.setItemsFromDatabase();
+                recyclerListChanged();
+            } else {
+                Snackbar.make(mSwipeContainer, getString(R.string.noDeleted),
+                        Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 }

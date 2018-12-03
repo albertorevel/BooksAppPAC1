@@ -111,7 +111,7 @@ public class BookModel {
 
                 // Comparamos, evitando NullPointerExceptions
                 if (bookItem1 != null && bookItem2 != null) {
-                    result = ((Integer) bookItem1.getId()).compareTo((Integer) bookItem2.getId());
+                    result = ((Integer) bookItem1.getId()).compareTo(bookItem2.getId());
                 }
 
                 // Devolvemos el resultado
@@ -253,20 +253,28 @@ public class BookModel {
 
 
     /**
-     * Este método borra un libro de la base de datos local cuyo id sea bookId
+     * Este método borra un libro de la base de datos local cuyo id sea bookId, en caso de que exista.
+     *
+     * @return true si se ha podido realizar el borrado correctamente
      */
-    public static void deleteBookAtDatabase(final Integer bookId) {
+    public static boolean deleteBookAtDatabase(final Integer bookId) {
+
+        // Variable que nos permitirá devolver el resultado de la acción de borrado.
+        final boolean[] deleteResult = new boolean[1];
 
         Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
             @Override
 
             // Creamos el libro en la base de datos Realm de la aplicación
             public void execute(Realm realm) {
-                RealmResults<BookItem> results = Realm.getDefaultInstance().where(BookItem.class).equalTo("id", bookId)
+                RealmResults<BookItem> results = Realm.getDefaultInstance().where(BookItem.class)
+                        .equalTo("id", bookId)
                         .findAll();
-                results.deleteAllFromRealm();
+                deleteResult[0] = results.deleteAllFromRealm();
             }
         });
+
+        return deleteResult[0];
     }
 
     // Constantes que definen la ordenación de la lista
