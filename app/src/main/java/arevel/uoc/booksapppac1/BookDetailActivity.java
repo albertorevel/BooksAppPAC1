@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -40,6 +41,10 @@ public class BookDetailActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.headerImage)
     ImageView headerImageView;
+
+    // Definimos los recursos que usa la actividad
+    @BindString(R.string.noBookFound)
+    String error_noBookFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +89,7 @@ public class BookDetailActivity extends AppCompatActivity {
             final BookDetailActivity self = this;
 
             // Creamos el mensaje advirtiendo el usuario
-            Snackbar.make(nestedScrollView, getString(R.string.noBookFound),
+            Snackbar.make(nestedScrollView, error_noBookFound,
                     messageDuration).show();
 
             // Definimos un handler que ejecute el método finish de la actividad cuando haya pasado

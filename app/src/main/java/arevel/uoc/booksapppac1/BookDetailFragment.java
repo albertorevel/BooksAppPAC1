@@ -18,8 +18,10 @@ import com.squareup.picasso.Picasso;
 
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Esta clase gestiona el fragment de detalle de un libro, usado tanto en la actividad de detalle,
@@ -48,7 +50,18 @@ public class BookDetailFragment extends Fragment {
     @BindView(R.id.middle_guideline)
     Guideline guideline;
 
+
+    // Definimos los recursos que usa el fragment
+    @BindString(R.string.noBookFound)
+    String error_noBookFound;
+    @BindString(R.string.noData)
+    String error_noData;
+
+
     ImageView headerImageView;
+
+    private Unbinder unbinder;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,7 +72,7 @@ public class BookDetailFragment extends Fragment {
         // Asociamos el layout del fragment al ViewGroup
         View v = inflater.inflate(R.layout.book_detail_fragment, container, false);
 
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
 
         // Este código comentado pertenece a una PAC anterior
 
@@ -115,7 +128,7 @@ public class BookDetailFragment extends Fragment {
             final BookDetailFragment self = this;
 
             // Creamos el mensaje advirtiendo el usuario
-            Snackbar.make(v, getString(R.string.noBookFound),
+            Snackbar.make(v, error_noBookFound,
                     messageDuration).show();
 
             // Definimos un handler que ejecute el método finish de la actividad cuando haya pasado
@@ -130,9 +143,17 @@ public class BookDetailFragment extends Fragment {
                     }
                 }
             }, messageDuration);
-            Snackbar.make(v, getString(R.string.noData), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(v, error_noData, Snackbar.LENGTH_LONG).show();
         }
 
         return v;
+    }
+
+    // Se debe hacer un unbind de las vistas por el ciclo diferente de vida que tienen los fragments
+    // respecto de las actividades,
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

@@ -18,4 +18,6 @@
     <string name="channel_description">Canal de notificació de llibres i llurs notificacions</string>
     <string name="noBookFound">El libro no existe</string>
     <string name="noDeleted">El libro no ha podido ser borrado</string>
+    <string name="notificationTitle">Libro recibido</string>
+    <string name="notificationBody">"Deslice para ver más del libro con id "</string>
 </resources>

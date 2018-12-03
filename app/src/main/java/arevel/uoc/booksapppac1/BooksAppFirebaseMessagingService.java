@@ -20,8 +20,6 @@ import java.util.Map;
  */
 public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "FirebaseNotification";
-
     /**
      * Método llamado cuando se recibe un mensaje remoto
      *
@@ -79,8 +77,10 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
         // Dependiendo del id, variarán una serie de elementos de la notificación.
         // En las notificaciones de libros con posición par, se mostrará un led azul y un sonido;
         // en las que se refieran a una posición impar, un led rojo y un sonido diferente.
+        // A partir de Oreo, deben usarse dos canales de notificación distintos para que funcione.
         int color;
         int sound;
+        String channelID;
 
         String baseSoundUri = "android.resource://" + getPackageName() + "/";
 
@@ -88,18 +88,20 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
         if (bookId % 2 == 0) {
             color = getResources().getColor(R.color.led1);
             sound = R.raw.definite;
+            channelID = Constants.CHANNEL_ID_0;
         } else {
             color = getResources().getColor(R.color.led2);
             sound = R.raw.appointed;
+            channelID = Constants.CHANNEL_ID_1;
         }
 
         Uri notificationSound = Uri.parse(baseSoundUri + sound);
 
         // Creamos la notificación
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, Constants.CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelID)
                 .setSmallIcon(R.drawable.ic_book)
-                .setContentTitle("Ejemplo Firebase" + System.currentTimeMillis())
-                .setContentText("Ejemplo ejemploizante ejemplizador")
+                .setContentTitle(getString(R.string.notificationTitle))
+                .setContentText(getString(R.string.notificationBody) + " " + bookId)
                 .setLights(color, 1000, 500)
                 .setSound(notificationSound)
                 .setVibrate(new long[]{1000, 1000})

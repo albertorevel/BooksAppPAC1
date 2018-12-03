@@ -30,8 +30,10 @@
     <string name="delete">Delete</string>
     <string name="detail">View details</string>
     <string name="channel_name">Books Notifications</string>
-    <string name="channel_description">Books notification channel and its actions</string>
+    <string name="channel_description">Books notification channel and its actions. Channel number </string>
     <string name="fireBaseMessageError" translatable="false">Error in book_id data received from Firebase. Id received:</string>
     <string name="noBookFound">This book doesn\'t exist.</string>
     <string name="noDeleted">Error in book deletion</string>
+    <string name="notificationTitle">Book received</string>
+    <string name="notificationBody">Slide in order to see more of book with id </string>
 </resources>

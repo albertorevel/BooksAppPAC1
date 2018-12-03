@@ -42,6 +42,8 @@ import arevel.uoc.booksapppac1.adapters.RecyclerAdapter;
 import arevel.uoc.booksapppac1.custom_views.SpaceDecoration;
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
+import butterknife.BindDimen;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -69,6 +71,22 @@ public class BookListActivity extends AppCompatActivity {
     // Variable que permite repetir un intento de conexión, evitando falsos negativos
     static boolean connectionTry = false;
 
+    /*
+     *  EJERCICIO 6. PATRONES DE DISEÑO.
+
+     En la aplicación podemos encontrar distintos patrones de diseño que ya se usaban antes de ser
+     pedidos, además del MVC se está usando manera el patrón Singleton (para la instancia de Realm
+     o de Firebase).
+
+     Se ha decidido aplicar el patrón de inyección de dependencias ya que permite tener un código más
+     limpio y mantenible conforme la aplicación va creciendo. Se ha optado por el uso de la librería
+     Butterknife (pensada para la inyección de vistas principalmente, aunque tiene otros usos como
+     la inyección de recursos o la asociación con eventos de clic en algún elemento).
+     Se ha usado la librería Butterknife para inyectar estas dependencias en las Activities y Fragments.
+
+     La librería Dagger, pese a ser interesante, consideraba que era algo innecesario para esta
+     aplicación, al menos para el planteamiento que se le había dado y el alcance que tenía.
+     */
 
     // Definimos los bindings de las vistas para ButterKnife
 
@@ -88,9 +106,39 @@ public class BookListActivity extends AppCompatActivity {
     @BindView(R.id.book_recyclerview)
     RecyclerView recyclerView;
 
+    // Obtenemos el FrameLayout, que será null cuando no se trate de un tablet
     @Nullable
     @BindView(R.id.detail_framelayout)
     FrameLayout frameLayout;
+
+    // Hacemos los bind de los diferentes recursos
+    // Logs
+    @BindString(R.string.success_log)
+    String log_success;
+    @BindString(R.string.failure_log)
+    String log_failure;
+    @BindString(R.string.signInWithEmail_log)
+    String log_signwithmail;
+    @BindString(R.string.checkConnection_log)
+    String log_checkConnectiom;
+    @BindString(R.string.dataValueEventListener_log)
+    String log_dataValueEvent;
+
+    // Errores
+    @BindString(R.string.authentication_error)
+    String error_authentication;
+    @BindString(R.string.noDeleted)
+    String error_nodeleted;
+    @BindString(R.string.noData)
+    String error_noData;
+    @BindString(R.string.fireBaseDatabaseError)
+    String error_firedatabase;
+
+    // Otros
+    @BindString(R.string.dataRefreshComplete)
+    String msg_dataRefreshComplete;
+    @BindDimen(R.dimen.gridOffSet)
+    int grid_offset;
 
 
     @Override
@@ -240,7 +288,7 @@ public class BookListActivity extends AppCompatActivity {
     public void firebaseAuth() {
 
         final StringBuilder logSb = new StringBuilder();
-        logSb.append(getString(R.string.signInWithEmail_log));
+        logSb.append(log_signwithmail);
 
         // Hacemos el login en el proyecto de Firebase
         mAuth.signInWithEmailAndPassword(userLogin, userPassword).addOnCompleteListener(
@@ -253,7 +301,7 @@ public class BookListActivity extends AppCompatActivity {
 
                             mUser = mAuth.getCurrentUser();
 
-                            logSb.append(getString(R.string.success_log));
+                            logSb.append(log_success);
                             Log.d(Constants.LOG_FB_CON, logSb.toString());
 
                             // Se procede a comprobar la conexión y recuperar los datos
@@ -261,13 +309,13 @@ public class BookListActivity extends AppCompatActivity {
 
                         } else {
                             // Ha habido un error autenticando al usuario
-                            logSb.append(getString(R.string.failure_log));
+                            logSb.append(log_failure);
                             Log.w(Constants.LOG_FB_CON, logSb.toString(), task.getException());
 
                             BookModel.setItemsFromDatabase();
                             recyclerListChanged();
-                            Toast.makeText(BookListActivity.this,
-                                    getString(R.string.authentication_error), Toast.LENGTH_SHORT)
+                            Toast.makeText(BookListActivity.this, error_authentication,
+                                    Toast.LENGTH_SHORT)
                                     .show();
                         }
                     }
@@ -282,7 +330,7 @@ public class BookListActivity extends AppCompatActivity {
     public void checkConnectionAndRetrieveData() {
 
         final StringBuilder logSb = new StringBuilder();
-        logSb.append(getString(R.string.checkConnection_log));
+        logSb.append(log_checkConnectiom);
 
         // Realizamos la comprobación
         final DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
@@ -310,7 +358,7 @@ public class BookListActivity extends AppCompatActivity {
 
                     connectionTry = false;
 
-                    logSb.append(getString(R.string.success_log));
+                    logSb.append(log_success);
                     Log.d(Constants.LOG_FB_CON, logSb.toString());
 
                     // Obtenemos los libros de FireBase
@@ -345,7 +393,7 @@ public class BookListActivity extends AppCompatActivity {
                             }
                         }, 3000);
                     }
-                    logSb.append(getString(R.string.failure_log));
+                    logSb.append(log_failure);
                     Log.d(Constants.LOG_FB_CON, logSb.toString());
                 }
 
@@ -365,7 +413,7 @@ public class BookListActivity extends AppCompatActivity {
                 // en tiempo real
                 connectedRef.removeEventListener(this);
 
-                logSb.append(getString(R.string.failure_log));
+                logSb.append(log_failure);
                 Log.d(Constants.LOG_FB_CON, logSb.toString());
             }
         });
@@ -379,7 +427,7 @@ public class BookListActivity extends AppCompatActivity {
 
         // Creamos las variables necesarias para realizar la llamada y mostrar el log
         final DatabaseReference ref = database.getReference();
-        final StringBuilder logSb = new StringBuilder(getString(R.string.dataValueEventListener_log));
+        final StringBuilder logSb = new StringBuilder(log_dataValueEvent);
 
         // Creamos el listener que nos permitirá obtener la respuesta.
         ValueEventListener dataListener = new ValueEventListener() {
@@ -394,7 +442,7 @@ public class BookListActivity extends AppCompatActivity {
                 // del usuario.
                 ref.removeEventListener(this);
 
-                logSb.append(getString(R.string.success_log));
+                logSb.append(log_success);
                 Log.d(Constants.LOG_FB_CON, logSb.toString());
 
             }
@@ -413,7 +461,7 @@ public class BookListActivity extends AppCompatActivity {
                 // en tiempo real
                 ref.removeEventListener(this);
 
-                logSb.append(getString(R.string.fireBaseDatabaseError));
+                logSb.append(error_firedatabase);
                 logSb.append(databaseError.getCode());
                 Log.e(Constants.LOG_FB_CON, logSb.toString());
             }
@@ -458,8 +506,7 @@ public class BookListActivity extends AppCompatActivity {
 
             // El decorator que nos permite definir la separación de elementos solamente debe crearse
             // una única vez
-            SpaceDecoration spaceDecoration = new SpaceDecoration(this.getResources()
-                    .getDimensionPixelSize(R.dimen.gridOffSet), spanCount);
+            SpaceDecoration spaceDecoration = new SpaceDecoration(grid_offset, spanCount);
 
             recyclerView.addItemDecoration(spaceDecoration);
 
@@ -485,7 +532,7 @@ public class BookListActivity extends AppCompatActivity {
             List<BookItem> bookList = BookModel.sortBy(null);
 
             if (bookList.size() <= 0) {
-                Snackbar.make(mSwipeContainer, getString(R.string.noData),
+                Snackbar.make(mSwipeContainer, error_noData,
                         Snackbar.LENGTH_LONG).show();
             }
 
@@ -515,7 +562,7 @@ public class BookListActivity extends AppCompatActivity {
         if (mSwipeContainer != null && mSwipeContainer.isRefreshing()) {
             mSwipeContainer.setRefreshing(false);
 
-            Snackbar.make(mSwipeContainer, getString(R.string.dataRefreshComplete),
+            Snackbar.make(mSwipeContainer, msg_dataRefreshComplete,
                     Snackbar.LENGTH_LONG).show();
         }
 
@@ -583,7 +630,7 @@ public class BookListActivity extends AppCompatActivity {
                 BookModel.setItemsFromDatabase();
                 recyclerListChanged();
             } else {
-                Snackbar.make(mSwipeContainer, getString(R.string.noDeleted),
+                Snackbar.make(mSwipeContainer, error_nodeleted,
                         Snackbar.LENGTH_LONG).show();
             }
         }

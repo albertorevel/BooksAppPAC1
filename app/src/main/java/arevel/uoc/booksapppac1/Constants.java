@@ -9,7 +9,8 @@ public class Constants {
 
     static final String FIREBASE_BOOK_POSITION = "book_position";
 
-    static final String CHANNEL_ID = "BooksPacApp_Channel_0";
+    static final String CHANNEL_ID_0 = "BooksPacApp_Channel_0";
+    static final String CHANNEL_ID_1 = "BooksPacApp_Channel_1";
 
     static final String LOG_FB_CON = "FIREBASE_CONN";
     static final String LOG_FB_CM = "FIREBASE_MESSAGING";
