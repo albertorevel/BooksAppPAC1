@@ -72,7 +72,7 @@ public class BookListActivity extends AppCompatActivity {
     static boolean connectionTry = false;
 
     /*
-     *  EJERCICIO 6. PATRONES DE DISEÑO.
+     *  PAC3. EJERCICIO 6. PATRONES DE DISEÑO.
 
      En la aplicación podemos encontrar distintos patrones de diseño que ya se usaban antes de ser
      pedidos, además del MVC se está usando manera el patrón Singleton (para la instancia de Realm
@@ -80,15 +80,16 @@ public class BookListActivity extends AppCompatActivity {
 
      Se ha decidido aplicar el patrón de inyección de dependencias ya que permite tener un código más
      limpio y mantenible conforme la aplicación va creciendo. Se ha optado por el uso de la librería
-     Butterknife (pensada para la inyección de vistas principalmente, aunque tiene otros usos como
+     Butter Knife (pensada para la inyección de vistas principalmente, aunque tiene otros usos como
      la inyección de recursos o la asociación con eventos de clic en algún elemento).
-     Se ha usado la librería Butterknife para inyectar estas dependencias en las Activities y Fragments.
+     Se ha usado la librería Butter Knife para inyectar estas dependencias en las Activities,
+     Fragments y RecyclerViewHolders.
 
      La librería Dagger, pese a ser interesante, consideraba que era algo innecesario para esta
      aplicación, al menos para el planteamiento que se le había dado y el alcance que tenía.
      */
 
-    // Definimos los bindings de las vistas para ButterKnife
+    // Definimos los bindings de las vistas para Butter Knife
 
     // Toolbar que sobreescribirá el de Android
     @BindView(R.id.toolbar)
@@ -148,7 +149,7 @@ public class BookListActivity extends AppCompatActivity {
         // Definimos el layout que usaremos para mostrar la información gestionada
         setContentView(R.layout.book_list);
 
-        // Creamos los bindings definidos para Butterknife
+        // Creamos los bindings definidos para Butter Knife
         ButterKnife.bind(this);
 
         // Definimos la toolbar de la aplicación
@@ -250,14 +251,16 @@ public class BookListActivity extends AppCompatActivity {
 
         if (intent != null && intent.getAction() != null && intent.getExtras() != null) {
 
+            // Recuperamos el identificador envíado con la notificación y la acción a realizar.
             Integer bookId = intent.getExtras().getInt(Constants.BOOK_ID);
 
             switch (intent.getAction()) {
 
+                // En caso de que la acción sea la de borrado, prodecemos al borrado del libro indicado.
                 case Constants.ACTION_DELETE:
                     deleteBook(bookId);
                     break;
-
+                // En caso de que se trate d ela acción de detalle, mostramos el detalle del libro
                 case Constants.ACTION_DETAIL:
 
                     if (BookListActivity.dualScreen) {
@@ -271,7 +274,7 @@ public class BookListActivity extends AppCompatActivity {
                     break;
             }
 
-            // Borramos la notificación ahora que está gestionada
+            // Borramos, si es posible, la notificación ahora que está gestionada
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

@@ -67,6 +67,10 @@ public class BookModel {
 
     }
 
+    /**
+     * Este método crea los comparadores que se usarán para la ordenación de la lista. Se pueden
+     * añadir tantos como sea necesario.
+     */
     private static void createComparators() {
         // Comparador por autor
         authorComparator = new Comparator<BookItem>() {
@@ -149,7 +153,11 @@ public class BookModel {
         return getITEMS();
     }
 
-    // Devuelve la lista de BookItems que gestiona este modelo
+    /**
+     * Devuelve la lista de BookItems que gestiona este modelo
+     *
+     * @return Lista de libros actual.
+     */
     public static List<BookItem> getITEMS() {
         return ITEMS;
     }
@@ -259,7 +267,9 @@ public class BookModel {
      */
     public static boolean deleteBookAtDatabase(final Integer bookId) {
 
-        // Variable que nos permitirá devolver el resultado de la acción de borrado.
+        // Variable que nos permitirá devolver el resultado de la acción de borrado. Debe ser un
+        // ya que debe ser usado dentro de una clase interna, pero si fuera una variable boolean,
+        // no podría ser cambiada al haberse marcado como final.
         final boolean[] deleteResult = new boolean[1];
 
         Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {

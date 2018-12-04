@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import static arevel.uoc.booksapppac1.Constants.DETAIL_FRAGMENT_TAG;
+
 /**
  * Esta clase contiene métodos comunes a varias actividades del proyecto.
  */
 public class ActivitiesUtils {
 
-    private static final String DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT_TAG";
     /**
      * Este método permite iniciar el fragments de detalle, informando del id del elemento seleccionado
      */

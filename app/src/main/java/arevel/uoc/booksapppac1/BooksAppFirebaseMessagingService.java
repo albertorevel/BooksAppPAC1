@@ -84,7 +84,7 @@ public class BooksAppFirebaseMessagingService extends FirebaseMessagingService {
 
         String baseSoundUri = "android.resource://" + getPackageName() + "/";
 
-
+        // Elegimos la luz del led y el sonido de esta, así cómo los canales que usaremos para la notificación.
         if (bookId % 2 == 0) {
             color = getResources().getColor(R.color.led1);
             sound = R.raw.definite;

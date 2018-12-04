@@ -36,9 +36,6 @@ public class BookCoverRecyclerAdapter
     // Conjunto de datos que manejará el adapter
     private List<BookItem> dataSet;
 
-    // Hacemos el bind de las vistas que necesitamos definir
-
-
     // Constructor del adapter, al que le pasamos el conjunto de datos
     public BookCoverRecyclerAdapter(List<BookItem> dataSet) {
         this.dataSet = dataSet;
@@ -56,7 +53,6 @@ public class BookCoverRecyclerAdapter
                 .inflate(R.layout.bookcover_listitem, parent, false);
 
         ButterKnife.bind(this, view);
-
 
         return new BookCoverRecyclerAdapter.RecyclerViewHolder(view);
     }
@@ -77,7 +73,6 @@ public class BookCoverRecyclerAdapter
         //  holder.coverImageView.setImageResource(R.drawable.default_bookcover);
 
 
-        // TODO no bind pq no elemento
         // Definimos el las acciones a realizar cuando se produzca un click en el elemento
         holder.baseView.setOnClickListener(new View.OnClickListener() {
 
@@ -87,6 +82,8 @@ public class BookCoverRecyclerAdapter
                 // Obtenemos el identificador del libro mostrado en el elemento sobre el que se ha hecho click.
                 int id = holder.bookItem.getId();
 
+                // Mostramos los detalles de una manera u otra, dependiendo de si se trata de un tablet
+                // o no el dispositivo que ejecuta la aplicación.
                 if (BookListActivity.dualScreen) {
                     FragmentManager supportFM = ((AppCompatActivity)
                             view.getContext()).getSupportFragmentManager();
@@ -101,14 +98,25 @@ public class BookCoverRecyclerAdapter
         });
     }
 
-    // Este método asocia una nueva lista al adapter y notifica del cambio a este para que la muestre
+    /**
+     * Este método asocia una nueva lista al adapter y notifica del cambio a este para que la muestre
+     *
+     * @param dataSet nueva lista a mostrar en el Adapter
+     */
     public void updateItems(List<BookItem> dataSet) {
+
+        // Construimos un objeto de tipo BookItemDiffCallback, pasando la lista actual del adapter
+        // y la nueva que se quiere mostrar.
         final BookItemDiffCallback diffCallback = new BookItemDiffCallback(this.dataSet, dataSet);
+
+        // Se calcula la fierencia entre ambas listas
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
+        // COn las diferencias calculadas anteriormente, se actualizan las vistas.
         this.dataSet.clear();
         this.dataSet.addAll(dataSet);
         diffResult.dispatchUpdatesTo(this);
+
     }
 
     // Devolvemos el tamaño del conjunto de datos
@@ -123,6 +131,7 @@ public class BookCoverRecyclerAdapter
         // Vistas que contendrá el elemento
         CardView baseView;
 
+        // Asociamos las vistas del elemento gracias a Butter Knife
         @BindView(R.id.title_textview)
         TextView titleTextView;
 
@@ -141,6 +150,8 @@ public class BookCoverRecyclerAdapter
             super(cardview);
             this.baseView = cardview;
 
+            // Hacemos un bind del ViewHolder que contendrá las vistas asociadas y la vista que las
+            // contendrá.
             ButterKnife.bind(this, cardview);
         }
     }

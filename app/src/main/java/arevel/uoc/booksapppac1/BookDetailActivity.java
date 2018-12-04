@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  */
 public class BookDetailActivity extends AppCompatActivity {
 
-    // Definimos los bindings de las vistas para ButterKnife
+    // Definimos los bindings de las vistas para Butter Knife
 
     // Toolbar que sobreescribirá el de Android
     @BindView(R.id.app_bar)
@@ -37,7 +37,7 @@ public class BookDetailActivity extends AppCompatActivity {
     NestedScrollView nestedScrollView;
 
     // Definimos aquí la headerImageView que usará el fragment para que pueda encontrarla al llamar
-    // a método Butterknife.bind();
+    // a método ButterKnife.bind();
     @Nullable
     @BindView(R.id.headerImage)
     ImageView headerImageView;
@@ -54,7 +54,7 @@ public class BookDetailActivity extends AppCompatActivity {
         // Definimos el layout que usaremos para mostrar la información gestionada
         setContentView(R.layout.book_detail);
 
-        // Creamos los bindings definidos para Butterknife
+        // Creamos los bindings definidos para Butter Knife
         ButterKnife.bind(this);
 
         // Definimos la toolbar de la aplicación

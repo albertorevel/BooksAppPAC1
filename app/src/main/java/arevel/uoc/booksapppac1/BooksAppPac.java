@@ -46,17 +46,19 @@ public class BooksAppPac extends Application {
             String description = getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
+            // Definimos el primer canal.
             NotificationChannel channel0 = new NotificationChannel(Constants.CHANNEL_ID_0,
-                    name + "0", importance);
+                    name + " 0", importance);
             String baseSoundUri = "android.resource://" + getPackageName() + "/";
 
-            channel0.setDescription(description + "0");
+            channel0.setDescription(description + " 0");
             channel0.setLightColor(getColor(R.color.led1));
             channel0.setSound(Uri.parse(baseSoundUri + R.raw.definite), null);
 
+            // Definimos el segundo canal.
             NotificationChannel channel1 = new NotificationChannel(Constants.CHANNEL_ID_1,
-                    name + "1", importance);
-            channel1.setDescription(description + "1");
+                    name + " 1", importance);
+            channel1.setDescription(description + " 1");
             channel1.setLightColor(getColor(R.color.led2));
             channel0.setSound(Uri.parse(baseSoundUri + R.raw.appointed), null);
 

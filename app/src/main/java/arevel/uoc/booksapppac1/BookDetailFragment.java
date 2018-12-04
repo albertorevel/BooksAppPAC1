@@ -57,9 +57,11 @@ public class BookDetailFragment extends Fragment {
     @BindString(R.string.noData)
     String error_noData;
 
-
+    // Imagen de la barra de la aplicación
     ImageView headerImageView;
 
+    // Unbinder necesario para gestionar las vistas enlazadas mediante Butter Knife al tratarse de
+    // un fragmento.
     private Unbinder unbinder;
 
 
@@ -103,6 +105,7 @@ public class BookDetailFragment extends Fragment {
                 descriptionTextView.setText(bookItem.getDescription());
             }
 
+            // Si podemos recuoerar la imageview que contendrá la portada (en la toolbar), la cargamos.
             if (getActivity().getClass() == BookDetailActivity.class) {
 
                 headerImageView = ((BookDetailActivity) getActivity()).headerImageView;
@@ -112,7 +115,10 @@ public class BookDetailFragment extends Fragment {
                             .load(bookItem.getUrl_image()).into(headerImageView);
                     guideline.setGuidelinePercent(0);
                 }
-            } else if (coverImageView != null) {
+            }
+            // En caso contrario, si existe una imageview para mostrarla, la mostramos
+            // (como ocurrirá en caso de la ejecución en tablet)
+            else if (coverImageView != null) {
 
                 // Cargamos la imagen desde la URL proporcionada
                 Picasso.with(coverImageView.getContext())
