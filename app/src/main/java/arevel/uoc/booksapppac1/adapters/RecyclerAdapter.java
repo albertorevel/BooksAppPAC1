@@ -101,11 +101,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
         });
     }
 
-    // Este método asocia una nueva lista al adapter y notifica del cambio a este para que la muestre
+    /**
+     * Este método asocia una nueva lista al adapter y notifica del cambio a este para que la muestre
+     *
+     * @param dataSet nueva lista a mostrar en el Adapter
+     */
     public void updateItems(List<BookItem> dataSet) {
+
+        // Construimos un objeto de tipo BookItemDiffCallback, pasando la lista actual del adapter
+        // y la nueva que se quiere mostrar.
         final BookItemDiffCallback diffCallback = new BookItemDiffCallback(this.dataSet, dataSet);
+
+        // Se calcula la fierencia entre ambas listas
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
+        // COn las diferencias calculadas anteriormente, se actualizan las vistas.
         this.dataSet.clear();
         this.dataSet.addAll(dataSet);
         diffResult.dispatchUpdatesTo(this);
