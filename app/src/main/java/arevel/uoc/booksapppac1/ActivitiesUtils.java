@@ -5,8 +5,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +25,10 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 import arevel.uoc.booksapppac1.Constants.DRAWER_ACTION;
 
@@ -119,17 +126,40 @@ public class ActivitiesUtils {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        ;
+
                         Intent intent;
 
-                        Uri path = Uri.parse("android.resource://arevel.uoc.booksapppac1/R.mipmap.ic_launcher");
+                        // ******************
+
+                        Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
+                        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Share.png";
+                        OutputStream out = null;
+                        File file = new File(path);
+                        try {
+                            out = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.flush();
+                            out.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        path = file.getPath();
+                        Uri bmpUri = Uri.parse("file://" + path);
+
+
+                        // ******************
+//
+//                        Uri path = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+//                                + activity.getResources().getResourcePackageName(R.drawable.ic_launcher)
+//                        +"/" + activity.getResources().getResourceTypeName(R.drawable.ic_launcher)
+//                        + "/" + activity.getResources().getResourceEntryName(R.drawable.ic_launcher)+"");
                         intent = new Intent();
                         intent.setAction(Intent.ACTION_SEND);
                         intent.putExtra(Intent.EXTRA_TEXT, "Aplicación Android de libros");
-//                        intent.putExtra(Intent.EXTRA_STREAM, path);
+                        intent.putExtra(Intent.EXTRA_STREAM, bmpUri);
 //                        intent.setType("image/*");
-                        intent.setType("text/plain");
-                        // intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.setType("image/png");
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                         switch ((DRAWER_ACTION) drawerItem.getTag()) {
                             case SHARE_OTHERAPPS:
