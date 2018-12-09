@@ -83,9 +83,6 @@ public class BookDetailActivity extends AppCompatActivity {
             // Lanzamos el fragment mostrará el detalle en el frame layout, pasando el id del elemento
             ActivitiesUtils.startDetailsFragment(getSupportFragmentManager(), id);
 
-            // Añadimos el menú lateral a la aplicación
-            ActivitiesUtils.createDrawer(this, toolbar);
-
         } else {
             // Si el libro no ha podido ser encontrado, mostramos un mensaje y cerramos la actividad
             // volviendo al home.

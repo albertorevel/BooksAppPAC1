@@ -36,4 +36,7 @@
     <string name="noDeleted">Error in book deletion</string>
     <string name="notificationTitle">Book received</string>
     <string name="notificationBody">Slide in order to see more of book with id </string>
+    <string name="share_otherapps">Share with other apps</string>
+    <string name="copy_clipboard">Copy the details</string>
+    <string name="share_whatsapp">Share with Whatsapp</string>
 </resources>

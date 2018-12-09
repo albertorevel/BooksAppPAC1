@@ -20,4 +20,7 @@
     <string name="noDeleted">El libro no ha podido ser borrado</string>
     <string name="notificationTitle">Libro recibido</string>
     <string name="notificationBody">"Deslice para ver más del libro con id "</string>
+    <string name="share_otherapps">Compartir con otras apps</string>
+    <string name="copy_clipboard">Copia los detalles</string>
+    <string name="share_whatsapp">Compartir con Whatsapp</string>
 </resources>
