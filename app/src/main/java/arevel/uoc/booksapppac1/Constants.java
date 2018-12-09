@@ -20,4 +20,11 @@ public class Constants {
     // Canales de notificaciones
     static final String CHANNEL_ID_0 = "BooksPacApp_Channel_0";
     static final String CHANNEL_ID_1 = "BooksPacApp_Channel_1";
+
+    // Tags usados en las opciones del menú lateral
+    enum DRAWER_ACTION {
+        SHARE_OTHERAPPS,
+        COPY_CLIPBOARD,
+        SHARE_WHATSAPP
+    }
 }

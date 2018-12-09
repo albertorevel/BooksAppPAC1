@@ -1,8 +1,13 @@
 package arevel.uoc.booksapppac1;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +23,12 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 
+import arevel.uoc.booksapppac1.Constants.DRAWER_ACTION;
+
 import static arevel.uoc.booksapppac1.Constants.DETAIL_FRAGMENT_TAG;
+import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.COPY_CLIPBOARD;
+import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.SHARE_OTHERAPPS;
+import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.SHARE_WHATSAPP;
 
 /**
  * Esta clase contiene métodos comunes a varias actividades del proyecto.
@@ -82,12 +92,15 @@ public class ActivitiesUtils {
 
         // Creamos las opciones del menú
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1)
+                .withTag(SHARE_OTHERAPPS)
                 .withName(activity.getResources().getString(R.string.share_otherapps))
                 .withIcon(FontAwesome.Icon.faw_share_alt).withSelectable(false);
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2)
+                .withTag(COPY_CLIPBOARD)
                 .withName(activity.getResources().getString(R.string.copy_clipboard))
                 .withIcon(FontAwesome.Icon.faw_clipboard).withSelectable(false);
         PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3)
+                .withTag(SHARE_WHATSAPP)
                 .withName(activity.getResources().getString(R.string.share_whatsapp))
                 .withIcon(FontAwesome.Icon.faw_whatsapp).withSelectable(false);
 
@@ -106,15 +119,48 @@ public class ActivitiesUtils {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        ;
+                        Intent intent;
+
+                        Uri path = Uri.parse("android.resource://arevel.uoc.booksapppac1/R.mipmap.ic_launcher");
+                        intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_TEXT, "Aplicación Android de libros");
+//                        intent.putExtra(Intent.EXTRA_STREAM, path);
+//                        intent.setType("image/*");
+                        intent.setType("text/plain");
+                        // intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                        switch ((DRAWER_ACTION) drawerItem.getTag()) {
+                            case SHARE_OTHERAPPS:
 
 
-                        switch (position) {
-                            case 1:
-
+                                Intent chooser = Intent.createChooser(intent, "Compartir con...");
+                                if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                                    activity.startActivity(chooser);
+                                }
                                 break;
-                            case 2:
+                            case COPY_CLIPBOARD:
+
+                                ClipboardManager clipboard = (ClipboardManager)
+                                        activity.getSystemService(Context.CLIPBOARD_SERVICE);
+
+                                ClipData clip = ClipData.newPlainText("Text", "Aplicación Android de libros");
+
+                                if (clipboard != null) {
+                                    clipboard.setPrimaryClip(clip);
+                                }
+
+                                Snackbar.make(activity.getWindow().getDecorView().getRootView(), "Copiado",
+                                        Snackbar.LENGTH_LONG).show();
                                 break;
-                            case 3:
+
+                            case SHARE_WHATSAPP:
+
+
+                                intent.setPackage("com.whatsapp");
+
+                                activity.startActivity(intent);
 
                                 break;
                         }
