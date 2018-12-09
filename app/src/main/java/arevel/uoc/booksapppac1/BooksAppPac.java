@@ -3,10 +3,15 @@ package arevel.uoc.booksapppac1;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.ImageView;
 
 import com.facebook.stetho.Stetho;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.realm.Realm;
@@ -29,6 +34,21 @@ public class BooksAppPac extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
+
+        // Creamos e inicializamos el objeto DrawerImageLoader que nos permitirá cargar imágenes en el
+        // menú lateral con una Uri dada mediante la librería Picasso.
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+
+        });
 
         createNotificationChannel();
     }

@@ -234,6 +234,9 @@ public class BookListActivity extends AppCompatActivity {
             }
         });
 
+        // Añadimos el menú lateral a la aplicación
+        ActivitiesUtils.createDrawer(this, toolbar);
+
         // Comprobamos si se ha de realizar alguna acción (actividad abierta desde las acciones de
         // una notificación), o si por el contrario se ha iniciado de manera normal
         Intent mIntent = getIntent();
