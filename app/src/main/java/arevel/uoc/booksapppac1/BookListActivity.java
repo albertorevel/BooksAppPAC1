@@ -1,12 +1,16 @@
 package arevel.uoc.booksapppac1;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,6 +38,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.List;
 
@@ -111,6 +117,11 @@ public class BookListActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.detail_framelayout)
     FrameLayout frameLayout;
+
+    // Floating Action Button que abrirá formulario de compra
+    @Nullable
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     // Hacemos los bind de los diferentes recursos
     // Logs
@@ -236,6 +247,23 @@ public class BookListActivity extends AppCompatActivity {
 
         // Añadimos el menú lateral a la aplicación
         ActivitiesUtils.createDrawer(this, toolbar);
+
+        // TODO
+        if (fab != null) {
+            fab.setVisibility(View.GONE);
+            Drawable fabIcon = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_star1)
+                    .color(Color.WHITE);
+            fab.setImageDrawable(fabIcon);
+
+            final Activity self = this;
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ActivitiesUtils.openWeb(getSupportFragmentManager(), self);
+                }
+            });
+        }
+
 
         // Comprobamos si se ha de realizar alguna acción (actividad abierta desde las acciones de
         // una notificación), o si por el contrario se ha iniciado de manera normal

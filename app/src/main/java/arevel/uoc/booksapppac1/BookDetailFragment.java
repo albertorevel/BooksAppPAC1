@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Guideline;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -49,6 +50,9 @@ public class BookDetailFragment extends Fragment {
 
     @BindView(R.id.middle_guideline)
     Guideline guideline;
+
+//    @BindView(R.id.detail_webview)
+//    WebView webView;
 
 
     // Definimos los recursos que usa el fragment
@@ -127,6 +131,16 @@ public class BookDetailFragment extends Fragment {
                 // coverImageView.setImageResource(R.drawable.default_bookcover);
 
             }
+
+            // TODO
+            if (getActivity() instanceof BookListActivity) {
+                FloatingActionButton fab = ((BookListActivity) getActivity()).fab;
+
+                if (fab != null) {
+                    fab.setVisibility(View.VISIBLE);
+                }
+            }
+
         } else {
             // Si el libro no ha podido ser encontrado, mostramos un mensaje y eliminamos el fragment
             int messageDuration = 3000;

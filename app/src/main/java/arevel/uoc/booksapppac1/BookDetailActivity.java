@@ -1,16 +1,24 @@
 package arevel.uoc.booksapppac1;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
@@ -41,6 +49,10 @@ public class BookDetailActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.headerImage)
     ImageView headerImageView;
+
+    // Floating Action Button que abrirá formulario de compra
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     // Definimos los recursos que usa la actividad
     @BindString(R.string.noBookFound)
@@ -82,6 +94,20 @@ public class BookDetailActivity extends AppCompatActivity {
 
             // Lanzamos el fragment mostrará el detalle en el frame layout, pasando el id del elemento
             ActivitiesUtils.startDetailsFragment(getSupportFragmentManager(), id);
+
+            // Definimos el icomo del FloatingActionButton (FAB)
+            Drawable fabIcon = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_star1)
+                    .color(Color.WHITE);
+            fab.setImageDrawable(fabIcon);
+
+            // Definimos el listener del FAB
+            final Activity self = this;
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ActivitiesUtils.openWeb(getSupportFragmentManager(), self);
+                }
+            });
 
         } else {
             // Si el libro no ha podido ser encontrado, mostramos un mensaje y cerramos la actividad

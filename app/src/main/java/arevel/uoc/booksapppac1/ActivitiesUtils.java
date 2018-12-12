@@ -1,12 +1,14 @@
 package arevel.uoc.booksapppac1;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +17,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.RelativeLayout;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -38,7 +42,8 @@ import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.SHARE_OTHERAPPS;
 import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.SHARE_WHATSAPP;
 
 /**
- * Esta clase contiene métodos comunes a varias actividades del proyecto.
+ * Esta clase contiene métodos comunes a varias actividades del proyecto. También contiene referencias
+ * a fragments o vistas necesarias.
  */
 public class ActivitiesUtils {
 
@@ -203,5 +208,38 @@ public class ActivitiesUtils {
         if (drawer != null) {
             drawer.setSelection(-1);
         }
+    }
+
+    // TODO
+    static void openWeb(FragmentManager fragmentManager, Activity activity) {
+
+//        if (fragmentManager != null) {
+//            // Recuperamos el fragmentManager para
+//            Fragment activeFragment = fragmentManager.findFragmentByTag(DETAIL_FRAGMENT_TAG);
+//
+//            if (activeFragment instanceof BookDetailFragment &&
+//                    ((BookDetailFragment) activeFragment).webView != null) {
+//
+//                if (appBarLayout != null) {
+//                    appBarLayout.setVisibility(View.GONE);
+//                }
+
+        String formPath = "file:///android_asset/form.html";
+//                WebView webView = ((BookDetailFragment) activeFragment).webView;
+        WebView webView = new WebView(activity);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(false);
+        webView.getSettings().setSupportZoom(false);
+        webView.setBackgroundColor(Color.WHITE);
+        webView.loadUrl(formPath);
+
+        RelativeLayout.LayoutParams paramsWebView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        Dialog dialog = new Dialog(activity, R.style.AppTheme);
+        dialog.addContentView(webView, paramsWebView);
+        dialog.show();
+
+
+//            }
+//        }
     }
 }
