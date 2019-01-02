@@ -1,10 +1,12 @@
 package arevel.uoc.booksapppac1;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Guideline;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +22,7 @@ import com.squareup.picasso.Picasso;
 
 import arevel.uoc.booksapppac1.model.BookItem;
 import arevel.uoc.booksapppac1.model.BookModel;
+import arevel.uoc.booksapppac1.web.MyWebViewClient;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,9 +34,6 @@ import butterknife.Unbinder;
  * lista.
  */
 public class BookDetailFragment extends Fragment {
-
-    // Id que usaremos para saber el detalle del libro seleccionado
-    private int bookId = -1;
 
     // Hacemos el bind de las vistas que necesitamos definir
     @BindView(R.id.author_detail)
@@ -51,9 +52,8 @@ public class BookDetailFragment extends Fragment {
     @BindView(R.id.middle_guideline)
     Guideline guideline;
 
-//    @BindView(R.id.detail_webview)
-//    WebView webView;
-
+    @BindView(R.id.detail_webview)
+    WebView webView;
 
     // Definimos los recursos que usa el fragment
     @BindString(R.string.noBookFound)
@@ -68,12 +68,14 @@ public class BookDetailFragment extends Fragment {
     // un fragmento.
     private Unbinder unbinder;
 
+    // TODO
+    private AppBarLayout appBarLayout = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Obtenemos el id seleccionado para mostrar sus detalles
-        bookId = getArguments() != null ? getArguments().getInt(Constants.BOOK_ID) : 0;
+        int bookId = getArguments() != null ? getArguments().getInt(Constants.BOOK_ID) : 0;
 
         // Asociamos el layout del fragment al ViewGroup
         View v = inflater.inflate(R.layout.book_detail_fragment, container, false);
@@ -110,7 +112,7 @@ public class BookDetailFragment extends Fragment {
             }
 
             // Si podemos recuoerar la imageview que contendrá la portada (en la toolbar), la cargamos.
-            if (getActivity().getClass() == BookDetailActivity.class) {
+            if (getActivity() != null && getActivity().getClass() == BookDetailActivity.class) {
 
                 headerImageView = ((BookDetailActivity) getActivity()).headerImageView;
 
@@ -132,24 +134,15 @@ public class BookDetailFragment extends Fragment {
 
             }
 
-            // TODO
-            if (getActivity() instanceof BookListActivity) {
-                FloatingActionButton fab = ((BookListActivity) getActivity()).fab;
-
-                if (fab != null) {
-                    fab.setVisibility(View.VISIBLE);
-                }
-            }
+            setFABVisibility(true);
 
         } else {
             // Si el libro no ha podido ser encontrado, mostramos un mensaje y eliminamos el fragment
             int messageDuration = 3000;
             final FragmentManager fragmentManager = getFragmentManager();
-            final BookDetailFragment self = this;
 
             // Creamos el mensaje advirtiendo el usuario
-            Snackbar.make(v, error_noBookFound,
-                    messageDuration).show();
+            Snackbar.make(v, error_noBookFound, messageDuration).show();
 
             // Definimos un handler que ejecute el método finish de la actividad cuando haya pasado
             // el tiempo establecido. En este caso, será el mismo tiempo que se muestra el mensaje
@@ -174,6 +167,68 @@ public class BookDetailFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        setFABVisibility(false);
+
         unbinder.unbind();
+    }
+
+    //TODO
+    private void setFABVisibility(boolean visible) {
+
+        if (getActivity() instanceof BookListActivity) {
+            FloatingActionButton fab = ((BookListActivity) getActivity()).fab;
+
+            if (fab != null) {
+                fab.setVisibility(visible ? View.VISIBLE : View.GONE);
+            }
+        }
+    }
+
+    // TODO
+    public void showWebView(AppBarLayout appBarLayout) {
+
+        this.appBarLayout = appBarLayout;
+
+        if (this.appBarLayout != null) {
+            this.appBarLayout.setExpanded(false);
+        }
+
+        String formPath = "file:///android_asset/form.html";
+
+        this.webView.getSettings().setLoadWithOverviewMode(true);
+        this.webView.getSettings().setUseWideViewPort(false);
+        this.webView.getSettings().setSupportZoom(false);
+        this.webView.setVisibility(View.VISIBLE);
+        this.webView.setWebViewClient(new MyWebViewClient(this));
+        this.webView.loadUrl(formPath);
+
+    }
+
+    // TODO
+    public void formSubmitted(boolean buyed) {
+
+        if (buyed) {
+            if (this.appBarLayout != null) {
+                this.appBarLayout.setExpanded(true);
+            }
+
+            this.webView.setVisibility(View.GONE);
+        }
+
+        // Mostramos un mensaje con el resultado de la compra.
+        int messageId = buyed ? R.string.buy_success : R.string.buy_error;
+        int messageDuration = 3000;
+
+        // Comprobamos que los métodos getView y getActivity devuelven algo distinto de null, para
+        // para evitar posibles NullPointerException.
+        View view = getView();
+        Activity activity = getActivity();
+
+        if (view != null && activity != null) {
+
+            Snackbar.make(view, getActivity().getResources().getString(messageId),
+                    messageDuration).show();
+        }
     }
 }

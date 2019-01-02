@@ -1,24 +1,21 @@
 package arevel.uoc.booksapppac1;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.RelativeLayout;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -85,6 +82,7 @@ public class ActivitiesUtils {
      * @param activity la actividad donde se mostrará el drawer
      * @param toolbar  la toolbar que usa la actividad
      */
+    // TODO comentar y ver si metemos opciones ordenación
     static void createDrawer(final Activity activity, Toolbar toolbar) {
 
         // Creamos la cabecera con los datos del perfil del usuario
@@ -138,10 +136,9 @@ public class ActivitiesUtils {
 
                         Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
                         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Share.png";
-                        OutputStream out = null;
                         File file = new File(path);
                         try {
-                            out = new FileOutputStream(file);
+                            OutputStream out = new FileOutputStream(file);
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                             out.flush();
                             out.close();
@@ -211,35 +208,17 @@ public class ActivitiesUtils {
     }
 
     // TODO
-    static void openWeb(FragmentManager fragmentManager, Activity activity) {
+    static void openWeb(FragmentManager fragmentManager, AppBarLayout appBarLayout) {
 
-//        if (fragmentManager != null) {
-//            // Recuperamos el fragmentManager para
-//            Fragment activeFragment = fragmentManager.findFragmentByTag(DETAIL_FRAGMENT_TAG);
-//
-//            if (activeFragment instanceof BookDetailFragment &&
-//                    ((BookDetailFragment) activeFragment).webView != null) {
-//
-//                if (appBarLayout != null) {
-//                    appBarLayout.setVisibility(View.GONE);
-//                }
+        if (fragmentManager != null) {
+            // Recuperamos el fragmentManager para
+            Fragment activeFragment = fragmentManager.findFragmentByTag(DETAIL_FRAGMENT_TAG);
 
-        String formPath = "file:///android_asset/form.html";
-//                WebView webView = ((BookDetailFragment) activeFragment).webView;
-        WebView webView = new WebView(activity);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(false);
-        webView.getSettings().setSupportZoom(false);
-        webView.setBackgroundColor(Color.WHITE);
-        webView.loadUrl(formPath);
+            if (activeFragment instanceof BookDetailFragment &&
+                    ((BookDetailFragment) activeFragment).webView != null) {
 
-        RelativeLayout.LayoutParams paramsWebView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        Dialog dialog = new Dialog(activity, R.style.AppTheme);
-        dialog.addContentView(webView, paramsWebView);
-        dialog.show();
-
-
-//            }
-//        }
+                ((BookDetailFragment) activeFragment).showWebView(appBarLayout);
+            }
+        }
     }
 }

@@ -23,4 +23,6 @@
     <string name="share_otherapps">Compartir amb altres apps</string>
     <string name="copy_clipboard">Copia els detalls</string>
     <string name="share_whatsapp">"Compartir amb Whatsapp "</string>
+    <string name="buy_success">Compra realitzada amb èxit</string>
+    <string name="buy_error">Hi ha hagut un problema amb la compra</string>
 </resources>

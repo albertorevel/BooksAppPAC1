@@ -1,6 +1,5 @@
 package arevel.uoc.booksapppac1;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -20,9 +20,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -100,6 +97,10 @@ public class BookListActivity extends AppCompatActivity {
     // Toolbar que sobreescribirá el de Android
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    //AppBarLayout que contiene el toolbar
+    @BindView(R.id.app_bar)
+    AppBarLayout appBarLayout;
 
     // Container que permite hacer el gesto de swipe para refrescar la lista
     @BindView(R.id.swipeContainer)
@@ -255,11 +256,10 @@ public class BookListActivity extends AppCompatActivity {
                     .color(Color.WHITE);
             fab.setImageDrawable(fabIcon);
 
-            final Activity self = this;
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ActivitiesUtils.openWeb(getSupportFragmentManager(), self);
+                    ActivitiesUtils.openWeb(getSupportFragmentManager(), appBarLayout);
                 }
             });
         }
@@ -291,7 +291,7 @@ public class BookListActivity extends AppCompatActivity {
                 case Constants.ACTION_DELETE:
                     deleteBook(bookId);
                     break;
-                // En caso de que se trate d ela acción de detalle, mostramos el detalle del libro
+                // En caso de que se trate de la acción de detalle, mostramos el detalle del libro
                 case Constants.ACTION_DETAIL:
 
                     if (BookListActivity.dualScreen) {
@@ -607,6 +607,13 @@ public class BookListActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    **************************
+    ********* PAC 4 **********
+    **************************
+
+    Ya no se usa este menú en la PAC4.
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -636,13 +643,14 @@ public class BookListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Creamos el menú de la lista
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_list, menu);
         return true;
-    }
+    }*/
 
     /**
      * Este método realiza una llamada al modelo de datos para que borre un libro y tras esto,

@@ -1,6 +1,5 @@
 package arevel.uoc.booksapppac1;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -101,11 +100,10 @@ public class BookDetailActivity extends AppCompatActivity {
             fab.setImageDrawable(fabIcon);
 
             // Definimos el listener del FAB
-            final Activity self = this;
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ActivitiesUtils.openWeb(getSupportFragmentManager(), self);
+                    ActivitiesUtils.openWeb(getSupportFragmentManager(), appBarLayout);
                 }
             });
 
