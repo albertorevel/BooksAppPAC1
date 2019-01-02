@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Datos del provider que nos permite compartir recursos con otras aplicaciones -->
+    <external-path
+        name="external_files"
+        path="." />
+</paths>

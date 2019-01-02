@@ -17,6 +17,25 @@
     <string name="sortByTitle">Sort by title</string>
     <string name="sortByAuthor">Sort by author</string>
 
+    <!--Textos del MenuDrawer y sus acciones-->
+    <string name="default_profile_name" translatable="false">Alberto Revel</string>
+    <string name="default_profile_email" translatable="false">arevel@uoc.edu</string>
+    <string name="header_image_tag" translatable="false">Header</string>
+
+    <string name="share_otherapps">Share with other apps</string>
+    <string name="copy_clipboard">Copy the details</string>
+    <string name="share_whatsapp">Share with Whatsapp</string>
+
+    <string name="clipboardcopy_title" translatable="false">Text</string>
+    <string name="clipboardcopy_body">Books Android Application</string>
+    <string name="clipboardcopy_ok">Copied to the clipboard</string>
+    <string name="clipboardcopy_fail">Couldn\'t be copied to the clipboard</string>
+
+    <string name="share_no_permission">App has not enough permission to perform the action</string>
+
+    <string name="share_chooser_title">Share with...</string>
+
+
     <!-- Autenticación del usuario -->
     <string name="signInWithEmail_log" translatable="false">signInWithEmail:</string>
     <string name="dataValueEventListener_log" translatable="false">dataValueEventListener:</string>
@@ -36,9 +55,6 @@
     <string name="noDeleted">Error in book deletion</string>
     <string name="notificationTitle">Book received</string>
     <string name="notificationBody">Slide in order to see more of book with id </string>
-    <string name="share_otherapps">Share with other apps</string>
-    <string name="copy_clipboard">Copy the details</string>
-    <string name="share_whatsapp">Share with Whatsapp</string>
     <string name="buy_success">Buy completed successfuly</string>
-    <string name="buy_error">Error in buying process</string>
+    <string name="buy_error">Error in buying process. Please fill all the fields.</string>
 </resources>

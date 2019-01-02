@@ -134,6 +134,13 @@ public class BookDetailFragment extends Fragment {
 
             }
 
+            // PAC4. Definimos las propiedades del WebView
+            if (this.webView != null) {
+
+                this.webView.getSettings().setLoadWithOverviewMode(true);
+                this.webView.getSettings().setUseWideViewPort(false);
+                this.webView.getSettings().setSupportZoom(false);
+            }
             setFABVisibility(true);
 
         } else {
@@ -173,7 +180,12 @@ public class BookDetailFragment extends Fragment {
         unbinder.unbind();
     }
 
-    //TODO
+    /**
+     * Este método define la visibilidad del botón FAB, si la actividad es del tipo BookListActivity
+     * y dicho botón existe.
+     *
+     * @param visible indica si se debe mostrar el botón o no.
+     */
     private void setFABVisibility(boolean visible) {
 
         if (getActivity() instanceof BookListActivity) {
@@ -185,38 +197,51 @@ public class BookDetailFragment extends Fragment {
         }
     }
 
-    // TODO
+    /**
+     * Este método muestra el WebView contenido en el fragment cargando en él el formulario de compra
+     * del libro del cual se está mostrando el detalle.
+     *
+     * @param appBarLayout AppBar de la aplicación que deberá ocultarse al mostrar la web.
+     */
     public void showWebView(AppBarLayout appBarLayout) {
 
         this.appBarLayout = appBarLayout;
 
+        // Colapsamos la AppBar y ocultamos el FAB.
         if (this.appBarLayout != null) {
             this.appBarLayout.setExpanded(false);
+            this.setFABVisibility(false);
         }
 
-        String formPath = "file:///android_asset/form.html";
-
-        this.webView.getSettings().setLoadWithOverviewMode(true);
-        this.webView.getSettings().setUseWideViewPort(false);
-        this.webView.getSettings().setSupportZoom(false);
-        this.webView.setVisibility(View.VISIBLE);
+        // Mostramos el webView y definimos la URL y el Cliente que debe escuchar las peticiones que
+        // realice la página que se carga.
+        this.webView.loadUrl(Constants.URL_BOOKS_SHOP);
         this.webView.setWebViewClient(new MyWebViewClient(this));
-        this.webView.loadUrl(formPath);
-
+        this.webView.setVisibility(View.VISIBLE);
     }
 
-    // TODO
+    /**
+     * Método que se llama al enviar el formulario de la web de compra del libro. Si se ha realizado
+     * la compra de manera satisfactoria, cierra la vista de la web. Informa al usuario del resultado
+     * en todos los casos.
+     *
+     * @param buyed indica si el libro se ha comprado correctamente (actualmente, si formulario se
+     *              ha validado correctamente o no)
+     */
     public void formSubmitted(boolean buyed) {
 
+        // Expandimos la AppBar y mostramos el FAB. Ocultamos del mismo modo el WebView.
         if (buyed) {
             if (this.appBarLayout != null) {
                 this.appBarLayout.setExpanded(true);
+                this.setFABVisibility(true);
             }
 
             this.webView.setVisibility(View.GONE);
         }
 
         // Mostramos un mensaje con el resultado de la compra.
+
         int messageId = buyed ? R.string.buy_success : R.string.buy_error;
         int messageDuration = 3000;
 

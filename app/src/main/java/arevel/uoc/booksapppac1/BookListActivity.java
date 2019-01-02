@@ -1,10 +1,13 @@
 package arevel.uoc.booksapppac1;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,6 +16,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -247,9 +251,9 @@ public class BookListActivity extends AppCompatActivity {
         });
 
         // Añadimos el menú lateral a la aplicación
-        ActivitiesUtils.createDrawer(this, toolbar);
+        ActivitiesUtils.createDrawer(this, toolbar, this.mSwipeContainer);
 
-        // TODO
+        // Definimos el FAB que se mostrará en el detalle
         if (fab != null) {
             fab.setVisibility(View.GONE);
             Drawable fabIcon = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_star1)
@@ -262,6 +266,20 @@ public class BookListActivity extends AppCompatActivity {
                     ActivitiesUtils.openWeb(getSupportFragmentManager(), appBarLayout);
                 }
             });
+        }
+
+        // Comprobamos los permisos de la aplicación para pedir los permisos en caso de que no se tengan.
+        // Se encuentra en este punto la comprobación ya que la gestión de permisos al seleccionar
+        // una opción del menú implicaba unos desarrollos que se ha considerado que se escapaban
+        // de esta práctica.
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+            return;
         }
 
 

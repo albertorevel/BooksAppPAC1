@@ -24,5 +24,10 @@
     <string name="copy_clipboard">Copia los detalles</string>
     <string name="share_whatsapp">Compartir con Whatsapp</string>
     <string name="buy_success">Compra realizada con éxito</string>
-    <string name="buy_error">Ha habido un problema con la compra</string>
+    <string name="buy_error">Ha habido un problema con la compra. Debe rellenar todos los campos</string>
+    <string name="clipboardcopy_ok">Copiado al portapapeles</string>
+    <string name="clipboardcopy_fail">No se ha podido copiar al portapapeles</string>
+    <string name="clipboardcopy_body">Aplicación Android sobre libros</string>
+    <string name="share_no_permission">La aplicación no tiene permisos suficientes para realizar la acción</string>
+    <string name="share_chooser_title">Compartir con...</string>
 </resources>
