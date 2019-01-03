@@ -282,6 +282,8 @@ public class BookListActivity extends AppCompatActivity {
             return;
         }
 
+        // Inicializamos AdMob con el ID de prueba de Google
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
         // Comprobamos si se ha de realizar alguna acción (actividad abierta desde las acciones de
         // una notificación), o si por el contrario se ha iniciado de manera normal
