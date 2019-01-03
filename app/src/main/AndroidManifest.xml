@@ -16,6 +16,12 @@
         android:name=".BooksAppPac"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <!-- Datos para encontrar la aplicación en AdMob UI. -->
+        <!-- Utilizamos de momento el ID de prueba de Google -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
         <!-- Activities del proyecto -->
         <!-- Definimos la activity BookListActivity, que gestionará la lista de libros
          como activity principal y que se ejecutará al lanzar la aplicación -->
