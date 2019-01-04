@@ -29,6 +29,9 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -127,6 +130,9 @@ public class BookListActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
+    @BindView(R.id.adView)
+    AdView m_adView;
 
     // Hacemos los bind de los diferentes recursos
     // Logs
@@ -284,6 +290,10 @@ public class BookListActivity extends AppCompatActivity {
 
         // Inicializamos AdMob con el ID de prueba de Google
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        m_adView.loadAd(adRequest);
+
 
         // Comprobamos si se ha de realizar alguna acción (actividad abierta desde las acciones de
         // una notificación), o si por el contrario se ha iniciado de manera normal
