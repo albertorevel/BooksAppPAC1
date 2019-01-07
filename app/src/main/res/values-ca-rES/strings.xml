@@ -29,6 +29,6 @@
     <string name="clipboardcopy_fail">No s\'ha pogut copiar al portapapers</string>
     <string name="clipboardcopy_body">Aplicació Android sobre llibres</string>
     <string name="share_no_permission">L\'app no té prou permisos per realitzar l\'acció o hi ha hagut un problema</string>
-    <string name="share_chooser_title">Compartir amb...</string>
+    <string name="share_chooser_title">Compartir amb…</string>
     <string name="appnotinstalled">Aquesta app no està instal·lada en el dispositiu</string>
 </resources>

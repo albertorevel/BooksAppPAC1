@@ -33,7 +33,7 @@
 
     <string name="share_no_permission">App has not enough permission to perform the action</string>
 
-    <string name="share_chooser_title">Share with...</string>
+    <string name="share_chooser_title">Share with…</string>
 
 
     <!-- Autenticación del usuario -->

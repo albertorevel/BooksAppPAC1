@@ -1,6 +1,5 @@
 package arevel.uoc.booksapppac1;
 
-import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -259,7 +258,7 @@ public class BookListActivity extends AppCompatActivity {
         });
 
         // Añadimos el menú lateral a la aplicación
-        ActivitiesUtils.createDrawer(this, toolbar, this.mSwipeContainer);
+        ActivitiesUtils.createDrawer(this, toolbar);
 
         // Definimos el FAB que se mostrará en el detalle
         if (fab != null) {
@@ -276,23 +275,10 @@ public class BookListActivity extends AppCompatActivity {
             });
         }
 
-        // Comprobamos los permisos de la aplicación para pedir los permisos en caso de que no se tengan.
-        // Se encuentra en este punto la comprobación ya que la gestión de permisos al seleccionar
-        // una opción del menú implicaba unos desarrollos que se ha considerado que se escapaban
-        // de esta práctica.
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-//                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//
-//            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//
-//            return;
-//        }
-
         // Inicializamos AdMob con el ID de prueba de Google
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
+        // Creamos el AdRequest y lo añadimos a la vista del anuncio
         AdRequest adRequest = new AdRequest.Builder().build();
         m_adView.loadAd(adRequest);
 
@@ -702,30 +688,42 @@ public class BookListActivity extends AppCompatActivity {
         }
     }
 
-    // TODO comment
-    public void launchIntentAndCheckPermission(Intent intent) {
+    /**
+     * Este método lanza una aplicación a través de un intent si la aplicación tiene concedido el
+     * permiso indicado. En caso de no tenerlo, lanza una petición para que el usuario otorgue los
+     * permisos.
+     *
+     * @param intent     con la información
+     * @param permission permiso a comprobar antes de lanzar la activity.
+     */
+    public void launchIntentAndCheckPermission(Intent intent, String permission) {
 
         intentToLaunch = intent;
 
+        // Comprobamos si tiene el permiso.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                ContextCompat.checkSelfPermission(this, permission)
                         != PackageManager.PERMISSION_GRANTED) {
 
-            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            // Si no tiene le permiso requerido, lo solicitamos.
+            this.requestPermissions(new String[]{permission},
                     Constants.WRITE_EXTERNAL_STORAGE);
         } else {
+            // Si el usuario ha concedido ya el permiso, iniciamos la actividad indicada en el Intent.
             this.startActivity(intentToLaunch);
         }
     }
 
-    // TODO comment
+    // En este método capturaremos la respuesta a la solicitud del permiso solicitado para lanzar el
+    // intent.
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
 
         switch (requestCode) {
+
             case Constants.WRITE_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
+                // Si se ha concedido el permiso necesario, se lanza la actividad.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && intentToLaunch != null) {
@@ -733,8 +731,8 @@ public class BookListActivity extends AppCompatActivity {
                     this.startActivity(intentToLaunch);
 
                 } else {
-                    // Informamos al usuario de que no se puede realizar la acción por falta de permisos y
-                    // salimos del método
+                    // Si no se ha concedido el permiso, informamos al usuario de que no se puede
+                    // realizar la acción por falta de permisos y salimos del método
                     Snackbar.make(this.mSwipeContainer,
                             getResources().getString(R.string.share_no_permission),
                             Snackbar.LENGTH_LONG).show();

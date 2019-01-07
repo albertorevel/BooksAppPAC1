@@ -36,6 +36,12 @@ class Utils {
         return formattedDate;
     }
 
+    /**
+     * Este método devuelve el Bitmap de un objeto de tipo Drawable dado
+     *
+     * @param drawable del que se desea extraer el Bitmap
+     * @return Bitmap extraído del objeto de tipo Drawable.
+     */
     static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
         final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(bmp);

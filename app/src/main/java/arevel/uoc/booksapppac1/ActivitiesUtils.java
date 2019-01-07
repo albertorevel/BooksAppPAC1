@@ -1,5 +1,6 @@
 package arevel.uoc.booksapppac1;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -90,9 +91,8 @@ public class ActivitiesUtils {
      *
      * @param activity la actividad donde se mostrará el drawer
      * @param toolbar  la toolbar que usa la actividad
-     * @param view vista donde se mostrará el Snackbar con mensajes para el usuario
      */
-    static void createDrawer(final Activity activity, Toolbar toolbar, View view) {
+    static void createDrawer(final Activity activity, Toolbar toolbar) {
 
         Resources resources = activity.getResources();
 
@@ -126,6 +126,8 @@ public class ActivitiesUtils {
                 .withTag(SHARE_WHATSAPP)
                 .withName(activity.getResources().getString(R.string.share_whatsapp))
                 .withIcon(FontAwesome.Icon.faw_whatsapp).withSelectable(false);
+
+        // Añadimos las opciones del menú anterior que se ha eliminado en la PAC4
         PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4)
                 .withTag(SORT_AUTHOR)
                 .withName(activity.getResources().getString(R.string.sortByAuthor))
@@ -181,12 +183,13 @@ public class ActivitiesUtils {
                                     }
                                     break;
                             }
-                            return false;
 
                         } catch (ClassCastException exception) {
                             exception.printStackTrace();
-                            return false;
                         }
+                        // Devolvemos false para que se cierre el menú al procesar el click en uno
+                        // de los elementos
+                        return false;
                     }
                 })
                 .build();
@@ -201,9 +204,8 @@ public class ActivitiesUtils {
      * Este método copia un texto predefinido al portapapeles e informa al usuario de si la copia
      * se ha podido realizar o no.
      *
-     * @param activity desde la cual se ha lanzado la acción. Permite mostrar el snackbar con el
-     *                 resultado al finalizar y obtener recursos.
-     * @param view     vista donde se mostrará el Snackbar con mensajes para el usuario
+     * @param activity desde la cual se ha lanzado la acción. Permite obtener los recursos.
+     * @param view     vista que usamos para mostrar el Snackbar
      */
     private static void shareToClipBoard(Activity activity, View view) {
 
@@ -239,10 +241,13 @@ public class ActivitiesUtils {
      * @param activity      desde la cual se ha lanzado la acción. Permite mostrar el snackbar con el
      *                      resultado al finalizar, obtener recursos y gestionar permisos entre otros.
      * @param drawer_action acción a realizar (Compartir con otra app, Compartir con Whatsapp, etc.)
-     * @param view          vista donde se mostrará el Snackbar con mensajes para el usuario
+     * @param view          vista que permite mostrar el Snackbar
      */
     private static void launchShareIntent(Activity activity, DRAWER_ACTION drawer_action, View view) {
 
+        // Ahora mismo solamente lo llamamos desde BookListActivity. Si necesitaramos llamar al
+        // mismo método con distintas Activities, deberíamos comprobar que tuvieran el método o que
+        // implementaran una interfaz con todos los métodos del Drawer.
         if (!(activity instanceof BookListActivity)) {
             return;
         }
@@ -305,6 +310,12 @@ public class ActivitiesUtils {
 
         switch (drawer_action) {
 
+            // Las actividades (a través del intent creado), no se lanza aquí si no que se hace en
+            // la actividad. Esto permite que se pueda observar la respuesta en caso de que se deban
+            // solicitar permisos, evitando crear todavía más dependencias ya que en esta clase no
+            // se manejan las variables que deberemos tener en la actividad para manejar este intent
+            // y la solicitud de permisos.
+
             case SHARE_OTHERAPPS:
 
                 // Si se comparte con otras apps sin saber cual, se deben mostrar todas aquellas
@@ -313,7 +324,8 @@ public class ActivitiesUtils {
                 Intent chooser = Intent.createChooser(intent, resources.getString(R.string.share_chooser_title));
 
                 if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                    ((BookListActivity) activity).launchIntentAndCheckPermission(chooser);
+                    ((BookListActivity) activity).launchIntentAndCheckPermission(chooser,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 }
 
                 break;
@@ -321,13 +333,14 @@ public class ActivitiesUtils {
             case SHARE_WHATSAPP:
 
                 if (isAppInstalled("com.whatsapp", activity)) {
-                    // En caso de que se comparta con Whatsapp, se lanza la aplicación con el Intent creado.
+                    // En caso de que se comparta con Whatsapp, se lanzará la aplicación con el Intent creado.
                     intent.setPackage("com.whatsapp");
-                    ((BookListActivity) activity).launchIntentAndCheckPermission(intent);
+                    ((BookListActivity) activity).launchIntentAndCheckPermission(intent,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 } else {
 
-                    // Informamos al usuario de si se ha podido realizar la copia. Solamente mostraremos el
-                    // mensaje de error si ha habido un problema obteniendo el ClipboardManager.
+                    // Informamos al usuario de que la aplicación no existe en el dispositivo y que,
+                    // por lo tanto no se puede realizar la acción.
                     Snackbar.make(view,
                             resources.getString(R.string.appnotinstalled),
                             Snackbar.LENGTH_LONG).show();
@@ -336,10 +349,19 @@ public class ActivitiesUtils {
         }
     }
 
-    // TODO comment
+    /**
+     * Este método comprueba si una app existe en el dispositivo.
+     *
+     * @param uri      identificador de la aplicación a buscar
+     * @param activity actividad necesaria para obtener ciertos datos.
+     * @return true en caso de que exista la aplicación con el uri que se pasa por parámetros; false
+     * en caso contrario.
+     */
     static boolean isAppInstalled(String uri, Activity activity) {
         PackageManager pm = activity.getPackageManager();
         boolean app_installed;
+
+        // Comprueba la existencia de la app.
         try {
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
             app_installed = true;
