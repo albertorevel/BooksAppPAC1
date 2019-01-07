@@ -705,13 +705,11 @@ public class BookListActivity extends AppCompatActivity {
     // TODO comment
     public void launchIntentAndCheckPermission(Intent intent) {
 
-        intentToLaunch = null;
+        intentToLaunch = intent;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-
-            intentToLaunch = intent;
 
             this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     Constants.WRITE_EXTERNAL_STORAGE);
@@ -723,7 +721,7 @@ public class BookListActivity extends AppCompatActivity {
     // TODO comment
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
 
         switch (requestCode) {
             case Constants.WRITE_EXTERNAL_STORAGE: {

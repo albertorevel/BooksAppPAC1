@@ -30,4 +30,5 @@
     <string name="clipboardcopy_body">Aplicación Android sobre libros</string>
     <string name="share_no_permission">La aplicación no tiene permisos suficientes para realizar la acción o ha ocurrido un error</string>
     <string name="share_chooser_title">Compartir con...</string>
+    <string name="appnotinstalled">Esta app no está instalada en el dispositivo</string>
 </resources>

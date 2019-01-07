@@ -181,7 +181,7 @@ public class ActivitiesUtils {
                                     }
                                     break;
                             }
-                            return true;
+                            return false;
 
                         } catch (ClassCastException exception) {
                             exception.printStackTrace();
@@ -324,6 +324,13 @@ public class ActivitiesUtils {
                     // En caso de que se comparta con Whatsapp, se lanza la aplicación con el Intent creado.
                     intent.setPackage("com.whatsapp");
                     ((BookListActivity) activity).launchIntentAndCheckPermission(intent);
+                } else {
+
+                    // Informamos al usuario de si se ha podido realizar la copia. Solamente mostraremos el
+                    // mensaje de error si ha habido un problema obteniendo el ClipboardManager.
+                    Snackbar.make(view,
+                            resources.getString(R.string.appnotinstalled),
+                            Snackbar.LENGTH_LONG).show();
                 }
 
         }

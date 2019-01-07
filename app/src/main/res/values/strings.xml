@@ -57,4 +57,5 @@
     <string name="notificationBody">Slide in order to see more of book with id </string>
     <string name="buy_success">Buy completed successfuly</string>
     <string name="buy_error">Error in buying process. Please fill all the fields.</string>
+    <string name="appnotinstalled">This app is not installed in this device</string>
 </resources>
