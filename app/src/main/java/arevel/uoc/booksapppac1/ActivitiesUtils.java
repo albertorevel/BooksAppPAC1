@@ -1,6 +1,5 @@
 package arevel.uoc.booksapppac1;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -19,7 +18,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -28,6 +26,7 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -38,12 +37,15 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import arevel.uoc.booksapppac1.Constants.DRAWER_ACTION;
+import arevel.uoc.booksapppac1.model.BookModel;
 import arevel.uoc.booksapppac1.tools.GenericFileProvider;
 
 import static arevel.uoc.booksapppac1.Constants.DETAIL_FRAGMENT_TAG;
 import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.COPY_CLIPBOARD;
 import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.SHARE_OTHERAPPS;
 import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.SHARE_WHATSAPP;
+import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.SORT_AUTHOR;
+import static arevel.uoc.booksapppac1.Constants.DRAWER_ACTION.SORT_TITLE;
 
 /**
  * Esta clase contiene métodos comunes a varias actividades del proyecto. También contiene referencias
@@ -90,7 +92,6 @@ public class ActivitiesUtils {
      * @param toolbar  la toolbar que usa la actividad
      * @param view vista donde se mostrará el Snackbar con mensajes para el usuario
      */
-    // TODO ver si metemos opciones ordenación
     static void createDrawer(final Activity activity, Toolbar toolbar, View view) {
 
         Resources resources = activity.getResources();
@@ -125,18 +126,31 @@ public class ActivitiesUtils {
                 .withTag(SHARE_WHATSAPP)
                 .withName(activity.getResources().getString(R.string.share_whatsapp))
                 .withIcon(FontAwesome.Icon.faw_whatsapp).withSelectable(false);
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4)
+                .withTag(SORT_AUTHOR)
+                .withName(activity.getResources().getString(R.string.sortByAuthor))
+                .withIcon(FontAwesome.Icon.faw_user).withSelectable(false);
+        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5)
+                .withTag(SORT_TITLE)
+                .withName(activity.getResources().getString(R.string.sortByTitle))
+                .withIcon(FontAwesome.Icon.faw_align_center).withSelectable(false);
+
 
         // Creamos el menú con los elementos creados anteriormente y definimos un listener
         // que nos permitirá gestionar la opción seleccionada
-        Drawer drawer = new DrawerBuilder()
+        final Drawer drawer = new DrawerBuilder()
                 .withActivity(activity)
                 .withToolbar(toolbar)
                 .withAccountHeader(headerResult)
                 .withSelectedItem(0)
+                .withCloseOnClick(true)
                 .addDrawerItems(
                         item1,
                         item2,
-                        item3
+                        item3,
+                        new DividerDrawerItem(),
+                        item4,
+                        item5
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -154,8 +168,19 @@ public class ActivitiesUtils {
                                 case COPY_CLIPBOARD:
                                     shareToClipBoard(activity, view);
                                     break;
+                                case SORT_TITLE:
+                                    if (activity instanceof BookListActivity) {
+                                        ((BookListActivity) activity)
+                                                .sortList(BookModel.SORT_CRITERIA.TITLE);
+                                    }
+                                    break;
+                                case SORT_AUTHOR:
+                                    if (activity instanceof BookListActivity) {
+                                        ((BookListActivity) activity)
+                                                .sortList(BookModel.SORT_CRITERIA.AUTHOR);
+                                    }
+                                    break;
                             }
-
                             return true;
 
                         } catch (ClassCastException exception) {
@@ -218,25 +243,11 @@ public class ActivitiesUtils {
      */
     private static void launchShareIntent(Activity activity, DRAWER_ACTION drawer_action, View view) {
 
-        Resources resources = activity.getResources();
-
-        // La solicitud de los permisos necesarios se realiza en la actividad principal, como se
-        // explica allí. No obstante, aquí se debe comprobar sí se tienen para realizar la acción,
-        // por lo que se comprueba, y en caso de no tenerlos, se informa al usuario de que no se
-        // puede realizar.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-            // Informamos al usuario de que no se puede realizar la acción por falta de permisos y
-            // salimos del método
-            Snackbar.make(view,
-                    resources.getString(R.string.share_no_permission),
-                    Snackbar.LENGTH_LONG).show();
-
+        if (!(activity instanceof BookListActivity)) {
             return;
         }
 
+        Resources resources = activity.getResources();
 
         Bitmap bitmap;
         Drawable m_icon;
@@ -249,7 +260,6 @@ public class ActivitiesUtils {
             if (m_icon instanceof BitmapDrawable) {
                 bitmap = ((BitmapDrawable) m_icon).getBitmap();
             } else {
-//                bitmap = Bitmap.createBitmap(m_icon.getIntrinsicWidth(), m_icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                 bitmap = Utils.getBitmapFromDrawable(m_icon);
             }
 
@@ -303,17 +313,33 @@ public class ActivitiesUtils {
                 Intent chooser = Intent.createChooser(intent, resources.getString(R.string.share_chooser_title));
 
                 if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                    activity.startActivity(chooser);
+                    ((BookListActivity) activity).launchIntentAndCheckPermission(chooser);
                 }
 
                 break;
 
             case SHARE_WHATSAPP:
 
-                // En caso de que se comparta con Whatsapp, se lanza la aplicación con el Intent creado.
-                intent.setPackage("com.whatsapp");
-                activity.startActivity(intent);
+                if (isAppInstalled("com.whatsapp", activity)) {
+                    // En caso de que se comparta con Whatsapp, se lanza la aplicación con el Intent creado.
+                    intent.setPackage("com.whatsapp");
+                    ((BookListActivity) activity).launchIntentAndCheckPermission(intent);
+                }
+
         }
+    }
+
+    // TODO comment
+    static boolean isAppInstalled(String uri, Activity activity) {
+        PackageManager pm = activity.getPackageManager();
+        boolean app_installed;
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            app_installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed = false;
+        }
+        return app_installed;
     }
 
     /**

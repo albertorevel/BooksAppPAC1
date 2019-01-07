@@ -81,6 +81,9 @@ public class BookListActivity extends AppCompatActivity {
     // Variable que permite repetir un intento de conexión, evitando falsos negativos
     static boolean connectionTry = false;
 
+    // Intent que dejamos almacenado si se piden permisos
+    Intent intentToLaunch = null;
+
     /*
      *  PAC3. EJERCICIO 6. PATRONES DE DISEÑO.
 
@@ -162,7 +165,6 @@ public class BookListActivity extends AppCompatActivity {
     String msg_dataRefreshComplete;
     @BindDimen(R.dimen.gridOffSet)
     int grid_offset;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,14 +281,14 @@ public class BookListActivity extends AppCompatActivity {
         // una opción del menú implicaba unos desarrollos que se ha considerado que se escapaban
         // de esta práctica.
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
-            return;
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//
+//            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//
+//            return;
+//        }
 
         // Inicializamos AdMob con el ID de prueba de Google
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
@@ -644,35 +646,6 @@ public class BookListActivity extends AppCompatActivity {
 
     Ya no se usa este menú en la PAC4.
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Ordenamos la lista según la opción seleccionada
-        List<BookItem> sortedList;
-
-        switch (item.getItemId()) {
-
-            case R.id.sortByAuthor_option:
-                sortedList = BookModel.sortBy(BookModel.SORT_CRITERIA.AUTHOR);
-                break;
-            case R.id.sortByTitle_option:
-                sortedList = BookModel.sortBy(BookModel.SORT_CRITERIA.TITLE);
-                break;
-            default:
-                sortedList = BookModel.getITEMS();
-        }
-
-        // Creamos un nuevo objeto adapter con la lista y notificamos del cambio para que se pueda
-        // mostrar la nueva lista.
-        if (sortedList != null) {
-
-            recyclerListChanged();
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -680,7 +653,28 @@ public class BookListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_list, menu);
         return true;
-    }*/
+    }
+
+
+    --> Además, cambiamos el método onOptionsItemSelected para llamarlo desde el nuevo menú.
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        ...
+    */
+
+    public void sortList(BookModel.SORT_CRITERIA sortCriteria) {
+
+        // Ordenamos la lista según la opción seleccionada
+        List<BookItem> sortedList = BookModel.sortBy(sortCriteria);
+
+
+        recyclerListChanged();
+
+    }
 
     /**
      * Este método realiza una llamada al modelo de datos para que borre un libro y tras esto,
@@ -707,4 +701,50 @@ public class BookListActivity extends AppCompatActivity {
             }
         }
     }
+
+    // TODO comment
+    public void launchIntentAndCheckPermission(Intent intent) {
+
+        intentToLaunch = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+            intentToLaunch = intent;
+
+            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Constants.WRITE_EXTERNAL_STORAGE);
+        } else {
+            this.startActivity(intentToLaunch);
+        }
+    }
+
+    // TODO comment
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        switch (requestCode) {
+            case Constants.WRITE_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && intentToLaunch != null) {
+
+                    this.startActivity(intentToLaunch);
+
+                } else {
+                    // Informamos al usuario de que no se puede realizar la acción por falta de permisos y
+                    // salimos del método
+                    Snackbar.make(this.mSwipeContainer,
+                            getResources().getString(R.string.share_no_permission),
+                            Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+        }
+    }
+
+
 }

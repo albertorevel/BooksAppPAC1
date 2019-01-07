@@ -21,11 +21,16 @@ public class Constants {
     static final String CHANNEL_ID_0 = "BooksPacApp_Channel_0";
     static final String CHANNEL_ID_1 = "BooksPacApp_Channel_1";
 
+    // Permission request
+    static final int WRITE_EXTERNAL_STORAGE = 1;
+
     // Tags usados en las opciones del menú lateral
     enum DRAWER_ACTION {
         SHARE_OTHERAPPS,
         COPY_CLIPBOARD,
-        SHARE_WHATSAPP
+        SHARE_WHATSAPP,
+        SORT_AUTHOR,
+        SORT_TITLE
     }
 
     //
